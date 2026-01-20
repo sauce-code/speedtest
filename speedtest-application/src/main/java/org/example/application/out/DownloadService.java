@@ -5,6 +5,6 @@ import org.example.domain.TransferTestResult;
 
 public interface DownloadService {
 
-    TransferTestResult testDownload(String serverUrl, DownloadSetting settings);
+    TransferTestResult testDownload(String serverUrl, DownloadSetting settings) throws InterruptedException;
 
 }

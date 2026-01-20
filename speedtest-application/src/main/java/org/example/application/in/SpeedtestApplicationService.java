@@ -18,6 +18,7 @@ public class SpeedtestApplicationService {
     private final TimeService timeService;
     private final ConfigService configService;
     private final ServerService serverService;
+    private final LatencyService latencyService;
     private final DownloadService downloadService;
     private final UploadService uploadService;
     private final ShareUrlService shareUrlService;
@@ -27,6 +28,7 @@ public class SpeedtestApplicationService {
             TimeService timeService,
             ConfigService configService,
             ServerService serverService,
+            LatencyService latencyService,
             DownloadService downloadService,
             UploadService uploadService,
             ShareUrlService shareUrlService) {
@@ -34,49 +36,57 @@ public class SpeedtestApplicationService {
         this.timeService = timeService;
         this.configService = configService;
         this.serverService = serverService;
+        this.latencyService = latencyService;
         this.downloadService = downloadService;
         this.uploadService = uploadService;
         this.shareUrlService = shareUrlService;
     }
 
     public SpeedtestResult run(SpeedtestApplicationCommand command) {
-        SpeedtestResultID id = idService.create();
-        LocalDateTime startTime = timeService.localDateTime();
-        Config config = configService.config();
-        List<Server> servers = serverService.servers();
-        Map<Double, Server> closestServers = serverService.findClosestServers(
-                config.client().lat(),
-                config.client().lon(),
-                10,
-                command.distanceUnit(),
-                servers
-        );
-        Map.Entry<Server, LatencyTestResult> fastestServer = serverService.getFastestServer(closestServers);
-        TransferTestResult downloadResult = downloadService.testDownload(
-                fastestServer.getKey().url(),
-                config.download());
-        TransferTestResult uploadResult = uploadService.testUpload(
-                fastestServer.getKey().url(),
-                config.upload(),
-                (downloadResult != null && downloadResult.rateInMbps() > 0.1)
-                        ? 8
-                        : config.upload().threads());
-        String shareUrl = shareUrlService.createShareUrl(
-                fastestServer.getKey().id(),
-                fastestServer.getValue().latency(),
-                uploadResult.rateInMbps(),
-                downloadResult.rateInMbps());
-        LocalDateTime endTime = timeService.localDateTime();
-        return  new SpeedtestResult(
-                id,
-                startTime,
-                endTime,
-                config.client(),
-                fastestServer.getKey(),
-                fastestServer.getValue(),
-                downloadResult,
-                uploadResult,
-                shareUrl);
+        try {
+            SpeedtestResultID id = idService.create();
+            LocalDateTime startTime = timeService.localDateTime();
+            Config config = configService.config();
+            List<Server> servers = serverService.servers(
+                    config.download().threadsPerUrl());
+            Map<Double, Server> closestServers = serverService.findClosestServers(
+                    config.client().lat(),
+                    config.client().lon(),
+                    10,
+                    command.distanceUnit(),
+                    servers
+            );
+            Map.Entry<Server, LatencyTestResult> fastestServer = latencyService.getFastestServer(closestServers);
+            TransferTestResult downloadResult = downloadService.testDownload(
+                    fastestServer.getKey().url(),
+                    config.download());
+            TransferTestResult uploadResult = uploadService.testUpload(
+                    fastestServer.getKey().url(),
+                    config.upload(),
+                    (downloadResult != null && downloadResult.rateInMbps() > 0.1)
+                            ? 8
+                            : config.upload().threads());
+            String shareUrl = shareUrlService.createShareUrl(
+                    fastestServer.getKey().id(),
+                    fastestServer.getValue().latency(),
+                    uploadResult.rateInMbps(),
+                    downloadResult.rateInMbps());
+            LocalDateTime endTime = timeService.localDateTime();
+            return new SpeedtestResult(
+                    id,
+                    startTime,
+                    endTime,
+                    config.client(),
+                    fastestServer.getKey(),
+                    fastestServer.getValue(),
+                    downloadResult,
+                    uploadResult,
+                    shareUrl);
+        } catch (Exception e) {
+            // TODO log
+
+            throw new RuntimeException();
+        }
     }
 
 }

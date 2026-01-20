@@ -5,6 +5,6 @@ import org.example.application.out.model.UploadSetting;
 
 public interface UploadService {
 
-    TransferTestResult testUpload(String serverUrl, UploadSetting settings, int threads);
+    TransferTestResult testUpload(String serverUrl, UploadSetting settings, int threads) throws InterruptedException;
 
 }
