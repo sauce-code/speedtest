@@ -4,6 +4,7 @@ import jakarta.xml.bind.DatatypeConverter;
 import org.example.application.out.ShareUrlService;
 import org.example.framework.out.Util;
 import org.example.framework.out.http.HttpPostClient;
+import org.example.util.Objectz;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,9 +23,9 @@ public class ShareUrlServiceImpl implements ShareUrlService {
 
     @Override
     public String createShareUrl(int serverId, double latency, double uploadMbps, double downloadMbps) {
-        if (serverId <= 0 || !(uploadMbps > 0) || !(downloadMbps > 0)) {
-            throw new IllegalArgumentException();
-        }
+        Objectz.require(serverId > 0);
+        Objectz.require(uploadMbps > 0);
+        Objectz.require(downloadMbps > 0);
         int ping = (int) Math.round(latency);
         int uploadKbps = (int) Math.round(uploadMbps * 1000.0d);
         int downloadKbps = (int) Math.round(downloadMbps * 1000.0d);

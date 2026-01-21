@@ -6,6 +6,7 @@ import org.example.domain.LatencyTestResult;
 import org.example.framework.out.Util;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
+import org.example.util.Objectz;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -55,9 +56,7 @@ public class LatencyServiceImpl implements LatencyService {
 
     private List<Long> testLatency(String serverUrl, int limit) {
         Objects.requireNonNull(serverUrl);
-        if (limit <= 0) {
-            throw new IllegalArgumentException();
-        }
+        Objectz.require(limit > 0);
         List<Long> latencies = new ArrayList<>();
         for (int i = 0; i < limit; i++) {
             String testUrl = serverUrl + TEST_FILE + System.currentTimeMillis();

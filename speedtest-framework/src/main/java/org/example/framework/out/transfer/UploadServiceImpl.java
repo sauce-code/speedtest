@@ -4,6 +4,7 @@ import org.example.application.out.UploadService;
 import org.example.application.out.model.Upload;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpPostClient;
+import org.example.util.Objectz;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,9 +45,7 @@ public final class UploadServiceImpl implements UploadService {
     }
 
     private String generateDataString(int size) {
-        if (size <= 0) {
-            throw new IllegalArgumentException();
-        }
+        Objectz.require(size > 0);
         int multiplier = (int) Math.ceil(size / (float) CHARS.length());
         StringBuilder dataString = new StringBuilder(CONTENT);
         dataString.append(CHARS.repeat(Math.max(0, multiplier)));

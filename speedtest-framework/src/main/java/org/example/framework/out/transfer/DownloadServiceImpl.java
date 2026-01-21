@@ -4,6 +4,7 @@ import org.example.application.out.DownloadService;
 import org.example.application.out.model.Download;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpGetClient;
+import org.example.util.Objectz;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,9 +38,7 @@ public class DownloadServiceImpl implements DownloadService {
 
     private List<String> generateUrls(String serverUrl, int threadsPerUrl) {
         Objects.requireNonNull(serverUrl);
-        if (threadsPerUrl <= 0) {
-            throw new IllegalArgumentException();
-        }
+        Objectz.require(threadsPerUrl > 0);
         List<String> urls = new ArrayList<>();
         for (int size : SIZES) {
             for (int i = 0; i < threadsPerUrl; i++) {

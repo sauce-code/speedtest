@@ -10,6 +10,7 @@ import org.example.framework.out.config.MissingResultException;
 import org.example.framework.out.config.ParsingException;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
+import org.example.util.Objectz;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -75,9 +76,7 @@ public class ServerServiceImpl implements ServerService {
     public Map<Double, DomainServer> findClosestServers(double lat, double lon, int limit, DistanceUnit distanceUnit, List<DomainServer> domainServerList) {
         Objects.requireNonNull(distanceUnit);
         Objects.requireNonNull(domainServerList);
-        if (limit <= 0) {
-            throw new IllegalArgumentException();
-        }
+        Objectz.require(limit > 0);
         Map<Double, DomainServer> closestServers = domainServerList.stream()
                 .collect(Collectors.toMap(
                         server -> calculateDistance(lat, lon, server.lat(), server.lon(), distanceUnit),

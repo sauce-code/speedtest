@@ -2,6 +2,7 @@ package org.example.framework.out.transfer;
 
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.Util;
+import org.example.util.Objectz;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,9 +13,7 @@ public class TransferService {
 
     public TransferTestResult testTransfer(List<? extends Callable<TransferTestResult>> callables, int threads) throws InterruptedException {
         Objects.requireNonNull(callables);
-        if (threads <= 0) {
-            throw new IllegalArgumentException();
-        }
+        Objectz.require(threads > 0);
         List<TransferTestResult> results = Executors.newWorkStealingPool(threads).invokeAll(callables)
                 .stream()
                 .map(future -> {

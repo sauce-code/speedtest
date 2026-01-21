@@ -46,7 +46,7 @@ public class HttpGetClient {
         }
     }
 
-    public byte[] get(String urlString) throws ServerRequestException {
+    public byte[] get(String urlString) {
         Objects.requireNonNull(urlString);
         try {
             HttpURLConnection conn = httpClient.createConnection(new URL(urlString), GET);

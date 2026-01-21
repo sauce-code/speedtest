@@ -10,7 +10,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-public final class HttpPostClient {
+public class HttpPostClient {
 
     public static final String CONTENT_LENGTH = "Content-Length";
     private static final String POST = "POST";
