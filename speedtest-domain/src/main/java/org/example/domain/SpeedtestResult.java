@@ -10,7 +10,7 @@ public class SpeedtestResult extends Entity<SpeedtestResultID> {
                            LocalDateTime startTime,
                            LocalDateTime endTime,
                            Client client,
-                           Server server,
+                           DomainServer domainServer,
                            LatencyTestResult latency,
                            TransferTestResult download,
                            TransferTestResult upload,
@@ -19,7 +19,7 @@ public class SpeedtestResult extends Entity<SpeedtestResultID> {
         this.startTime = startTime;
         this.endTime = endTime;
         this.client = client;
-        this.server = server;
+        this.domainServer = domainServer;
         this.latency = latency;
         this.download = download;
         this.upload = upload;
@@ -29,10 +29,24 @@ public class SpeedtestResult extends Entity<SpeedtestResultID> {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Client client;
-    private Server server;
+    private DomainServer domainServer;
     private LatencyTestResult latency;
     private TransferTestResult download;
     private TransferTestResult upload;
     private String shareUrl;
+
+    @Override
+    public String toString() {
+        return "SpeedtestResult{" +
+                "startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", client=" + client +
+                ", domainServer=" + domainServer +
+                ", latency=" + latency +
+                ", download=" + download +
+                ", upload=" + upload +
+                ", shareUrl='" + shareUrl + '\'' +
+                '}';
+    }
 
 }

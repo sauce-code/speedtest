@@ -1,7 +1,7 @@
 package org.example.framework.out.transfer;
 
 import org.example.application.out.DownloadService;
-import org.example.application.out.model.DownloadSetting;
+import org.example.application.out.model.Download;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpGetClient;
 
@@ -22,7 +22,7 @@ public class DownloadServiceImpl implements DownloadService {
     }
 
     @Override
-    public TransferTestResult testDownload(String serverUrl, DownloadSetting settings) throws InterruptedException {
+    public TransferTestResult testDownload(String serverUrl, Download settings) throws InterruptedException {
         if (serverUrl != null && settings != null) {
             List<String> urls = generateUrls(serverUrl, settings.threadsPerUrl());
             long timeoutTime = System.currentTimeMillis() + settings.testLength() * 1000L;

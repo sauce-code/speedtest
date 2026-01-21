@@ -1,6 +1,6 @@
 package org.example.domain;
 
-public record Server(
+public record DomainServer(
         String url,
         Double lat,
         Double lon,

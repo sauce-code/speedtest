@@ -2,8 +2,9 @@ package org.example.application.in;
 
 import org.example.application.out.*;
 import org.example.application.out.model.Config;
+import org.example.application.out.model.ConfigService;
 import org.example.domain.LatencyTestResult;
-import org.example.domain.Server;
+import org.example.domain.DomainServer;
 import org.example.domain.TransferTestResult;
 import org.example.domain.SpeedtestResult;
 import org.example.domain.SpeedtestResultID;
@@ -11,6 +12,7 @@ import org.example.domain.SpeedtestResultID;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class SpeedtestApplicationService {
 
@@ -43,20 +45,20 @@ public class SpeedtestApplicationService {
     }
 
     public SpeedtestResult run(SpeedtestApplicationCommand command) {
+        Objects.requireNonNull(command);
         try {
             SpeedtestResultID id = idService.create();
             LocalDateTime startTime = timeService.localDateTime();
             Config config = configService.config();
-            List<Server> servers = serverService.servers(
+            List<DomainServer> domainServers = serverService.servers(
                     config.download().threadsPerUrl());
-            Map<Double, Server> closestServers = serverService.findClosestServers(
+            Map<Double, DomainServer> closestServers = serverService.findClosestServers(
                     config.client().lat(),
                     config.client().lon(),
                     10,
                     command.distanceUnit(),
-                    servers
-            );
-            Map.Entry<Server, LatencyTestResult> fastestServer = latencyService.getFastestServer(closestServers);
+                    domainServers);
+            Map.Entry<DomainServer, LatencyTestResult> fastestServer = latencyService.getFastestServer(closestServers);
             TransferTestResult downloadResult = downloadService.testDownload(
                     fastestServer.getKey().url(),
                     config.download());
@@ -85,7 +87,7 @@ public class SpeedtestApplicationService {
         } catch (Exception e) {
             // TODO log
 
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
     }
 

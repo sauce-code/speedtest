@@ -3,13 +3,17 @@ package org.example.framework.out.config;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
-import org.example.application.out.ConfigService;
 import org.example.application.out.model.Config;
+import org.example.application.out.model.ConfigService;
+import org.example.application.out.model.Download;
+import org.example.application.out.model.Upload;
+import org.example.domain.Client;
 import org.example.framework.out.http.HttpGetClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 public class ConfigServiceImpl implements ConfigService {
 
@@ -23,25 +27,34 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public Config config() {
-        final byte[] bytes = httpGetClient.get(CONFIG_URL);
-        if (bytes != null) {
-            return getSettingFromXml(bytes);
-        } else {
-            throw new MissingResultException("Missing result for config settings request");
-        }
+        byte[] bytes = httpGetClient.get(CONFIG_URL);
+        ConfigSetting settingFromXml = getSettingFromXml(bytes);
+        return new Config(
+                new Client(
+                        settingFromXml.getClient().getIpAddress(),
+                        settingFromXml.getClient().getLat(),
+                        settingFromXml.getClient().getLon(),
+                        settingFromXml.getClient().getIsp(),
+                        settingFromXml.getClient().getIspRating(),
+                        settingFromXml.getClient().getIsoAlpha2CountryCode()),
+                new Download(
+                        settingFromXml.getDownload().getTestLength(),
+                        settingFromXml.getDownload().getThreadsPerUrl()),
+                new Upload(
+                        settingFromXml.getUpload().getRatio(),
+                        settingFromXml.getUpload().getMaxChunkCount(),
+                        settingFromXml.getUpload().getThreads(),
+                        settingFromXml.getUpload().getTestLength()));
     }
 
-    private Config getSettingFromXml(final byte[] xml) throws ParsingException {
-        if (xml != null) {
-            try (InputStream is = new ByteArrayInputStream(xml)) {
-                final JAXBContext jaxbContext = JAXBContext.newInstance(Config.class);
-                final Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                return (Config) jaxbUnmarshaller.unmarshal(is);
-            } catch (IOException | JAXBException e) {
-                throw new ParsingException(e);
-            }
-        } else {
-            throw new IllegalArgumentException();
+    private ConfigSetting getSettingFromXml(byte[] xml) throws ParsingException {
+        Objects.requireNonNull(xml);
+        try (InputStream is = new ByteArrayInputStream(xml)) {
+            JAXBContext jaxbContext = JAXBContext.newInstance(ConfigSetting.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            return (ConfigSetting) jaxbUnmarshaller.unmarshal(is);
+        } catch (IOException | JAXBException e) {
+            throw new ParsingException(e);
         }
     }
 

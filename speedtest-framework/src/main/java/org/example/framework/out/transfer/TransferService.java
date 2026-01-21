@@ -10,9 +10,9 @@ import java.util.concurrent.Executors;
 
 public class TransferService {
 
-    public TransferTestResult testTransfer(List<Callable<TransferTestResult>> callables, int threats) throws InterruptedException {
-        if (callables != null && !callables.isEmpty() && threats > 0) {
-            List<TransferTestResult> results = Executors.newWorkStealingPool(threats).invokeAll(callables)
+    public TransferTestResult testTransfer(List<Callable<TransferTestResult>> callables, int threads) throws InterruptedException {
+        if (callables != null && !callables.isEmpty() && threads > 0) {
+            List<TransferTestResult> results = Executors.newWorkStealingPool(threads).invokeAll(callables)
                     .stream()
                     .map(future -> {
                         try {
@@ -33,7 +33,7 @@ public class TransferService {
             long durationInMs = results.stream()
                     .map(TransferTestResult::durationInMs)
                     .mapToLong(Long::longValue)
-                    .sum() / threats;
+                    .sum() / threads;
             return new TransferTestResult(Util.calculateMbps(bytes, durationInMs), bytes, durationInMs);
         } else {
             throw new IllegalArgumentException();

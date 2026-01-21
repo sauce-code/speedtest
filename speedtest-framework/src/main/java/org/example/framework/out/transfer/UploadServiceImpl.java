@@ -1,7 +1,7 @@
 package org.example.framework.out.transfer;
 
 import org.example.application.out.UploadService;
-import org.example.application.out.model.UploadSetting;
+import org.example.application.out.model.Upload;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpPostClient;
 
@@ -25,7 +25,7 @@ public final class UploadServiceImpl implements UploadService {
     }
 
     @Override
-    public TransferTestResult testUpload(String serverUrl, UploadSetting settings, int threads) throws InterruptedException {
+    public TransferTestResult testUpload(String serverUrl, Upload settings, int threads) throws InterruptedException {
         if (serverUrl != null && settings != null) {
             final int[] uploadSizes = Arrays.copyOfRange(SIZES, settings.ratio() - 1, SIZES.length);
             final int uploadCount = (int) Math.ceil((double) settings.maxChunkCount() / (double) uploadSizes.length);

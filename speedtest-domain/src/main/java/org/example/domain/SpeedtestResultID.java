@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class SpeedtestResultID extends EntityID {
 
-    protected SpeedtestResultID(UUID uuid) {
+    public SpeedtestResultID(UUID uuid) {
         super(uuid);
     }
 
