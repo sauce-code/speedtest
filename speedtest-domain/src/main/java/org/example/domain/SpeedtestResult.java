@@ -6,15 +6,16 @@ import java.time.LocalDateTime;
 
 public class SpeedtestResult extends Entity<SpeedtestResultID> {
 
-    public SpeedtestResult(SpeedtestResultID id,
-                           LocalDateTime startTime,
-                           LocalDateTime endTime,
-                           Client client,
-                           DomainServer domainServer,
-                           LatencyTestResult latency,
-                           TransferTestResult download,
-                           TransferTestResult upload,
-                           String shareUrl) {
+    public SpeedtestResult(
+            SpeedtestResultID id,
+            LocalDateTime startTime,
+            LocalDateTime endTime,
+            Client client,
+            DomainServer domainServer,
+            LatencyTestResult latency,
+            TransferTestResult download,
+            TransferTestResult upload,
+            String shareUrl) {
         super(id);
         this.startTime = startTime;
         this.endTime = endTime;
