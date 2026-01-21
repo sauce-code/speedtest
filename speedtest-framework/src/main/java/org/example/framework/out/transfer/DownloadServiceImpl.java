@@ -6,8 +6,10 @@ import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpGetClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
+import java.util.Objects;
+import java.util.stream.IntStream;
 
 public class DownloadServiceImpl implements DownloadService {
 
@@ -23,31 +25,28 @@ public class DownloadServiceImpl implements DownloadService {
 
     @Override
     public TransferTestResult testDownload(String serverUrl, Download settings) throws InterruptedException {
-        if (serverUrl != null && settings != null) {
-            List<String> urls = generateUrls(serverUrl, settings.threadsPerUrl());
-            long timeoutTime = System.currentTimeMillis() + settings.testLength() * 1000L;
-            List<Callable<TransferTestResult>> callables = new ArrayList<>();
-            for (String url : urls) {
-                callables.add(new DownloadTask(httpGetClient, url, timeoutTime));
-            }
-            return transferService.testTransfer(callables, settings.threadsPerUrl() * 2);
-        } else {
-            throw new IllegalArgumentException();
-        }
+        Objects.requireNonNull(serverUrl);
+        Objects.requireNonNull(settings);
+        List<String> urls = generateUrls(serverUrl, settings.threadsPerUrl());
+        long timeoutTime = System.currentTimeMillis() + settings.testLength() * 1_000L;
+        List<DownloadTask> callables = urls.stream()
+                .map(s -> new DownloadTask(httpGetClient, s, timeoutTime))
+                .toList();
+        return transferService.testTransfer(callables, settings.threadsPerUrl() * 2);
     }
 
     private List<String> generateUrls(String serverUrl, int threadsPerUrl) {
-        if (serverUrl != null && threadsPerUrl > 0) {
-            List<String> urls = new ArrayList<>();
-            for (int size : SIZES) {
-                for (int iter = 0; iter < threadsPerUrl; iter++) {
-                    urls.add(String.format("%s/random%sx%s.jpg", serverUrl, size, size));
-                }
-            }
-            return urls;
-        } else {
+        Objects.requireNonNull(serverUrl);
+        if (threadsPerUrl <= 0) {
             throw new IllegalArgumentException();
         }
+        List<String> urls = new ArrayList<>();
+        for (int size : SIZES) {
+            for (int i = 0; i < threadsPerUrl; i++) {
+                urls.add(String.format("%s/random%sx%s.jpg", serverUrl, size, size));
+            }
+        }
+        return urls;
     }
 
 }

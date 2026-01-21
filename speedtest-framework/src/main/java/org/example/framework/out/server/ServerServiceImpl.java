@@ -80,39 +80,29 @@ public class ServerServiceImpl implements ServerService {
         }
         Map<Double, DomainServer> closestServers = domainServerList.stream()
                 .collect(Collectors.toMap(
-                        server -> {
-                            try {
-                                return calculateDistance(lat, lon, server.lat(), server.lon(), distanceUnit);
-                            } catch (UnsupportedUnitException e) {
-                                throw new RuntimeException(e);
-                            }
-                        },
+                        server -> calculateDistance(lat, lon, server.lat(), server.lon(), distanceUnit),
                         server -> server, (server1, server2) -> server1, TreeMap::new));
         return closestServers.entrySet().stream()
                 .limit(limit)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public static double calculateDistance(double lat1, double lon1, double lat2, double lon2, DistanceUnit distanceUnit)
-            throws UnsupportedUnitException {
-        if (distanceUnit == null) {
-            throw new IllegalArgumentException();
-        }
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2, DistanceUnit distanceUnit) {
+        Objects.requireNonNull(distanceUnit);
         if (lat1 == lat2 && lon1 == lon2) {
             return 0d;
-        } else {
-            double theta = lon1 - lon2;
-            double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2))
-                    + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
-            dist = Math.acos(dist);
-            dist = Math.toDegrees(dist);
-            dist = dist * 60 * 1.1515; // miles
-            return switch (distanceUnit) {
-                case MILE -> dist;
-                case KILOMETER -> dist * 1.609344;
-                case NAUTICAL_MILE -> dist * 0.8684;
-            };
         }
+        double theta = lon1 - lon2;
+        double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2))
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
+        dist = Math.acos(dist);
+        dist = Math.toDegrees(dist);
+        dist = dist * 60 * 1.1515; // miles
+        return switch (distanceUnit) {
+            case MILE -> dist;
+            case KILOMETER -> dist * 1.609344;
+            case NAUTICAL_MILE -> dist * 0.8684;
+        };
     }
 
 }

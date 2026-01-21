@@ -10,34 +10,31 @@ import java.util.concurrent.Executors;
 
 public class TransferService {
 
-    public TransferTestResult testTransfer(List<Callable<TransferTestResult>> callables, int threads) throws InterruptedException {
-        if (callables != null && !callables.isEmpty() && threads > 0) {
-            List<TransferTestResult> results = Executors.newWorkStealingPool(threads).invokeAll(callables)
-                    .stream()
-                    .map(future -> {
-                        try {
-                            return future.get();
-                        } catch (Exception e) {
-                            throw new IllegalStateException(e);
-                        }
-                    })
-                    .filter(Objects::nonNull)
-                    .toList();
-            if (results.isEmpty()) {
-                throw new MissingResultException("Empty list for transfer results");
-            }
-            int bytes = results.stream()
-                    .map(TransferTestResult::bytes)
-                    .mapToInt(Integer::intValue)
-                    .sum();
-            long durationInMs = results.stream()
-                    .map(TransferTestResult::durationInMs)
-                    .mapToLong(Long::longValue)
-                    .sum() / threads;
-            return new TransferTestResult(Util.calculateMbps(bytes, durationInMs), bytes, durationInMs);
-        } else {
+    public TransferTestResult testTransfer(List<? extends Callable<TransferTestResult>> callables, int threads) throws InterruptedException {
+        Objects.requireNonNull(callables);
+        if (threads <= 0) {
             throw new IllegalArgumentException();
         }
+        List<TransferTestResult> results = Executors.newWorkStealingPool(threads).invokeAll(callables)
+                .stream()
+                .map(future -> {
+                    try {
+                        return future.get();
+                    } catch (Exception e) {
+                        throw new IllegalStateException(e);
+                    }
+                })
+                .filter(Objects::nonNull)
+                .toList();
+        int bytes = results.stream()
+                .map(TransferTestResult::bytes)
+                .mapToInt(Integer::intValue)
+                .sum();
+        long durationInMs = results.stream()
+                .map(TransferTestResult::durationInMs)
+                .mapToLong(Long::longValue)
+                .sum() / threads;
+        return new TransferTestResult(Util.calculateMbps(bytes, durationInMs), bytes, durationInMs);
     }
 
 }

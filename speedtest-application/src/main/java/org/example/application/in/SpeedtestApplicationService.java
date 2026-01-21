@@ -3,11 +3,7 @@ package org.example.application.in;
 import org.example.application.out.*;
 import org.example.application.out.model.Config;
 import org.example.application.out.model.ConfigService;
-import org.example.domain.LatencyTestResult;
-import org.example.domain.DomainServer;
-import org.example.domain.TransferTestResult;
-import org.example.domain.SpeedtestResult;
-import org.example.domain.SpeedtestResultID;
+import org.example.domain.*;
 
 import java.time.LocalDateTime;
 import java.util.List;

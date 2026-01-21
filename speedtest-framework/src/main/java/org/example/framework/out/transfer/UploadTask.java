@@ -20,7 +20,7 @@ public final class UploadTask implements Callable<TransferTestResult> {
     }
 
     @Override
-    public TransferTestResult call() throws ServerRequestException {
+    public TransferTestResult call() {
         return httpPostClient.partialPostUploadData(url, timeoutTime, dataString);
     }
 
