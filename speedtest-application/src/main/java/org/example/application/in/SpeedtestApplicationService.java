@@ -40,8 +40,7 @@ public class SpeedtestApplicationService {
         this.shareUrlService = shareUrlService;
     }
 
-    public SpeedtestResult run(SpeedtestApplicationCommand command) {
-        Objects.requireNonNull(command);
+    public SpeedtestResult run() {
         try {
             SpeedtestResultID id = idService.create();
             LocalDateTime startTime = timeService.localDateTime();
@@ -52,7 +51,7 @@ public class SpeedtestApplicationService {
                     config.client().lat(),
                     config.client().lon(),
                     10,
-                    command.distanceUnit(),
+                    DistanceUnit.KILOMETER,
                     servers);
             Map.Entry<Server, LatencyTestResult> fastestServer = latencyService.getFastestServer(closestServers);
             TransferTestResult downloadResult = downloadService.testDownload(

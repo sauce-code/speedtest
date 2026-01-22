@@ -1,8 +1,6 @@
 package org.example;
 
-import org.example.application.in.SpeedtestApplicationCommand;
 import org.example.application.in.SpeedtestApplicationService;
-import org.example.domain.DistanceUnit;
 import org.example.domain.SpeedtestResult;
 import org.example.framework.out.config.ConfigServiceImpl;
 import org.example.framework.out.http.HttpClient;
@@ -17,15 +15,11 @@ import org.example.framework.out.transfer.DownloadServiceImpl;
 import org.example.framework.out.transfer.TransferService;
 import org.example.framework.out.transfer.UploadServiceImpl;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
     public static void main(String[] args) {
         SpeedtestApplicationService speedtestApplicationService = init();
-        DistanceUnit distanceUnit = DistanceUnit.KILOMETER;
-        SpeedtestApplicationCommand command = new SpeedtestApplicationCommand(distanceUnit);
-        SpeedtestResult speedtestResult = speedtestApplicationService.run(command);
+        SpeedtestResult speedtestResult = speedtestApplicationService.run();
         System.out.println(speedtestResult);
     }
 

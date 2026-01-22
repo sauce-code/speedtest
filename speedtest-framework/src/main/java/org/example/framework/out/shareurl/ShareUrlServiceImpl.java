@@ -27,8 +27,8 @@ public class ShareUrlServiceImpl implements ShareUrlService {
         Objectz.require(uploadMbps > 0);
         Objectz.require(downloadMbps > 0);
         int ping = (int) Math.round(latency);
-        int uploadKbps = (int) Math.round(uploadMbps * 1000.0d);
-        int downloadKbps = (int) Math.round(downloadMbps * 1000.0d);
+        int uploadKbps = (int) Math.round(uploadMbps * 1000.0);
+        int downloadKbps = (int) Math.round(downloadMbps * 1000.0);
         String md5Hash = generateMd5Hash(String.format("%s-%s-%s-%s", ping, uploadKbps, downloadKbps, "297aae72"));
         String encodedBody = String.format("serverid=%s&hash=%s&ping=%s&download=%s&upload=%s&accuracy=1",
                 serverId, md5Hash, ping, downloadKbps, uploadKbps);
