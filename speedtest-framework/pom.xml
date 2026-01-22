@@ -15,12 +15,12 @@
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>speedtest-application</artifactId>
-            <version>1.0.0</version>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>speedtest-domain</artifactId>
-            <version>1.0.0</version>
+            <version>${revision}</version>
         </dependency>
 
         <dependency>
