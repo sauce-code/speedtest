@@ -1,7 +1,7 @@
 package org.example.framework.out.transfer;
 
 import org.example.application.out.UploadService;
-import org.example.application.out.model.Upload;
+import org.example.domain.config.Upload;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpPostClient;
 import org.example.util.Objectz;

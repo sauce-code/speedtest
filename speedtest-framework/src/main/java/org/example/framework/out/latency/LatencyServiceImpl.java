@@ -1,7 +1,7 @@
 package org.example.framework.out.latency;
 
 import org.example.application.out.LatencyService;
-import org.example.domain.DomainServer;
+import org.example.domain.Server;
 import org.example.domain.LatencyTestResult;
 import org.example.framework.out.Util;
 import org.example.framework.out.http.HttpGetClient;
@@ -23,18 +23,18 @@ public class LatencyServiceImpl implements LatencyService {
     }
 
     @Override
-    public Map.Entry<DomainServer, LatencyTestResult> getFastestServer(Map<Double, DomainServer> serverMap) {
+    public Map.Entry<Server, LatencyTestResult> getFastestServer(Map<Double, Server> serverMap) {
         Objects.requireNonNull(serverMap);
         return findServerLatencies(serverMap).entrySet().stream()
                 .min(Comparator.comparing(entry -> entry.getValue().latency()))
                 .orElseThrow(MissingResultException::new);
     }
 
-    private Map<DomainServer, LatencyTestResult> findServerLatencies(Map<Double, DomainServer> serverMap) {
+    private Map<Server, LatencyTestResult> findServerLatencies(Map<Double, Server> serverMap) {
         Objects.requireNonNull(serverMap);
         int testsPerServer = Integer.parseInt(Objects.requireNonNull(Util.getConfigProperty("Latency.testsPerServer.maxNumber")));
-        Map<DomainServer, LatencyTestResult> results = new HashMap<>();
-        for (Map.Entry<Double, DomainServer> entry : serverMap.entrySet()) {
+        Map<Server, LatencyTestResult> results = new HashMap<>();
+        for (Map.Entry<Double, Server> entry : serverMap.entrySet()) {
             try {
                 results.put(entry.getValue(), new LatencyTestResult(calculateAverage(
                         testLatency(entry.getValue().url(), testsPerServer)), entry.getKey()));

@@ -1,16 +1,14 @@
 package org.example.framework.out.transfer;
 
 import org.example.application.out.DownloadService;
-import org.example.application.out.model.Download;
+import org.example.domain.config.Download;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.util.Objectz;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 public class DownloadServiceImpl implements DownloadService {
 

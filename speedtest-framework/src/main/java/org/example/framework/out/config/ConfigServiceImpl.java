@@ -3,10 +3,10 @@ package org.example.framework.out.config;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
-import org.example.application.out.model.Config;
-import org.example.application.out.model.ConfigService;
-import org.example.application.out.model.Download;
-import org.example.application.out.model.Upload;
+import org.example.domain.config.Config;
+import org.example.application.out.ConfigService;
+import org.example.domain.config.Download;
+import org.example.domain.config.Upload;
 import org.example.domain.Client;
 import org.example.framework.out.http.HttpGetClient;
 

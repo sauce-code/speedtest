@@ -1,4 +1,4 @@
-package org.example.application.out.model;
+package org.example.domain;
 
 import java.util.Arrays;
 

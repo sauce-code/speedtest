@@ -1,8 +1,8 @@
 package org.example.application.in;
 
 import org.example.application.out.*;
-import org.example.application.out.model.Config;
-import org.example.application.out.model.ConfigService;
+import org.example.domain.config.Config;
+import org.example.application.out.ConfigService;
 import org.example.domain.*;
 
 import java.time.LocalDateTime;
@@ -46,15 +46,15 @@ public class SpeedtestApplicationService {
             SpeedtestResultID id = idService.create();
             LocalDateTime startTime = timeService.localDateTime();
             Config config = configService.config();
-            List<DomainServer> domainServers = serverService.servers(
+            List<Server> servers = serverService.servers(
                     config.download().threadsPerUrl());
-            Map<Double, DomainServer> closestServers = serverService.findClosestServers(
+            Map<Double, Server> closestServers = serverService.findClosestServers(
                     config.client().lat(),
                     config.client().lon(),
                     10,
                     command.distanceUnit(),
-                    domainServers);
-            Map.Entry<DomainServer, LatencyTestResult> fastestServer = latencyService.getFastestServer(closestServers);
+                    servers);
+            Map.Entry<Server, LatencyTestResult> fastestServer = latencyService.getFastestServer(closestServers);
             TransferTestResult downloadResult = downloadService.testDownload(
                     fastestServer.getKey().url(),
                     config.download());

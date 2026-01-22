@@ -4,8 +4,8 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import org.example.application.out.ServerService;
-import org.example.application.out.model.DistanceUnit;
-import org.example.domain.DomainServer;
+import org.example.domain.DistanceUnit;
+import org.example.domain.Server;
 import org.example.framework.out.config.MissingResultException;
 import org.example.framework.out.config.ParsingException;
 import org.example.framework.out.http.HttpGetClient;
@@ -31,7 +31,7 @@ public class ServerServiceImpl implements ServerService {
             "https://www.speedtest.net/speedtest-servers.php", "http://c.speedtest.net/speedtest-servers.php"));
 
     @Override
-    public List<DomainServer> servers(int threadsPerUrl) {
+    public List<Server> servers(int threadsPerUrl) {
         if (threadsPerUrl <= 0) {
             throw new IllegalArgumentException();
         }
@@ -49,14 +49,14 @@ public class ServerServiceImpl implements ServerService {
                 .collect(Collectors.toList());
     }
 
-    private List<DomainServer> getServersFromXml(byte[] bytes) {
+    private List<Server> getServersFromXml(byte[] bytes) {
         Objects.requireNonNull(bytes);
         try (InputStream is = new ByteArrayInputStream(bytes)) {
             JAXBContext jaxbContext = JAXBContext.newInstance(ServerSetting.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             ServerSetting serverSetting = (ServerSetting) jaxbUnmarshaller.unmarshal(is);
             return serverSetting.getServers().getServerList().stream()
-                    .map(s -> new DomainServer(
+                    .map(s -> new Server(
                             s.getUrl(),
                             s.getLat(),
                             s.getLon(),
@@ -73,11 +73,11 @@ public class ServerServiceImpl implements ServerService {
     }
 
     @Override
-    public Map<Double, DomainServer> findClosestServers(double lat, double lon, int limit, DistanceUnit distanceUnit, List<DomainServer> domainServerList) {
+    public Map<Double, Server> findClosestServers(double lat, double lon, int limit, DistanceUnit distanceUnit, List<Server> serverList) {
         Objects.requireNonNull(distanceUnit);
-        Objects.requireNonNull(domainServerList);
+        Objects.requireNonNull(serverList);
         Objectz.require(limit > 0);
-        Map<Double, DomainServer> closestServers = domainServerList.stream()
+        Map<Double, Server> closestServers = serverList.stream()
                 .collect(Collectors.toMap(
                         server -> calculateDistance(lat, lon, server.lat(), server.lon(), distanceUnit),
                         server -> server, (server1, server2) -> server1, TreeMap::new));

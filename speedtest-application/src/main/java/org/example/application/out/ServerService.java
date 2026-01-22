@@ -1,15 +1,15 @@
 package org.example.application.out;
 
-import org.example.application.out.model.DistanceUnit;
-import org.example.domain.DomainServer;
+import org.example.domain.DistanceUnit;
+import org.example.domain.Server;
 
 import java.util.List;
 import java.util.Map;
 
 public interface ServerService {
 
-    List<DomainServer> servers(int threadsPerUrl);
+    List<Server> servers(int threadsPerUrl);
 
-    Map<Double, DomainServer> findClosestServers(double lat, double lon, int limit, DistanceUnit distanceUnit, List<DomainServer> domainServerList);
+    Map<Double, Server> findClosestServers(double lat, double lon, int limit, DistanceUnit distanceUnit, List<Server> serverList);
 
 }

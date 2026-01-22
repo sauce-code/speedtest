@@ -1,6 +1,6 @@
 package org.example.application.out;
 
-import org.example.application.out.model.Download;
+import org.example.domain.config.Download;
 import org.example.domain.TransferTestResult;
 
 public interface DownloadService {

@@ -2,7 +2,7 @@ package org.example;
 
 import org.example.application.in.SpeedtestApplicationCommand;
 import org.example.application.in.SpeedtestApplicationService;
-import org.example.application.out.model.DistanceUnit;
+import org.example.domain.DistanceUnit;
 import org.example.domain.SpeedtestResult;
 import org.example.framework.out.config.ConfigServiceImpl;
 import org.example.framework.out.http.HttpClient;

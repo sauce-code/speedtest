@@ -1,4 +1,4 @@
-package org.example.application.out.model;
+package org.example.domain.config;
 
 import org.example.domain.Client;
 
