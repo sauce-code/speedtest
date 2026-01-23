@@ -6,8 +6,8 @@ import jakarta.xml.bind.Unmarshaller;
 import org.example.domain.Location;
 import org.example.domain.config.Config;
 import org.example.application.out.ConfigService;
-import org.example.domain.config.Download;
-import org.example.domain.config.Upload;
+import org.example.domain.config.DownloadSettings;
+import org.example.domain.config.UploadSettings;
 import org.example.domain.Client;
 import org.example.framework.out.http.HttpGetClient;
 
@@ -39,10 +39,10 @@ public class ConfigServiceImpl implements ConfigService {
                         settingFromXml.getClient().getIsp(),
                         settingFromXml.getClient().getIspRating(),
                         settingFromXml.getClient().getIsoAlpha2CountryCode()),
-                new Download(
+                new DownloadSettings(
                         settingFromXml.getDownload().getTestLength(),
                         settingFromXml.getDownload().getThreadsPerUrl()),
-                new Upload(
+                new UploadSettings(
                         settingFromXml.getUpload().getRatio(),
                         settingFromXml.getUpload().getMaxChunkCount(),
                         settingFromXml.getUpload().getThreads(),

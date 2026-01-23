@@ -2,7 +2,7 @@ package org.example.framework.out.transfer;
 
 import org.example.application.out.DownloadService;
 import org.example.domain.Server;
-import org.example.domain.config.Download;
+import org.example.domain.config.DownloadSettings;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.util.Objectz;
@@ -24,7 +24,7 @@ public class DownloadServiceImpl implements DownloadService {
     }
 
     @Override
-    public TransferTestResult testDownload(Server server, Download settings) throws InterruptedException {
+    public TransferTestResult testDownload(Server server, DownloadSettings settings) throws InterruptedException {
         Objects.requireNonNull(server);
         Objects.requireNonNull(settings);
         List<String> urls = generateUrls(server.url(), settings.threadsPerUrl());

@@ -45,7 +45,7 @@ public class SpeedtestApplicationService {
             LocalDateTime startTime = timeService.localDateTime();
             Config config = configService.config();
             List<Server> servers = serverService.servers(
-                    config.download().threadsPerUrl());
+                    config.downloadSettings().threadsPerUrl());
             Map<Double, Server> closestServers = serverService.findClosestServers(
                     config.client().location(),
                     10,
@@ -54,10 +54,10 @@ public class SpeedtestApplicationService {
             Map.Entry<Server, LatencyTestResult> fastestServer = latencyService.getFastestServer(closestServers);
             TransferTestResult downloadResult = downloadService.testDownload(
                     fastestServer.getKey(),
-                    config.download());
+                    config.downloadSettings());
             TransferTestResult uploadResult = uploadService.testUpload(
                     fastestServer.getKey(),
-                    config.upload());
+                    config.uploadSettings());
             String shareUrl = shareUrlService.createShareUrl(
                     fastestServer.getKey().id(),
                     fastestServer.getValue().latency(),
