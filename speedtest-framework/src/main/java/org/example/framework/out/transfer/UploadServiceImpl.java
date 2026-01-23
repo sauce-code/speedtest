@@ -1,6 +1,7 @@
 package org.example.framework.out.transfer;
 
 import org.example.application.out.UploadService;
+import org.example.domain.Server;
 import org.example.domain.config.Upload;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpPostClient;
@@ -26,8 +27,8 @@ public final class UploadServiceImpl implements UploadService {
     }
 
     @Override
-    public TransferTestResult testUpload(String serverUrl, Upload settings, int threads) throws InterruptedException {
-        Objects.requireNonNull(serverUrl);
+    public TransferTestResult testUpload(Server server, Upload settings) throws InterruptedException {
+        Objects.requireNonNull(server);
         Objects.requireNonNull(settings);
         int[] uploadSizes = Arrays.copyOfRange(SIZES, settings.ratio() - 1, SIZES.length);
         int uploadCount = (int) Math.ceil((double) settings.maxChunkCount() / (double) uploadSizes.length);
@@ -39,9 +40,9 @@ public final class UploadServiceImpl implements UploadService {
         }
         long timeoutTime = System.currentTimeMillis() + settings.testLength() * 1000L;
         List<UploadTask> callables = sizeList.stream()
-                .map(s -> new UploadTask(httpPostClient, serverUrl, timeoutTime, generateDataString(s)))
+                .map(s -> new UploadTask(httpPostClient, server.url(), timeoutTime, generateDataString(s)))
                 .toList();
-        return transferService.testTransfer(callables, threads);
+        return transferService.testTransfer(callables, 8); // TODO warum 8 Threads?
     }
 
     private String generateDataString(int size) {

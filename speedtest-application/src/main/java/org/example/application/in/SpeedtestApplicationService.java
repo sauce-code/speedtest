@@ -53,14 +53,11 @@ public class SpeedtestApplicationService {
                     servers);
             Map.Entry<Server, LatencyTestResult> fastestServer = latencyService.getFastestServer(closestServers);
             TransferTestResult downloadResult = downloadService.testDownload(
-                    fastestServer.getKey().url(),
+                    fastestServer.getKey(),
                     config.download());
             TransferTestResult uploadResult = uploadService.testUpload(
-                    fastestServer.getKey().url(),
-                    config.upload(),
-                    (downloadResult != null && downloadResult.rateInMbps() > 0.1)
-                            ? 8
-                            : config.upload().threads());
+                    fastestServer.getKey(),
+                    config.upload());
             String shareUrl = shareUrlService.createShareUrl(
                     fastestServer.getKey().id(),
                     fastestServer.getValue().latency(),
