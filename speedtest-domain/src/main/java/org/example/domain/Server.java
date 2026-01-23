@@ -1,7 +1,9 @@
 package org.example.domain;
 
+import java.net.URL;
+
 public record Server(
-        String url,
+        URL url,
         Location location,
         String city,
         String country,

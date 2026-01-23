@@ -16,6 +16,9 @@ import org.example.util.Objectz;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -58,7 +61,7 @@ public class ServerServiceImpl implements ServerService {
             ServerSetting serverSetting = (ServerSetting) jaxbUnmarshaller.unmarshal(is);
             return serverSetting.getServers().getServerList().stream()
                     .map(s -> new Server(
-                            s.getUrl(),
+                            url(s.getUrl()),
                             new Location(
                                     s.getLat(),
                                     s.getLon()),
@@ -86,6 +89,14 @@ public class ServerServiceImpl implements ServerService {
         return closestServers.entrySet().stream()
                 .limit(limit)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    private URL url(String s) {
+        try {
+            return URI.create(s).toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

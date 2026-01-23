@@ -3,16 +3,17 @@ package org.example.framework.out.transfer;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpPostClient;
 
+import java.net.URL;
 import java.util.concurrent.Callable;
 
 public final class UploadTask implements Callable<TransferTestResult> {
 
     private final HttpPostClient httpPostClient;
-    private final String url;
+    private final URL url;
     private final long timeoutTime;
     private final String dataString;
 
-    public UploadTask(HttpPostClient httpPostClient, String url, long timeoutTime, String dataString) {
+    public UploadTask(HttpPostClient httpPostClient, URL url, long timeoutTime, String dataString) {
         this.httpPostClient = httpPostClient;
         this.url = url;
         this.timeoutTime = timeoutTime;

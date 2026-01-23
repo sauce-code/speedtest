@@ -8,6 +8,7 @@ import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
 import org.example.util.Objectz;
 
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -54,7 +55,7 @@ public class LatencyServiceImpl implements LatencyService {
                 .orElseThrow();
     }
 
-    private List<Long> testLatency(String serverUrl, int limit) {
+    private List<Long> testLatency(URL serverUrl, int limit) {
         Objects.requireNonNull(serverUrl);
         Objectz.require(limit > 0);
         List<Long> latencies = new ArrayList<>();

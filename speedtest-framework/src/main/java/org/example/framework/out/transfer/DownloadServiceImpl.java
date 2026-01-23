@@ -7,6 +7,7 @@ import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.util.Objectz;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -35,7 +36,7 @@ public class DownloadServiceImpl implements DownloadService {
         return transferService.testTransfer(callables, settings.threadsPerUrl() * 2);
     }
 
-    private List<String> generateUrls(String serverUrl, int threadsPerUrl) {
+    private List<String> generateUrls(URL serverUrl, int threadsPerUrl) {
         Objects.requireNonNull(serverUrl);
         Objectz.require(threadsPerUrl > 0);
         List<String> urls = new ArrayList<>();
