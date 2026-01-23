@@ -47,8 +47,7 @@ public class SpeedtestApplicationService {
             List<Server> servers = serverService.servers(
                     config.download().threadsPerUrl());
             Map<Double, Server> closestServers = serverService.findClosestServers(
-                    config.client().lat(),
-                    config.client().lon(),
+                    config.client().location(),
                     10,
                     DistanceUnit.KILOMETER,
                     servers);

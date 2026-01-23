@@ -5,6 +5,7 @@ import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import org.example.application.out.ServerService;
 import org.example.domain.DistanceUnit;
+import org.example.domain.Location;
 import org.example.domain.Server;
 import org.example.framework.out.config.MissingResultException;
 import org.example.framework.out.config.ParsingException;
@@ -58,8 +59,9 @@ public class ServerServiceImpl implements ServerService {
             return serverSetting.getServers().getServerList().stream()
                     .map(s -> new Server(
                             s.getUrl(),
-                            s.getLat(),
-                            s.getLon(),
+                            new Location(
+                                    s.getLat(),
+                                    s.getLon()),
                             s.getCity(),
                             s.getCountry(),
                             s.getIsoAlpha2CountryCode(),
@@ -73,35 +75,17 @@ public class ServerServiceImpl implements ServerService {
     }
 
     @Override
-    public Map<Double, Server> findClosestServers(double lat, double lon, int limit, DistanceUnit distanceUnit, List<Server> serverList) {
+    public Map<Double, Server> findClosestServers(Location clientLocation, int limit, DistanceUnit distanceUnit, List<Server> serverList) {
         Objects.requireNonNull(distanceUnit);
         Objects.requireNonNull(serverList);
         Objectz.require(limit > 0);
         Map<Double, Server> closestServers = serverList.stream()
                 .collect(Collectors.toMap(
-                        server -> calculateDistance(lat, lon, server.lat(), server.lon(), distanceUnit),
+                        server -> clientLocation.distance(server.location(), distanceUnit),
                         server -> server, (server1, server2) -> server1, TreeMap::new));
         return closestServers.entrySet().stream()
                 .limit(limit)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2, DistanceUnit distanceUnit) {
-        Objects.requireNonNull(distanceUnit);
-        if (lat1 == lat2 && lon1 == lon2) {
-            return 0d;
-        }
-        double theta = lon1 - lon2;
-        double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2))
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
-        dist = Math.acos(dist);
-        dist = Math.toDegrees(dist);
-        dist = dist * 60 * 1.1515; // miles
-        return switch (distanceUnit) {
-            case MILE -> dist;
-            case KILOMETER -> dist * 1.609344;
-            case NAUTICAL_MILE -> dist * 0.8684;
-        };
     }
 
 }

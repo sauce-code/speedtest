@@ -3,6 +3,7 @@ package org.example.framework.out.config;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+import org.example.domain.Location;
 import org.example.domain.config.Config;
 import org.example.application.out.ConfigService;
 import org.example.domain.config.Download;
@@ -32,8 +33,9 @@ public class ConfigServiceImpl implements ConfigService {
         return new Config(
                 new Client(
                         settingFromXml.getClient().getIpAddress(),
-                        settingFromXml.getClient().getLat(),
-                        settingFromXml.getClient().getLon(),
+                        new Location(
+                                settingFromXml.getClient().getLat(),
+                                settingFromXml.getClient().getLon()),
                         settingFromXml.getClient().getIsp(),
                         settingFromXml.getClient().getIspRating(),
                         settingFromXml.getClient().getIsoAlpha2CountryCode()),
