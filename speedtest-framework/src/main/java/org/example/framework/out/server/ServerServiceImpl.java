@@ -4,7 +4,7 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import org.example.application.out.ServerService;
-import org.example.domain.DistanceUnit;
+import org.example.domain.Distance;
 import org.example.domain.Location;
 import org.example.domain.Server;
 import org.example.framework.out.config.MissingResultException;
@@ -78,13 +78,13 @@ public class ServerServiceImpl implements ServerService {
     }
 
     @Override
-    public Map<Double, Server> findClosestServers(Location clientLocation, int limit, DistanceUnit distanceUnit, List<Server> serverList) {
-        Objects.requireNonNull(distanceUnit);
-        Objects.requireNonNull(serverList);
+    public Map<Distance, Server> findClosestServers(Location clientLocation, int limit, List<Server> serverList) {
+        Objects.requireNonNull(clientLocation);
         Objectz.require(limit > 0);
-        Map<Double, Server> closestServers = serverList.stream()
+        Objects.requireNonNull(serverList);
+        Map<Distance, Server> closestServers = serverList.stream()
                 .collect(Collectors.toMap(
-                        server -> clientLocation.distance(server.location(), distanceUnit),
+                        server -> clientLocation.distance(server.location()),
                         server -> server, (server1, server2) -> server1, TreeMap::new));
         return closestServers.entrySet().stream()
                 .limit(limit)

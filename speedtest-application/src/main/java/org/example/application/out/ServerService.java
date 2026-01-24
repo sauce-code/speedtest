@@ -1,6 +1,6 @@
 package org.example.application.out;
 
-import org.example.domain.DistanceUnit;
+import org.example.domain.Distance;
 import org.example.domain.Location;
 import org.example.domain.Server;
 
@@ -11,6 +11,6 @@ public interface ServerService {
 
     List<Server> servers(int threadsPerUrl);
 
-    Map<Double, Server> findClosestServers(Location clientLocation, int limit, DistanceUnit distanceUnit, List<Server> serverList);
+    Map<Distance, Server> findClosestServers(Location clientLocation, int limit, List<Server> serverList);
 
 }

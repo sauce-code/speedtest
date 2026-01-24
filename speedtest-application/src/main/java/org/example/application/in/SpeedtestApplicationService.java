@@ -46,10 +46,9 @@ public class SpeedtestApplicationService {
             Config config = configService.config();
             List<Server> servers = serverService.servers(
                     config.downloadSettings().threadsPerUrl());
-            Map<Double, Server> closestServers = serverService.findClosestServers(
+            Map<Distance, Server> closestServers = serverService.findClosestServers(
                     config.client().location(),
                     10,
-                    DistanceUnit.KILOMETER,
                     servers);
             Map.Entry<Server, LatencyTestResult> fastestServer = latencyService.getFastestServer(closestServers);
             TransferTestResult downloadResult = downloadService.testDownload(
