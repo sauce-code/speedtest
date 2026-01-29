@@ -7,7 +7,7 @@ public record Server(
         Location location,
         String city,
         String country,
-        String isoAlpha2CountryCode,
+        IsoAlpha2CountryCode isoAlpha2CountryCode,
         String sponsor,
         Integer id,
         String host

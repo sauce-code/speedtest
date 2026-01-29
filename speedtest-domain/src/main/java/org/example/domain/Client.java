@@ -5,7 +5,7 @@ public record Client(
         Location location,
         String isp,
         Double ispRating,
-        String isoAlpha2CountryCode
+        IsoAlpha2CountryCode isoAlpha2CountryCode
 ) {
 
 }
