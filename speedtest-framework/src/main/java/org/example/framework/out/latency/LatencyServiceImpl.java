@@ -2,6 +2,7 @@ package org.example.framework.out.latency;
 
 import org.example.application.out.LatencyService;
 import org.example.domain.Distance;
+import org.example.domain.FastestServerResult;
 import org.example.domain.Server;
 import org.example.domain.LatencyTestResult;
 import org.example.framework.out.Util;
@@ -25,10 +26,11 @@ public class LatencyServiceImpl implements LatencyService {
     }
 
     @Override
-    public Map.Entry<Server, LatencyTestResult> getFastestServer(Map<Distance, Server> serverMap) {
+    public FastestServerResult getFastestServer(Map<Distance, Server> serverMap) {
         Objects.requireNonNull(serverMap);
         return findServerLatencies(serverMap).entrySet().stream()
                 .min(Comparator.comparing(entry -> entry.getValue().latency()))
+                .map(entry -> new FastestServerResult(entry.getKey(), entry.getValue()))
                 .orElseThrow(MissingResultException::new);
     }
 

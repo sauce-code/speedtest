@@ -4,14 +4,13 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import org.example.application.out.ServerService;
-import org.example.domain.Distance;
+import org.example.domain.IsoAlpha2CountryCode;
 import org.example.domain.Location;
 import org.example.domain.Server;
 import org.example.framework.out.config.MissingResultException;
 import org.example.framework.out.config.ParsingException;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
-import org.example.util.Objectz;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -67,7 +66,7 @@ public class ServerServiceImpl implements ServerService {
                                     s.getLon()),
                             s.getCity(),
                             s.getCountry(),
-                            s.getIsoAlpha2CountryCode(),
+                            new IsoAlpha2CountryCode(s.getIsoAlpha2CountryCode()),
                             s.getSponsor(),
                             s.getId(),
                             s.getHost()))
@@ -75,20 +74,6 @@ public class ServerServiceImpl implements ServerService {
         } catch (IOException | JAXBException e) {
             throw new ParsingException(e);
         }
-    }
-
-    @Override
-    public Map<Distance, Server> findClosestServers(Location clientLocation, int limit, List<Server> serverList) {
-        Objects.requireNonNull(clientLocation);
-        Objectz.require(limit > 0);
-        Objects.requireNonNull(serverList);
-        Map<Distance, Server> closestServers = serverList.stream()
-                .collect(Collectors.toMap(
-                        server -> clientLocation.distance(server.location()),
-                        server -> server, (server1, server2) -> server1, TreeMap::new));
-        return closestServers.entrySet().stream()
-                .limit(limit)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private URL url(String s) {

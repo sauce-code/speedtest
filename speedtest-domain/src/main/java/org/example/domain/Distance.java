@@ -8,7 +8,7 @@ public record Distance(
 
     public Distance {
         Objectz.require(Double.isFinite(kilometers));
-        Objectz.require(kilometers >= 0);
+        Objectz.require(kilometers >= 0d);
     }
 
     @Override

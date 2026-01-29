@@ -46,20 +46,20 @@ public class SpeedtestApplicationService {
             Config config = configService.config();
             List<Server> servers = serverService.servers(
                     config.downloadSettings().threadsPerUrl());
-            Map<Distance, Server> closestServers = serverService.findClosestServers(
-                    config.client().location(),
-                    10,
-                    servers);
-            Map.Entry<Server, LatencyTestResult> fastestServer = latencyService.getFastestServer(closestServers);
+            Map<Distance, Server> closestServers = config.client().closestServers(
+                    servers,
+                    10);
+            FastestServerResult fastestServer = latencyService.getFastestServer(
+                    closestServers);
             TransferTestResult downloadResult = downloadService.testDownload(
-                    fastestServer.getKey(),
+                    fastestServer.server(),
                     config.downloadSettings());
             TransferTestResult uploadResult = uploadService.testUpload(
-                    fastestServer.getKey(),
+                    fastestServer.server(),
                     config.uploadSettings());
             String shareUrl = shareUrlService.createShareUrl(
-                    fastestServer.getKey().id(),
-                    fastestServer.getValue().latency(),
+                    fastestServer.server().id(),
+                    fastestServer.latencyTestResult().latency(),
                     uploadResult.rateInMbps(),
                     downloadResult.rateInMbps());
             LocalDateTime endTime = timeService.localDateTime();
@@ -68,8 +68,8 @@ public class SpeedtestApplicationService {
                     startTime,
                     endTime,
                     config.client(),
-                    fastestServer.getKey(),
-                    fastestServer.getValue(),
+                    fastestServer.server(),
+                    fastestServer.latencyTestResult(),
                     downloadResult,
                     uploadResult,
                     shareUrl);
