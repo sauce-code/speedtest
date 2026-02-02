@@ -3,6 +3,7 @@ package org.example.domain;
 import org.example.structure.Entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class SpeedtestResult extends Entity<SpeedtestResultID> {
 
@@ -17,24 +18,24 @@ public class SpeedtestResult extends Entity<SpeedtestResultID> {
             TransferTestResult upload,
             String shareUrl) {
         super(id);
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.client = client;
-        this.server = server;
-        this.latency = latency;
-        this.download = download;
-        this.upload = upload;
-        this.shareUrl = shareUrl;
+        this.startTime = Objects.requireNonNull(startTime);
+        this.endTime = Objects.requireNonNull(endTime);
+        this.client = Objects.requireNonNull(client);
+        this.server = Objects.requireNonNull(server);
+        this.latency = Objects.requireNonNull(latency);
+        this.download = Objects.requireNonNull(download);
+        this.upload = Objects.requireNonNull(upload);
+        this.shareUrl = Objects.requireNonNull(shareUrl);
     }
 
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private Client client;
-    private Server server;
-    private LatencyTestResult latency;
-    private TransferTestResult download;
-    private TransferTestResult upload;
-    private String shareUrl;
+    private final LocalDateTime startTime;
+    private final LocalDateTime endTime;
+    private final Client client;
+    private final Server server;
+    private final LatencyTestResult latency;
+    private final TransferTestResult download;
+    private final TransferTestResult upload;
+    private final String shareUrl;
 
     @Override
     public String toString() {
