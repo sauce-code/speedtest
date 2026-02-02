@@ -7,7 +7,6 @@ import org.example.application.out.ServerService;
 import org.example.domain.IsoAlpha2CountryCode;
 import org.example.domain.Location;
 import org.example.domain.Server;
-import org.example.framework.out.config.MissingResultException;
 import org.example.framework.out.config.ParsingException;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
@@ -43,7 +42,7 @@ public class ServerServiceImpl implements ServerService {
                     try {
                         final byte[] bytes = httpGetClient.get(String.format("%s?threads=%d", url, threadsPerUrl));
                         return getServersFromXml(bytes);
-                    } catch (ParsingException | MissingResultException | ServerRequestException e) {
+                    } catch (ParsingException | ServerRequestException e) {
                         return null;
                     }
                 })
