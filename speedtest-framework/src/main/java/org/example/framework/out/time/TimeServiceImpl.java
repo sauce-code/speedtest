@@ -11,4 +11,9 @@ public class TimeServiceImpl implements TimeService {
         return LocalDateTime.now();
     }
 
+    @Override
+    public long currentTimeMillis() {
+        return System.currentTimeMillis();
+    }
+
 }

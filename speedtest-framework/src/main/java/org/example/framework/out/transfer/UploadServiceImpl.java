@@ -1,5 +1,6 @@
 package org.example.framework.out.transfer;
 
+import org.example.application.out.TimeService;
 import org.example.application.out.UploadService;
 import org.example.domain.Server;
 import org.example.domain.config.UploadSettings;
@@ -20,10 +21,12 @@ public final class UploadServiceImpl implements UploadService {
 
     private final HttpPostClient httpPostClient;
     private final TransferService transferService;
+    private final TimeService timeService;
 
-    public UploadServiceImpl(HttpPostClient httpPostClient, TransferService transferService) {
+    public UploadServiceImpl(HttpPostClient httpPostClient, TransferService transferService, TimeService timeService) {
         this.httpPostClient = httpPostClient;
         this.transferService = transferService;
+        this.timeService = timeService;
     }
 
     @Override
@@ -38,7 +41,7 @@ public final class UploadServiceImpl implements UploadService {
                 sizeList.add(size);
             }
         }
-        long timeoutTime = System.currentTimeMillis() + settings.testLength() * 1000L;
+        long timeoutTime = timeService.currentTimeMillis() + settings.testLength() * 1000L;
         List<UploadTask> callables = sizeList.stream()
                 .map(s -> new UploadTask(httpPostClient, server.url(), timeoutTime, generateDataString(s)))
                 .toList();

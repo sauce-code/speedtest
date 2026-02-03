@@ -1,6 +1,7 @@
 package org.example.framework.out.latency;
 
 import org.example.application.out.LatencyService;
+import org.example.application.out.TimeService;
 import org.example.domain.Distance;
 import org.example.domain.FastestServerResult;
 import org.example.domain.Server;
@@ -21,9 +22,11 @@ public class LatencyServiceImpl implements LatencyService {
     private static final String EXPECTED_BODY = "test=test\n";
 
     private final HttpGetClient httpGetClient;
+    private final TimeService timeService;
 
-    public LatencyServiceImpl(HttpGetClient httpGetClient) {
+    public LatencyServiceImpl(HttpGetClient httpGetClient, TimeService timeService) {
         this.httpGetClient = httpGetClient;
+        this.timeService = timeService;
     }
 
     @Override
@@ -66,11 +69,11 @@ public class LatencyServiceImpl implements LatencyService {
         Objectz.require(limit > 0);
         List<Long> latencies = new ArrayList<>();
         for (int i = 0; i < limit; i++) {
-            String testUrlString = serverUrl + TEST_FILE + System.currentTimeMillis();
+            String testUrlString = serverUrl + TEST_FILE + timeService.currentTimeMillis();
             URL testUrl = Objectz.notThrows(() -> URI.create(testUrlString).toURL());
-            long startTimestamp = System.currentTimeMillis();
+            long startTimestamp = timeService.currentTimeMillis();
             byte[] bytes = httpGetClient.get(testUrl);
-            long totalTime = System.currentTimeMillis() - startTimestamp;
+            long totalTime = timeService.currentTimeMillis() - startTimestamp;
             if (new String(bytes, StandardCharsets.UTF_8).equals(EXPECTED_BODY)) {
                 latencies.add(totalTime / 2);
             }

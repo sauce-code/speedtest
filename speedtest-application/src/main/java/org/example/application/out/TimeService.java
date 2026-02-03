@@ -6,4 +6,6 @@ public interface TimeService {
 
     LocalDateTime localDateTime();
 
+    long currentTimeMillis();
+
 }

@@ -1,6 +1,7 @@
 package org.example.framework.out.http;
 
 import org.apache.commons.io.IOUtils;
+import org.example.application.out.TimeService;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.Util;
 
@@ -16,9 +17,11 @@ public class HttpPostClient {
     private static final String POST = "POST";
 
     private final HttpClient httpClient;
+    private final TimeService timeService;
 
-    public HttpPostClient(HttpClient httpClient) {
+    public HttpPostClient(HttpClient httpClient, TimeService timeService) {
         this.httpClient = httpClient;
+        this.timeService = timeService;
     }
 
     public TransferTestResult partialPostUploadData(URL url, long timeoutTime, String dataString) {
@@ -31,7 +34,7 @@ public class HttpPostClient {
             conn.setChunkedStreamingMode(maxBufferSize);
             conn.setDoOutput(true);
             conn.setRequestProperty(CONTENT_LENGTH, Integer.toString(dataString.length()));
-            final long startTime = System.currentTimeMillis();
+            final long startTime = timeService.currentTimeMillis();
             final DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
 
             int bytesAvailable = is.available();
@@ -39,7 +42,7 @@ public class HttpPostClient {
             final byte[] buffer = new byte[bufferSize];
             int bytesRead = 1;
             while (bytesRead > 0) {
-                if (timeoutTime > 0 && System.currentTimeMillis() > timeoutTime) {
+                if (timeoutTime > 0 && timeService.currentTimeMillis() > timeoutTime) {
                     break;
                 }
                 dos.write(buffer, 0, bufferSize);
@@ -52,7 +55,7 @@ public class HttpPostClient {
             }
             dos.flush();
             dos.close();
-            return new TransferTestResult(0d, bytesSent, System.currentTimeMillis() - startTime);
+            return new TransferTestResult(0d, bytesSent, timeService.currentTimeMillis() - startTime);
         } catch (IOException e) {
             throw new ServerRequestException(e);
         }

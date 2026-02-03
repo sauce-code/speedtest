@@ -1,6 +1,7 @@
 package org.example.framework.out.transfer;
 
 import org.example.application.out.DownloadService;
+import org.example.application.out.TimeService;
 import org.example.domain.Server;
 import org.example.domain.config.DownloadSettings;
 import org.example.domain.TransferTestResult;
@@ -19,10 +20,12 @@ public class DownloadServiceImpl implements DownloadService {
 
     private final HttpGetClient httpGetClient;
     private final TransferService transferService;
+    private final TimeService timeService;
 
-    public DownloadServiceImpl(HttpGetClient httpGetClient, TransferService transferService) {
+    public DownloadServiceImpl(HttpGetClient httpGetClient, TransferService transferService, TimeService timeService) {
         this.httpGetClient = httpGetClient;
         this.transferService = transferService;
+        this.timeService = timeService;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class DownloadServiceImpl implements DownloadService {
         Objects.requireNonNull(server);
         Objects.requireNonNull(settings);
         List<URL> urls = generateUrls(server.url(), settings.threadsPerUrl());
-        long timeoutTime = System.currentTimeMillis() + settings.testLength() * 1_000L;
+        long timeoutTime = timeService.currentTimeMillis() + settings.testLength() * 1_000L;
         List<DownloadTask> callables = urls.stream()
                 .map(url -> new DownloadTask(httpGetClient, url, timeoutTime))
                 .toList();
