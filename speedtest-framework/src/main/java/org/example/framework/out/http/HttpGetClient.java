@@ -20,11 +20,11 @@ public class HttpGetClient {
         this.httpClient = httpClient;
     }
 
-    public TransferTestResult partialGetDownloadData(String urlString, long timeoutTime) {
-        Objects.requireNonNull(urlString);
+    public TransferTestResult partialGetDownloadData(URL url, long timeoutTime) {
+        Objects.requireNonNull(url);
         int bytesReceived = 0;
         try {
-            HttpURLConnection conn = httpClient.createConnection(new URL(urlString), GET);
+            HttpURLConnection conn = httpClient.createConnection(url, GET);
             long startTime = System.currentTimeMillis();
             try (InputStream is = conn.getInputStream()) {
                 byte[] buffer =
@@ -46,10 +46,10 @@ public class HttpGetClient {
         }
     }
 
-    public byte[] get(String urlString) {
-        Objects.requireNonNull(urlString);
+    public byte[] get(URL url) {
+        Objects.requireNonNull(url);
         try {
-            HttpURLConnection conn = httpClient.createConnection(new URL(urlString), GET);
+            HttpURLConnection conn = httpClient.createConnection(url, GET);
             try (InputStream is = conn.getInputStream()) {
                 return IOUtils.toByteArray(is);
             }

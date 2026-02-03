@@ -10,6 +10,7 @@ import org.example.domain.Server;
 import org.example.framework.out.config.ParsingException;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
+import org.example.util.Objectz;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -38,15 +39,17 @@ public class ServerServiceImpl implements ServerService {
             throw new IllegalArgumentException();
         }
         return SERVER_URLS.stream()
-                .map(url -> {
+                .map(urlString -> {
                     try {
-                        final byte[] bytes = httpGetClient.get(String.format("%s?threads=%d", url, threadsPerUrl));
+                        String s = "%s?threads=%d".formatted(urlString, threadsPerUrl);
+                        URI uri = URI.create(s);
+                        URL url = Objectz.notThrows(uri::toURL);
+                        byte[] bytes = httpGetClient.get(url);
                         return getServersFromXml(bytes);
                     } catch (ParsingException | ServerRequestException e) {
-                        return null;
+                        return Collections.<Server>emptyList();
                     }
                 })
-                .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }

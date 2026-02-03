@@ -7,6 +7,7 @@ import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.util.Objectz;
 
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,21 +29,24 @@ public class DownloadServiceImpl implements DownloadService {
     public TransferTestResult testDownload(Server server, DownloadSettings settings) throws InterruptedException {
         Objects.requireNonNull(server);
         Objects.requireNonNull(settings);
-        List<String> urls = generateUrls(server.url(), settings.threadsPerUrl());
+        List<URL> urls = generateUrls(server.url(), settings.threadsPerUrl());
         long timeoutTime = System.currentTimeMillis() + settings.testLength() * 1_000L;
         List<DownloadTask> callables = urls.stream()
-                .map(s -> new DownloadTask(httpGetClient, s, timeoutTime))
+                .map(url -> new DownloadTask(httpGetClient, url, timeoutTime))
                 .toList();
         return transferService.testTransfer(callables, settings.threadsPerUrl() * 2);
     }
 
-    private List<String> generateUrls(URL serverUrl, int threadsPerUrl) {
+    private List<URL> generateUrls(URL serverUrl, int threadsPerUrl) {
         Objects.requireNonNull(serverUrl);
         Objectz.require(threadsPerUrl > 0);
-        List<String> urls = new ArrayList<>();
+        List<URL> urls = new ArrayList<>();
         for (int size : SIZES) {
             for (int i = 0; i < threadsPerUrl; i++) {
-                urls.add(String.format("%s/random%sx%s.jpg", serverUrl, size, size));
+                String s = "%s/random%sx%s.jpg".formatted(serverUrl, size, size);
+                URI uri = URI.create(s);
+                URL url = Objectz.notThrows(uri::toURL);
+                urls.add(url);
             }
         }
         return urls;

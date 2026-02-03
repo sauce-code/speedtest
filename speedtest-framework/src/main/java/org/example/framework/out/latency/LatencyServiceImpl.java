@@ -10,6 +10,7 @@ import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
 import org.example.util.Objectz;
 
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -40,8 +41,10 @@ public class LatencyServiceImpl implements LatencyService {
         Map<Server, LatencyTestResult> results = new HashMap<>();
         for (Map.Entry<Distance, Server> entry : serverMap.entrySet()) {
             try {
-                results.put(entry.getValue(), new LatencyTestResult(calculateAverage(
-                        testLatency(entry.getValue().url(), testsPerServer)), entry.getKey()));
+                List<Long> longs = testLatency(entry.getValue().url(), testsPerServer);
+                double average = calculateAverage(longs);
+                LatencyTestResult latencyTestResult = new LatencyTestResult(average, entry.getKey());
+                results.put(entry.getValue(), latencyTestResult);
             } catch (ServerRequestException | MissingResultException e) {
 
             }
@@ -63,7 +66,8 @@ public class LatencyServiceImpl implements LatencyService {
         Objectz.require(limit > 0);
         List<Long> latencies = new ArrayList<>();
         for (int i = 0; i < limit; i++) {
-            String testUrl = serverUrl + TEST_FILE + System.currentTimeMillis();
+            String testUrlString = serverUrl + TEST_FILE + System.currentTimeMillis();
+            URL testUrl = Objectz.notThrows(() -> URI.create(testUrlString).toURL());
             long startTimestamp = System.currentTimeMillis();
             byte[] bytes = httpGetClient.get(testUrl);
             long totalTime = System.currentTimeMillis() - startTimestamp;

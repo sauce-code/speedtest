@@ -11,15 +11,18 @@ import org.example.domain.config.DownloadSettings;
 import org.example.domain.config.UploadSettings;
 import org.example.domain.Client;
 import org.example.framework.out.http.HttpGetClient;
+import org.example.util.Objectz;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.Objects;
 
 public class ConfigServiceImpl implements ConfigService {
 
-    private static final String CONFIG_URL = "https://www.speedtest.net/speedtest-config.php";
+    private static final URL CONFIG_URL = Objectz.notThrows(() -> URI.create("https://www.speedtest.net/speedtest-config.php").toURL());
 
     private final HttpGetClient httpGetClient;
 
