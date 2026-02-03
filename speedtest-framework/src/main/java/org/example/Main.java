@@ -26,17 +26,17 @@ public class Main {
     private static SpeedtestApplicationService init() {
 
         HttpClient httpClient = new HttpClient();
-        HttpGetClient httpGetClient = new HttpGetClient(httpClient);
-        HttpPostClient httpPostClient = new HttpPostClient(httpClient);
+        TimeServiceImpl timeService = new TimeServiceImpl();
+        HttpGetClient httpGetClient = new HttpGetClient(httpClient, timeService);
+        HttpPostClient httpPostClient = new HttpPostClient(httpClient, timeService);
         TransferService transferService = new TransferService();
 
         SpeedtestResultIDService speedtestResultIDService = new SpeedtestResultIDService();
-        TimeServiceImpl timeService = new TimeServiceImpl();
         ConfigServiceImpl configService = new ConfigServiceImpl(httpGetClient);
         ServerServiceImpl serverService = new ServerServiceImpl(httpGetClient);
-        LatencyServiceImpl latencyService = new LatencyServiceImpl(httpGetClient);
-        DownloadServiceImpl downloadService = new DownloadServiceImpl(httpGetClient, transferService);
-        UploadServiceImpl uploadService = new UploadServiceImpl(httpPostClient, transferService);
+        LatencyServiceImpl latencyService = new LatencyServiceImpl(httpGetClient, timeService);
+        DownloadServiceImpl downloadService = new DownloadServiceImpl(httpGetClient, transferService, timeService);
+        UploadServiceImpl uploadService = new UploadServiceImpl(httpPostClient, transferService, timeService);
         ShareUrlServiceImpl shareUrlService = new ShareUrlServiceImpl(httpPostClient);
         return new SpeedtestApplicationService(
                 speedtestResultIDService,

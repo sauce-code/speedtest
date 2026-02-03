@@ -61,28 +61,10 @@ public class ServerServiceImpl implements ServerService {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             ServerSetting serverSetting = (ServerSetting) jaxbUnmarshaller.unmarshal(is);
             return serverSetting.getServers().getServerList().stream()
-                    .map(s -> new Server(
-                            url(s.getUrl()),
-                            new Location(
-                                    s.getLat(),
-                                    s.getLon()),
-                            s.getCity(),
-                            s.getCountry(),
-                            new IsoAlpha2CountryCode(s.getIsoAlpha2CountryCode()),
-                            s.getSponsor(),
-                            s.getId(),
-                            s.getHost()))
+                    .map(org.example.framework.out.server.Server::toDomain)
                     .toList();
         } catch (IOException | JAXBException e) {
             throw new ParsingException(e);
-        }
-    }
-
-    private URL url(String s) {
-        try {
-            return URI.create(s).toURL();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
         }
     }
 

@@ -1,7 +1,6 @@
 package org.example.util;
 
 import java.util.concurrent.Callable;
-import java.util.function.Function;
 
 public class Objectz {
 
@@ -15,16 +14,12 @@ public class Objectz {
         }
     }
 
-    public static <T> T notThrows(Callable<T> function) {
+    public static <T> T notThrows(Callable<T> callable) {
         try {
-            return function.call();
+            return callable.call();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
-    }
-
-    public static <T, R> R notThrows(Function<T, R> function, T t) {
-        return function.apply(t);
     }
 
 }
