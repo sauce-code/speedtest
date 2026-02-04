@@ -56,6 +56,8 @@ public class ServerServiceImpl implements ServerService {
             ServerSetting serverSetting = (ServerSetting) jaxbUnmarshaller.unmarshal(is);
             return serverSetting.getServers().getServerList().stream()
                     .map(org.example.framework.out.server.Server::toDomain)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
                     .toList();
         } catch (IOException | JAXBException e) {
             throw new ParsingException(e);
