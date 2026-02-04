@@ -1,10 +1,10 @@
 package org.example.domain;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.Objects;
 
 public record Server(
-        URL url,
+        URI uri,
         Location location,
         String city,
         String country,
@@ -15,7 +15,7 @@ public record Server(
 ) {
 
     public Server {
-        Objects.requireNonNull(url);
+        Objects.requireNonNull(uri);
         Objects.requireNonNull(location);
         Objects.requireNonNull(city);
         Objects.requireNonNull(country);

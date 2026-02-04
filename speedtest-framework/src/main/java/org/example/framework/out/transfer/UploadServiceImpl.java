@@ -3,8 +3,8 @@ package org.example.framework.out.transfer;
 import org.example.application.out.TimeService;
 import org.example.application.out.UploadService;
 import org.example.domain.Server;
-import org.example.domain.config.UploadSettings;
 import org.example.domain.TransferTestResult;
+import org.example.domain.config.UploadSettings;
 import org.example.framework.out.http.HttpPostClient;
 import org.example.util.Objectz;
 
@@ -43,7 +43,7 @@ public final class UploadServiceImpl implements UploadService {
         }
         long timeoutTime = timeService.currentTimeMillis() + settings.testLength() * 1000L;
         List<UploadTask> callables = sizeList.stream()
-                .map(s -> new UploadTask(httpPostClient, server.url(), timeoutTime, generateDataString(s)))
+                .map(s -> new UploadTask(httpPostClient, server.uri(), timeoutTime, generateDataString(s)))
                 .toList();
         return transferService.testTransfer(callables, 8); // TODO warum 8 Threads?
     }

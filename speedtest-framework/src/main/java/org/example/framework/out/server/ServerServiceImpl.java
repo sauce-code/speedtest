@@ -4,20 +4,15 @@ import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import org.example.application.out.ServerService;
-import org.example.domain.IsoAlpha2CountryCode;
-import org.example.domain.Location;
 import org.example.domain.Server;
 import org.example.framework.out.config.ParsingException;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
-import org.example.util.Objectz;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,8 +38,7 @@ public class ServerServiceImpl implements ServerService {
                     try {
                         String s = "%s?threads=%d".formatted(urlString, threadsPerUrl);
                         URI uri = URI.create(s);
-                        URL url = Objectz.notThrows(uri::toURL);
-                        byte[] bytes = httpGetClient.get(url);
+                        byte[] bytes = httpGetClient.get(uri);
                         return getServersFromXml(bytes);
                     } catch (ParsingException | ServerRequestException e) {
                         return Collections.<Server>emptyList();

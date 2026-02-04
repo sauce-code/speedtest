@@ -6,7 +6,6 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import org.example.domain.IsoAlpha2CountryCode;
 import org.example.domain.Location;
-import org.example.util.Objectz;
 
 import java.net.URI;
 
@@ -14,7 +13,7 @@ import java.net.URI;
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class Server {
 
-    @XmlAttribute(name = "url")
+    @XmlAttribute(name = "uri")
     private String url;
     @XmlAttribute(name = "lat")
     private Double lat;
@@ -122,7 +121,7 @@ public final class Server {
 
     public org.example.domain.Server toDomain() {
         return new org.example.domain.Server(
-                Objectz.notThrows(() -> URI.create(url).toURL()),
+                URI.create(url),
                 new Location(lat, lon),
                 city,
                 country,

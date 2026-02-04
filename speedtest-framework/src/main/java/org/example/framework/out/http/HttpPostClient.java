@@ -7,7 +7,7 @@ import org.example.framework.out.Util;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -24,13 +24,13 @@ public class HttpPostClient {
         this.timeService = timeService;
     }
 
-    public TransferTestResult partialPostUploadData(URL url, long timeoutTime, String dataString) {
-        Objects.requireNonNull(url);
+    public TransferTestResult partialPostUploadData(URI uri, long timeoutTime, String dataString) {
+        Objects.requireNonNull(uri);
         Objects.requireNonNull(dataString);
         final int maxBufferSize = Integer.parseInt(Objects.requireNonNull(Util.getConfigProperty("Upload.maxBufferSize")));
         int bytesSent = 0;
         try (InputStream is = new ByteArrayInputStream(dataString.getBytes())) {
-            final HttpURLConnection conn = httpClient.createConnection(url, POST);
+            final HttpURLConnection conn = httpClient.createConnection(uri, POST);
             conn.setChunkedStreamingMode(maxBufferSize);
             conn.setDoOutput(true);
             conn.setRequestProperty(CONTENT_LENGTH, Integer.toString(dataString.length()));
@@ -61,11 +61,11 @@ public class HttpPostClient {
         }
     }
 
-    public String postBodyWithSharedData(URL url, String encodedBody) {
-        Objects.requireNonNull(url);
+    public String postBodyWithSharedData(URI uri, String encodedBody) {
+        Objects.requireNonNull(uri);
         Objects.requireNonNull(encodedBody);
         try {
-            final HttpURLConnection conn = httpClient.createConnection(url, POST);
+            final HttpURLConnection conn = httpClient.createConnection(uri, POST);
             conn.setDoOutput(true);
             conn.setRequestProperty(CONTENT_LENGTH, Integer.toString(encodedBody.length()));
             conn.setRequestProperty("Referer", "http://c.speedtest.net/flash/speedtest.swf");

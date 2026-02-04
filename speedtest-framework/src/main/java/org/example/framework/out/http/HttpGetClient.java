@@ -8,7 +8,7 @@ import org.example.framework.out.Util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
+import java.net.URI;
 import java.util.Objects;
 
 public class HttpGetClient {
@@ -23,11 +23,11 @@ public class HttpGetClient {
         this.timeService = timeService;
     }
 
-    public TransferTestResult partialGetDownloadData(URL url, long timeoutTime) {
-        Objects.requireNonNull(url);
+    public TransferTestResult partialGetDownloadData(URI uri, long timeoutTime) {
+        Objects.requireNonNull(uri);
         int bytesReceived = 0;
         try {
-            HttpURLConnection conn = httpClient.createConnection(url, GET);
+            HttpURLConnection conn = httpClient.createConnection(uri, GET);
             long startTime = timeService.currentTimeMillis();
             try (InputStream is = conn.getInputStream()) {
                 byte[] buffer =
@@ -49,10 +49,10 @@ public class HttpGetClient {
         }
     }
 
-    public byte[] get(URL url) {
-        Objects.requireNonNull(url);
+    public byte[] get(URI uri) {
+        Objects.requireNonNull(uri);
         try {
-            HttpURLConnection conn = httpClient.createConnection(url, GET);
+            HttpURLConnection conn = httpClient.createConnection(uri, GET);
             try (InputStream is = conn.getInputStream()) {
                 return IOUtils.toByteArray(is);
             }

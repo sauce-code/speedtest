@@ -3,13 +3,12 @@ package org.example.framework.out.transfer;
 import org.example.application.out.DownloadService;
 import org.example.application.out.TimeService;
 import org.example.domain.Server;
-import org.example.domain.config.DownloadSettings;
 import org.example.domain.TransferTestResult;
+import org.example.domain.config.DownloadSettings;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.util.Objectz;
 
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,27 +31,26 @@ public class DownloadServiceImpl implements DownloadService {
     public TransferTestResult testDownload(Server server, DownloadSettings settings) throws InterruptedException {
         Objects.requireNonNull(server);
         Objects.requireNonNull(settings);
-        List<URL> urls = generateUrls(server.url(), settings.threadsPerUrl());
+        List<URI> uris = generateUrls(server.uri(), settings.threadsPerUrl());
         long timeoutTime = timeService.currentTimeMillis() + settings.testLength() * 1_000L;
-        List<DownloadTask> callables = urls.stream()
-                .map(url -> new DownloadTask(httpGetClient, url, timeoutTime))
+        List<DownloadTask> callables = uris.stream()
+                .map(uri -> new DownloadTask(httpGetClient, uri, timeoutTime))
                 .toList();
         return transferService.testTransfer(callables, settings.threadsPerUrl() * 2);
     }
 
-    private List<URL> generateUrls(URL serverUrl, int threadsPerUrl) {
-        Objects.requireNonNull(serverUrl);
+    private List<URI> generateUrls(URI serverUri, int threadsPerUrl) {
+        Objects.requireNonNull(serverUri);
         Objectz.require(threadsPerUrl > 0);
-        List<URL> urls = new ArrayList<>();
+        List<URI> uris = new ArrayList<>();
         for (int size : SIZES) {
             for (int i = 0; i < threadsPerUrl; i++) {
-                String s = "%s/random%sx%s.jpg".formatted(serverUrl, size, size);
+                String s = "%s/random%sx%s.jpg".formatted(serverUri, size, size);
                 URI uri = URI.create(s);
-                URL url = Objectz.notThrows(uri::toURL);
-                urls.add(url);
+                uris.add(uri);
             }
         }
-        return urls;
+        return uris;
     }
 
 }

@@ -1,9 +1,8 @@
 package org.example.application.in;
 
 import org.example.application.out.*;
-import org.example.domain.config.Config;
-import org.example.application.out.ConfigService;
 import org.example.domain.*;
+import org.example.domain.config.Config;
 
 import java.time.LocalDateTime;
 import java.util.List;

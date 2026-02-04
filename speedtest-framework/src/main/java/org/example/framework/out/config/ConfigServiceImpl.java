@@ -3,26 +3,24 @@ package org.example.framework.out.config;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
+import org.example.application.out.ConfigService;
+import org.example.domain.Client;
 import org.example.domain.IsoAlpha2CountryCode;
 import org.example.domain.Location;
 import org.example.domain.config.Config;
-import org.example.application.out.ConfigService;
 import org.example.domain.config.DownloadSettings;
 import org.example.domain.config.UploadSettings;
-import org.example.domain.Client;
 import org.example.framework.out.http.HttpGetClient;
-import org.example.util.Objectz;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URL;
 import java.util.Objects;
 
 public class ConfigServiceImpl implements ConfigService {
 
-    private static final URL CONFIG_URL = Objectz.notThrows(() -> URI.create("https://www.speedtest.net/speedtest-config.php").toURL());
+    private static final URI CONFIG_URL = URI.create("https://www.speedtest.net/speedtest-config.php");
 
     private final HttpGetClient httpGetClient;
 

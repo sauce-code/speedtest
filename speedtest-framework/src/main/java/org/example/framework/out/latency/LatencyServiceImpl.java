@@ -4,15 +4,14 @@ import org.example.application.out.LatencyService;
 import org.example.application.out.TimeService;
 import org.example.domain.Distance;
 import org.example.domain.FastestServerResult;
-import org.example.domain.Server;
 import org.example.domain.LatencyTestResult;
+import org.example.domain.Server;
 import org.example.framework.out.Util;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
 import org.example.util.Objectz;
 
 import java.net.URI;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -44,7 +43,7 @@ public class LatencyServiceImpl implements LatencyService {
         Map<Server, LatencyTestResult> results = new HashMap<>();
         for (Map.Entry<Distance, Server> entry : serverMap.entrySet()) {
             try {
-                List<Long> longs = testLatency(entry.getValue().url(), testsPerServer);
+                List<Long> longs = testLatency(entry.getValue().uri(), testsPerServer);
                 double average = calculateAverage(longs);
                 LatencyTestResult latencyTestResult = new LatencyTestResult(average, entry.getKey());
                 results.put(entry.getValue(), latencyTestResult);
@@ -64,15 +63,15 @@ public class LatencyServiceImpl implements LatencyService {
                 .orElseThrow();
     }
 
-    private List<Long> testLatency(URL serverUrl, int limit) {
+    private List<Long> testLatency(URI serverUrl, int limit) {
         Objects.requireNonNull(serverUrl);
         Objectz.require(limit > 0);
         List<Long> latencies = new ArrayList<>();
         for (int i = 0; i < limit; i++) {
             String testUrlString = serverUrl + TEST_FILE + timeService.currentTimeMillis();
-            URL testUrl = Objectz.notThrows(() -> URI.create(testUrlString).toURL());
+            URI uri = URI.create(testUrlString);
             long startTimestamp = timeService.currentTimeMillis();
-            byte[] bytes = httpGetClient.get(testUrl);
+            byte[] bytes = httpGetClient.get(uri);
             long totalTime = timeService.currentTimeMillis() - startTimestamp;
             if (new String(bytes, StandardCharsets.UTF_8).equals(EXPECTED_BODY)) {
                 latencies.add(totalTime / 2);
