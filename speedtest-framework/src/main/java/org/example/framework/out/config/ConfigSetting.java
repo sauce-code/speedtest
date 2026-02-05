@@ -4,6 +4,11 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import org.example.domain.IsoAlpha2CountryCode;
+import org.example.domain.Location;
+import org.example.domain.config.Config;
+import org.example.domain.config.DownloadSettings;
+import org.example.domain.config.UploadSettings;
 
 @XmlRootElement(name = "settings")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -39,4 +44,26 @@ public final class ConfigSetting {
     public void setUpload(UploadSetting upload) {
         this.upload = upload;
     }
+    
+    public Config toDomain() {
+        return new Config(
+                new org.example.domain.Client(
+                        client.getIpAddress(),
+                        new Location(
+                                client.getLat(),
+                                client.getLon()),
+                        client.getIsp(),
+                        client.getIspRating(),
+                        new IsoAlpha2CountryCode(
+                                client.getIsoAlpha2CountryCode())),
+                new DownloadSettings(
+                        download.getTestLength(),
+                        download.getThreadsPerUrl()),
+                new UploadSettings(
+                        upload.getRatio(),
+                        upload.getMaxChunkCount(),
+                        upload.getThreads(),
+                        upload.getTestLength()));
+    }
+    
 }

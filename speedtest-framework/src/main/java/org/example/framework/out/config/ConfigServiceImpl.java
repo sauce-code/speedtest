@@ -32,24 +32,7 @@ public class ConfigServiceImpl implements ConfigService {
     public Config config() {
         byte[] bytes = httpGetClient.get(CONFIG_URL);
         ConfigSetting settingFromXml = getSettingFromXml(bytes);
-        return new Config(
-                new Client(
-                        settingFromXml.getClient().getIpAddress(),
-                        new Location(
-                                settingFromXml.getClient().getLat(),
-                                settingFromXml.getClient().getLon()),
-                        settingFromXml.getClient().getIsp(),
-                        settingFromXml.getClient().getIspRating(),
-                        new IsoAlpha2CountryCode(
-                                settingFromXml.getClient().getIsoAlpha2CountryCode())),
-                new DownloadSettings(
-                        settingFromXml.getDownload().getTestLength(),
-                        settingFromXml.getDownload().getThreadsPerUrl()),
-                new UploadSettings(
-                        settingFromXml.getUpload().getRatio(),
-                        settingFromXml.getUpload().getMaxChunkCount(),
-                        settingFromXml.getUpload().getThreads(),
-                        settingFromXml.getUpload().getTestLength()));
+        return settingFromXml.toDomain();
     }
 
     private ConfigSetting getSettingFromXml(byte[] xml) throws ParsingException {
