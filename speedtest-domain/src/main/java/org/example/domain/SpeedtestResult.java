@@ -16,7 +16,7 @@ public class SpeedtestResult extends Entity<SpeedtestResultID> {
             LatencyTestResult latency,
             TransferTestResult download,
             TransferTestResult upload,
-            String shareUrl) {
+            ShareURL shareUrl) {
         super(id);
         this.startTime = Objects.requireNonNull(startTime);
         this.endTime = Objects.requireNonNull(endTime);
@@ -35,7 +35,7 @@ public class SpeedtestResult extends Entity<SpeedtestResultID> {
     private final LatencyTestResult latency;
     private final TransferTestResult download;
     private final TransferTestResult upload;
-    private final String shareUrl;
+    private final ShareURL shareUrl;
 
     public LocalDateTime startTime() {
         return startTime;
@@ -65,7 +65,7 @@ public class SpeedtestResult extends Entity<SpeedtestResultID> {
         return upload;
     }
 
-    public String shareUrl() {
+    public ShareURL shareUrl() {
         return shareUrl;
     }
 

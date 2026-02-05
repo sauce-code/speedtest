@@ -2,6 +2,7 @@ package org.example.framework.out.shareurl;
 
 import jakarta.xml.bind.DatatypeConverter;
 import org.example.application.out.ShareUrlService;
+import org.example.domain.ShareURL;
 import org.example.framework.out.Util;
 import org.example.framework.out.http.HttpPostClient;
 import org.example.util.Objectz;
@@ -25,7 +26,7 @@ public class ShareUrlServiceImpl implements ShareUrlService {
     }
 
     @Override
-    public String createShareUrl(int serverId, double latency, double uploadMbps, double downloadMbps) {
+    public ShareURL createShareUrl(int serverId, double latency, double uploadMbps, double downloadMbps) {
         Objectz.require(serverId > 0);
         Objectz.require(uploadMbps > 0);
         Objectz.require(downloadMbps > 0);
@@ -38,7 +39,8 @@ public class ShareUrlServiceImpl implements ShareUrlService {
         String result = httpPostClient.postBodyWithSharedData(URI.create(URL_API), encodedBody);
         Map<String, String> queryParams = Util.getQueryParams(result);
         if (queryParams.containsKey(RESULT_ID) && queryParams.get(RESULT_ID) != null) {
-            return String.format("http://www.speedtest.net/result/%s.png", queryParams.get(RESULT_ID));
+            var s = String.format("https://www.speedtest.net/result/%s.png", queryParams.get(RESULT_ID));
+            return new ShareURL(URI.create(s));
         } else {
             throw new MissingResultException("Missing result for shareUrl request");
         }

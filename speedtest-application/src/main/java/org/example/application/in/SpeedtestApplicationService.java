@@ -6,6 +6,7 @@ import org.example.application.out.*;
 import org.example.domain.*;
 import org.example.domain.config.Config;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ public class SpeedtestApplicationService {
     private final DownloadService downloadService;
     private final UploadService uploadService;
     private final ShareUrlService shareUrlService;
+    private final ImageStore imageStore;
 
     public SpeedtestApplicationService(
             IDService<SpeedtestResultID> idService,
@@ -31,7 +33,8 @@ public class SpeedtestApplicationService {
             LatencyService latencyService,
             DownloadService downloadService,
             UploadService uploadService,
-            ShareUrlService shareUrlService) {
+            ShareUrlService shareUrlService,
+            ImageStore imageStore) {
         this.idService = idService;
         this.timeService = timeService;
         this.configService = configService;
@@ -40,6 +43,7 @@ public class SpeedtestApplicationService {
         this.downloadService = downloadService;
         this.uploadService = uploadService;
         this.shareUrlService = shareUrlService;
+        this.imageStore = imageStore;
     }
 
     public SpeedtestResult run() {
@@ -80,13 +84,17 @@ public class SpeedtestApplicationService {
                     config.uploadSettings());
             logger.info(uploadResult);
 
-            logger.info("create share url ...");
-            String shareUrl = shareUrlService.createShareUrl(
+            logger.info("creating share url ...");
+            ShareURL shareUrl = shareUrlService.createShareUrl(
                     fastestServer.server().id(),
                     fastestServer.latencyTestResult().latency(),
                     uploadResult.rateInMbps(),
                     downloadResult.rateInMbps());
             logger.info(shareUrl);
+
+            logger.info("saving share ...");
+            URI uri = imageStore.store(shareUrl);
+            logger.info(uri);
 
             LocalDateTime endTime = timeService.localDateTime();
             return new SpeedtestResult(
