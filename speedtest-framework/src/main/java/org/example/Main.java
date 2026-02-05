@@ -9,6 +9,7 @@ import org.example.framework.out.http.HttpClient;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.HttpPostClient;
 import org.example.framework.out.id.SpeedtestResultIDService;
+import org.example.framework.out.image.ImageStoreImpl;
 import org.example.framework.out.latency.LatencyServiceImpl;
 import org.example.framework.out.server.ServerServiceImpl;
 import org.example.framework.out.shareurl.ShareUrlServiceImpl;
@@ -49,6 +50,7 @@ public class Main {
         DownloadServiceImpl downloadService = new DownloadServiceImpl(httpGetClient, transferService, timeService);
         UploadServiceImpl uploadService = new UploadServiceImpl(httpPostClient, transferService, timeService);
         ShareUrlServiceImpl shareUrlService = new ShareUrlServiceImpl(httpPostClient);
+        ImageStoreImpl imageStore = new ImageStoreImpl();
         return new SpeedtestApplicationService(
                 speedtestResultIDService,
                 timeService,
@@ -57,7 +59,8 @@ public class Main {
                 latencyService,
                 downloadService,
                 uploadService,
-                shareUrlService);
+                shareUrlService,
+                imageStore);
     }
 
 }
