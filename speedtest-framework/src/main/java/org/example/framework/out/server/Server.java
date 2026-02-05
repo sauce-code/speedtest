@@ -4,6 +4,11 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import org.example.domain.IsoAlpha2CountryCode;
+import org.example.domain.Location;
+
+import java.net.URI;
+import java.util.Optional;
 
 @XmlRootElement(name = "server")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -113,6 +118,23 @@ public final class Server {
 
     public void setHost(String host) {
         this.host = host;
+    }
+
+    public Optional<org.example.domain.Server> toDomain() {
+        try {
+            org.example.domain.Server domain = new org.example.domain.Server(
+                    URI.create(url),
+                    new Location(lat, lon),
+                    city,
+                    country,
+                    new IsoAlpha2CountryCode(isoAlpha2CountryCode),
+                    sponsor,
+                    id,
+                    host);
+            return Optional.of(domain);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            return Optional.empty();
+        }
     }
 
 }

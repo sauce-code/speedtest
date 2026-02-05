@@ -1,6 +1,6 @@
 package org.example.domain.config;
 
-public record Download(
+public record DownloadSettings(
         int testLength,
         int threadsPerUrl
 ) {

@@ -1,6 +1,6 @@
 package org.example.domain.config;
 
-public record Upload(
+public record UploadSettings(
         int ratio,
         int maxChunkCount,
         int threads,

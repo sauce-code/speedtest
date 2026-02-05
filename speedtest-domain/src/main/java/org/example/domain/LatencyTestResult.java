@@ -1,8 +1,18 @@
 package org.example.domain;
 
+import org.example.util.Objectz;
+
+import java.util.Objects;
+
 public record LatencyTestResult(
         double latency,
-        double distance
+        Distance distance
 ) {
+
+    public LatencyTestResult {
+        Objectz.require(Double.isFinite(latency));
+        Objectz.require(latency >= 0d);
+        Objects.requireNonNull(distance);
+    }
 
 }

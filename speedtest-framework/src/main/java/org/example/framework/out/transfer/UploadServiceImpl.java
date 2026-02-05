@@ -1,8 +1,10 @@
 package org.example.framework.out.transfer;
 
+import org.example.application.out.TimeService;
 import org.example.application.out.UploadService;
-import org.example.domain.config.Upload;
+import org.example.domain.Server;
 import org.example.domain.TransferTestResult;
+import org.example.domain.config.UploadSettings;
 import org.example.framework.out.http.HttpPostClient;
 import org.example.util.Objectz;
 
@@ -19,15 +21,17 @@ public final class UploadServiceImpl implements UploadService {
 
     private final HttpPostClient httpPostClient;
     private final TransferService transferService;
+    private final TimeService timeService;
 
-    public UploadServiceImpl(HttpPostClient httpPostClient, TransferService transferService) {
+    public UploadServiceImpl(HttpPostClient httpPostClient, TransferService transferService, TimeService timeService) {
         this.httpPostClient = httpPostClient;
         this.transferService = transferService;
+        this.timeService = timeService;
     }
 
     @Override
-    public TransferTestResult testUpload(String serverUrl, Upload settings, int threads) throws InterruptedException {
-        Objects.requireNonNull(serverUrl);
+    public TransferTestResult testUpload(Server server, UploadSettings settings) throws InterruptedException {
+        Objects.requireNonNull(server);
         Objects.requireNonNull(settings);
         int[] uploadSizes = Arrays.copyOfRange(SIZES, settings.ratio() - 1, SIZES.length);
         int uploadCount = (int) Math.ceil((double) settings.maxChunkCount() / (double) uploadSizes.length);
@@ -37,11 +41,11 @@ public final class UploadServiceImpl implements UploadService {
                 sizeList.add(size);
             }
         }
-        long timeoutTime = System.currentTimeMillis() + settings.testLength() * 1000L;
+        long timeoutTime = timeService.currentTimeMillis() + settings.testLength() * 1000L;
         List<UploadTask> callables = sizeList.stream()
-                .map(s -> new UploadTask(httpPostClient, serverUrl, timeoutTime, generateDataString(s)))
+                .map(s -> new UploadTask(httpPostClient, server.uri(), timeoutTime, generateDataString(s)))
                 .toList();
-        return transferService.testTransfer(callables, threads);
+        return transferService.testTransfer(callables, 8); // TODO warum 8 Threads?
     }
 
     private String generateDataString(int size) {

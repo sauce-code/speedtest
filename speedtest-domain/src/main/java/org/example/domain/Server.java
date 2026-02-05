@@ -1,15 +1,27 @@
 package org.example.domain;
 
+import java.net.URI;
+import java.util.Objects;
+
 public record Server(
-        String url,
-        Double lat,
-        Double lon,
+        URI uri,
+        Location location,
         String city,
         String country,
-        String isoAlpha2CountryCode,
+        IsoAlpha2CountryCode countryCode,
         String sponsor,
-        Integer id,
+        int id,
         String host
 ) {
+
+    public Server {
+        Objects.requireNonNull(uri);
+        Objects.requireNonNull(location);
+        Objects.requireNonNull(city);
+        Objects.requireNonNull(country);
+        Objects.requireNonNull(countryCode);
+        Objects.requireNonNull(sponsor);
+        Objects.requireNonNull(host);
+    }
 
 }
