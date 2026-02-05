@@ -1,11 +1,15 @@
 package org.example.structure;
 
-public abstract class Entity<ID extends EntityID> {
+public abstract class Entity<I extends EntityID> {
 
-    protected final ID id;
+    protected final I id;
 
-    protected Entity(ID id) {
+    protected Entity(I id) {
         this.id = id;
+    }
+
+    public I id() {
+        return id;
     }
 
 }
