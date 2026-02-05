@@ -4,6 +4,7 @@
 *.class
 
 # Log file
+logs
 *.log
 
 # BlueJ files
@@ -42,3 +43,6 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# IntelliJ
+.idea
