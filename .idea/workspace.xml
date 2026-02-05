@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b3b94eb6-b01b-4b06-b674-701483601f26" name="Changes" comment="use toDomain">
-      <change afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/marshal/ConfigSettingUnmarshaller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/marshal/Marshaller.java" afterDir="false" />
+    <list default="true" id="b3b94eb6-b01b-4b06-b674-701483601f26" name="Changes" comment="add basic logging">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/config/ConfigServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/config/ConfigServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/speedtest-application/src/main/resources/log4j2.properties" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-application/src/main/resources/log4j2.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +22,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="dev" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory"><![CDATA[{
@@ -59,7 +62,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "feature/data-types",
+    "git-widget-placeholder": "feature/logging",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true"
   }
@@ -80,6 +83,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -179,7 +183,23 @@
       <option name="project" value="LOCAL" />
       <updated>1770283253929</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="idea">
+      <option name="closed" value="true" />
+      <created>1770284220548</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1770284220548</updated>
+    </task>
+    <task id="LOCAL-00012" summary="add basic logging">
+      <option name="closed" value="true" />
+      <created>1770295175695</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1770295175695</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -187,7 +207,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="dev" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -197,28 +229,19 @@
     <MESSAGE value="WIP" />
     <MESSAGE value="replace URL with URI" />
     <MESSAGE value="fix url null bug" />
-    <MESSAGE value="idea" />
     <MESSAGE value="use uri" />
     <MESSAGE value="use toDomain" />
-    <option name="LAST_COMMIT_MESSAGE" value="use toDomain" />
+    <MESSAGE value="idea" />
+    <MESSAGE value="add basic logging" />
+    <option name="LAST_COMMIT_MESSAGE" value="add basic logging" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/speedtest-application/src/main/java/org/example/application/in/SpeedtestApplicationService.java</url>
-          <line>42</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/server/Server.java</url>
-          <line>124</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/server/ServerServiceImpl.java</url>
-          <line>54</line>
-          <option name="timeStamp" value="5" />
+          <line>56</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

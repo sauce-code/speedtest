@@ -37,6 +37,38 @@ public class SpeedtestResult extends Entity<SpeedtestResultID> {
     private final TransferTestResult upload;
     private final String shareUrl;
 
+    public LocalDateTime startTime() {
+        return startTime;
+    }
+
+    public LocalDateTime endTime() {
+        return endTime;
+    }
+
+    public Client client() {
+        return client;
+    }
+
+    public Server server() {
+        return server;
+    }
+
+    public LatencyTestResult latency() {
+        return latency;
+    }
+
+    public TransferTestResult download() {
+        return download;
+    }
+
+    public TransferTestResult upload() {
+        return upload;
+    }
+
+    public String shareUrl() {
+        return shareUrl;
+    }
+
     @Override
     public String toString() {
         return "SpeedtestResult{" +
