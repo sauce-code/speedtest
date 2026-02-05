@@ -4,25 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b3b94eb6-b01b-4b06-b674-701483601f26" name="Changes" comment="WIP">
+    <list default="true" id="b3b94eb6-b01b-4b06-b674-701483601f26" name="Changes" comment="fix url null bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-application/src/main/java/org/example/application/in/SpeedtestApplicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-application/src/main/java/org/example/application/in/SpeedtestApplicationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-application/src/main/java/org/example/application/out/DownloadService.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-application/src/main/java/org/example/application/out/DownloadService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-application/src/main/java/org/example/application/out/UploadService.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-application/src/main/java/org/example/application/out/UploadService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-domain/src/main/java/org/example/domain/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-domain/src/main/java/org/example/domain/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-domain/src/main/java/org/example/util/Objectz.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-domain/src/main/java/org/example/util/Objectz.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/config/ConfigServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/config/ConfigServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/http/HttpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/http/HttpClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/http/HttpGetClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/http/HttpGetClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/http/HttpPostClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/http/HttpPostClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/latency/LatencyServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/latency/LatencyServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/server/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/server/ServerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/server/ServerServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/shareurl/ShareUrlServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/shareurl/ShareUrlServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/transfer/DownloadServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/transfer/DownloadServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/transfer/DownloadTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/transfer/DownloadTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/transfer/UploadServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/transfer/UploadServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/transfer/UploadTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/transfer/UploadTask.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +44,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "feature/data-types",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true"
@@ -117,7 +101,31 @@
       <option name="project" value="LOCAL" />
       <updated>1770153349124</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="replace URL with URI">
+      <option name="closed" value="true" />
+      <created>1770195238709</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1770195238709</updated>
+    </task>
+    <task id="LOCAL-00004" summary="idea">
+      <option name="closed" value="true" />
+      <created>1770195249206</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1770195249206</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix url null bug">
+      <option name="closed" value="true" />
+      <created>1770199995610</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1770199995610</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -133,6 +141,30 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="WIP" />
-    <option name="LAST_COMMIT_MESSAGE" value="WIP" />
+    <MESSAGE value="replace URL with URI" />
+    <MESSAGE value="idea" />
+    <MESSAGE value="fix url null bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix url null bug" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/speedtest-application/src/main/java/org/example/application/in/SpeedtestApplicationService.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/server/Server.java</url>
+          <line>124</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/server/ServerServiceImpl.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
