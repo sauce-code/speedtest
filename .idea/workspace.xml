@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b3b94eb6-b01b-4b06-b674-701483601f26" name="Changes" comment="fix url null bug">
+    <list default="true" id="b3b94eb6-b01b-4b06-b674-701483601f26" name="Changes" comment="idea">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/server/ServerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/server/ServerServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +126,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770199995610</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="idea">
+      <option name="closed" value="true" />
+      <created>1770280205986</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1770280205986</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -142,9 +151,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="WIP" />
     <MESSAGE value="replace URL with URI" />
-    <MESSAGE value="idea" />
     <MESSAGE value="fix url null bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix url null bug" />
+    <MESSAGE value="idea" />
+    <option name="LAST_COMMIT_MESSAGE" value="idea" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -161,7 +170,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/speedtest-framework/src/main/java/org/example/framework/out/server/ServerServiceImpl.java</url>
-          <line>53</line>
+          <line>55</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
