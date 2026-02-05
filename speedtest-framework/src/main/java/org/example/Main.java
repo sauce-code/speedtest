@@ -1,5 +1,7 @@
 package org.example;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.example.application.in.SpeedtestApplicationService;
 import org.example.domain.SpeedtestResult;
 import org.example.framework.out.config.ConfigServiceImpl;
@@ -17,10 +19,19 @@ import org.example.framework.out.transfer.UploadServiceImpl;
 
 public class Main {
 
+    private static final Logger logger = LogManager.getLogger();
+
     public static void main(String[] args) {
         SpeedtestApplicationService speedtestApplicationService = init();
         SpeedtestResult speedtestResult = speedtestApplicationService.run();
-        System.out.println(speedtestResult);
+        logger.info(speedtestResult.startTime());
+        logger.info(speedtestResult.endTime());
+        logger.info(speedtestResult.client());
+        logger.info(speedtestResult.server());
+        logger.info(speedtestResult.latency());
+        logger.info(speedtestResult.download());
+        logger.info(speedtestResult.upload());
+        logger.info(speedtestResult.shareUrl());
     }
 
     private static SpeedtestApplicationService init() {
