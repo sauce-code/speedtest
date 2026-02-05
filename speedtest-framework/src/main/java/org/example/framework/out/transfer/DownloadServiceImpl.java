@@ -1,5 +1,7 @@
 package org.example.framework.out.transfer;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.example.application.out.DownloadService;
 import org.example.application.out.TimeService;
 import org.example.domain.Server;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@ApplicationScoped
 public class DownloadServiceImpl implements DownloadService {
 
     private static final int[] SIZES = new int[]{350, 500, 750, 1000, 1500, 2000, 2500, 3000, 3500, 4000};
@@ -21,6 +24,7 @@ public class DownloadServiceImpl implements DownloadService {
     private final TransferService transferService;
     private final TimeService timeService;
 
+    @Inject
     public DownloadServiceImpl(HttpGetClient httpGetClient, TransferService transferService, TimeService timeService) {
         this.httpGetClient = httpGetClient;
         this.transferService = transferService;

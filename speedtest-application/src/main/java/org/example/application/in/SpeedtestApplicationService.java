@@ -1,5 +1,6 @@
 package org.example.application.in;
 
+import jakarta.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.application.out.*;
@@ -26,6 +27,7 @@ public class SpeedtestApplicationService {
     private final ImageStore imageStore;
     private final Repository<SpeedtestResultID, SpeedtestResult> repository;
 
+    @Inject
     public SpeedtestApplicationService(
             IDService<SpeedtestResultID> idService,
             TimeService timeService,
@@ -35,7 +37,8 @@ public class SpeedtestApplicationService {
             DownloadService downloadService,
             UploadService uploadService,
             ShareUrlService shareUrlService,
-            ImageStore imageStore, Repository<SpeedtestResultID, SpeedtestResult> repository) {
+            ImageStore imageStore,
+            Repository<SpeedtestResultID, SpeedtestResult> repository) {
         this.idService = idService;
         this.timeService = timeService;
         this.configService = configService;

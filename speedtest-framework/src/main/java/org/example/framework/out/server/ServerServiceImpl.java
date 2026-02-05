@@ -1,5 +1,7 @@
 package org.example.framework.out.server;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
@@ -17,10 +19,12 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@ApplicationScoped
 public class ServerServiceImpl implements ServerService {
 
     private final HttpGetClient httpGetClient;
 
+    @Inject
     public ServerServiceImpl(HttpGetClient httpGetClient) {
         this.httpGetClient = httpGetClient;
     }

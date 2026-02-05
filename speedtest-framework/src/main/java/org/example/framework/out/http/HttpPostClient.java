@@ -1,5 +1,7 @@
 package org.example.framework.out.http;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import org.example.application.out.TimeService;
 import org.example.domain.TransferTestResult;
@@ -11,6 +13,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
+@ApplicationScoped
 public class HttpPostClient {
 
     public static final String CONTENT_LENGTH = "Content-Length";
@@ -19,6 +22,7 @@ public class HttpPostClient {
     private final HttpClient httpClient;
     private final TimeService timeService;
 
+    @Inject
     public HttpPostClient(HttpClient httpClient, TimeService timeService) {
         this.httpClient = httpClient;
         this.timeService = timeService;

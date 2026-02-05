@@ -1,10 +1,13 @@
 package org.example.framework.out.http;
 
+import jakarta.enterprise.context.ApplicationScoped;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Objects;
 
+@ApplicationScoped
 public class HttpClient {
 
     public HttpURLConnection createConnection(URI uri, String requestMethod) throws IOException {

@@ -1,5 +1,7 @@
 package org.example.framework.out.http;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import org.example.application.out.TimeService;
 import org.example.domain.TransferTestResult;
@@ -11,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Objects;
 
+@ApplicationScoped
 public class HttpGetClient {
 
     private static final String GET = "GET";
@@ -18,6 +21,7 @@ public class HttpGetClient {
     private final HttpClient httpClient;
     private final TimeService timeService;
 
+    @Inject
     public HttpGetClient(HttpClient httpClient, TimeService timeService) {
         this.httpClient = httpClient;
         this.timeService = timeService;

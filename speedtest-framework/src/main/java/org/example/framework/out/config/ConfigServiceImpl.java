@@ -1,15 +1,12 @@
 package org.example.framework.out.config;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import org.example.application.out.ConfigService;
-import org.example.domain.Client;
-import org.example.domain.IsoAlpha2CountryCode;
-import org.example.domain.Location;
 import org.example.domain.config.Config;
-import org.example.domain.config.DownloadSettings;
-import org.example.domain.config.UploadSettings;
 import org.example.framework.out.http.HttpGetClient;
 
 import java.io.ByteArrayInputStream;
@@ -18,12 +15,14 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Objects;
 
+@ApplicationScoped
 public class ConfigServiceImpl implements ConfigService {
 
     private static final URI CONFIG_URL = URI.create("https://www.speedtest.net/speedtest-config.php");
 
     private final HttpGetClient httpGetClient;
 
+    @Inject
     public ConfigServiceImpl(HttpGetClient httpGetClient) {
         this.httpGetClient = httpGetClient;
     }

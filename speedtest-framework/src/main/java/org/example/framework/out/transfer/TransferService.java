@@ -1,5 +1,6 @@
 package org.example.framework.out.transfer;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.Util;
 import org.example.util.Objectz;
@@ -9,6 +10,7 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
+@ApplicationScoped
 public class TransferService {
 
     public TransferTestResult testTransfer(List<? extends Callable<TransferTestResult>> callables, int threads) throws InterruptedException {

@@ -1,5 +1,6 @@
 package org.example.framework.out.image;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.application.out.ImageStore;
@@ -9,6 +10,7 @@ import java.io.*;
 import java.net.URI;
 import java.net.URL;
 
+@ApplicationScoped
 public class ImageStoreImpl implements ImageStore {
 
     private final Logger logger = LogManager.getLogger();

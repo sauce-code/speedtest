@@ -1,5 +1,7 @@
 package org.example.framework.out.shareurl;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.xml.bind.DatatypeConverter;
 import org.example.application.out.ShareUrlService;
 import org.example.domain.ShareURL;
@@ -13,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Objects;
 
+@ApplicationScoped
 public class ShareUrlServiceImpl implements ShareUrlService {
 
     public static final String RESULT_ID = "resultid";
@@ -21,6 +24,7 @@ public class ShareUrlServiceImpl implements ShareUrlService {
 
     private final HttpPostClient httpPostClient;
 
+    @Inject
     public ShareUrlServiceImpl(HttpPostClient httpPostClient) {
         this.httpPostClient = httpPostClient;
     }

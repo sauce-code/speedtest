@@ -1,5 +1,7 @@
 package org.example.framework.out.transfer;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.example.application.out.TimeService;
 import org.example.application.out.UploadService;
 import org.example.domain.Server;
@@ -13,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+@ApplicationScoped
 public final class UploadServiceImpl implements UploadService {
 
     private static final int[] SIZES = new int[]{32768, 65536, 131072, 262144, 524288, 1048576, 7340032};
@@ -23,6 +26,7 @@ public final class UploadServiceImpl implements UploadService {
     private final TransferService transferService;
     private final TimeService timeService;
 
+    @Inject
     public UploadServiceImpl(HttpPostClient httpPostClient, TransferService transferService, TimeService timeService) {
         this.httpPostClient = httpPostClient;
         this.transferService = transferService;
