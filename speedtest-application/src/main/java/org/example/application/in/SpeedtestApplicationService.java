@@ -24,6 +24,7 @@ public class SpeedtestApplicationService {
     private final UploadService uploadService;
     private final ShareUrlService shareUrlService;
     private final ImageStore imageStore;
+    private final Repository<SpeedtestResultID, SpeedtestResult> repository;
 
     public SpeedtestApplicationService(
             IDService<SpeedtestResultID> idService,
@@ -34,7 +35,7 @@ public class SpeedtestApplicationService {
             DownloadService downloadService,
             UploadService uploadService,
             ShareUrlService shareUrlService,
-            ImageStore imageStore) {
+            ImageStore imageStore, Repository<SpeedtestResultID, SpeedtestResult> repository) {
         this.idService = idService;
         this.timeService = timeService;
         this.configService = configService;
@@ -44,6 +45,7 @@ public class SpeedtestApplicationService {
         this.uploadService = uploadService;
         this.shareUrlService = shareUrlService;
         this.imageStore = imageStore;
+        this.repository = repository;
     }
 
     public SpeedtestResult run() {
@@ -92,12 +94,8 @@ public class SpeedtestApplicationService {
                     downloadResult.rateInMbps());
             logger.info(shareUrl);
 
-            logger.info("saving share ...");
-            URI uri = imageStore.store(shareUrl);
-            logger.info(uri);
-
             LocalDateTime endTime = timeService.localDateTime();
-            return new SpeedtestResult(
+            SpeedtestResult speedtestResult = new SpeedtestResult(
                     id,
                     startTime,
                     endTime,
@@ -107,6 +105,15 @@ public class SpeedtestApplicationService {
                     downloadResult,
                     uploadResult,
                     shareUrl);
+
+            logger.info("saving share ...");
+            URI uri = imageStore.store(shareUrl);
+            logger.info(uri);
+
+            logger.info("saving csv ...");
+            repository.create(speedtestResult);
+
+            return speedtestResult;
         } catch (Exception e) {
             logger.error(e);
             throw new RuntimeException(e);

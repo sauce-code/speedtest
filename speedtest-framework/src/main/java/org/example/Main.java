@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.example.application.in.SpeedtestApplicationService;
 import org.example.domain.SpeedtestResult;
 import org.example.framework.out.config.ConfigServiceImpl;
+import org.example.framework.out.csv.SpeedtestCSVRepository;
 import org.example.framework.out.http.HttpClient;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.HttpPostClient;
@@ -51,6 +52,7 @@ public class Main {
         UploadServiceImpl uploadService = new UploadServiceImpl(httpPostClient, transferService, timeService);
         ShareUrlServiceImpl shareUrlService = new ShareUrlServiceImpl(httpPostClient);
         ImageStoreImpl imageStore = new ImageStoreImpl();
+        SpeedtestCSVRepository repository = new SpeedtestCSVRepository();
         return new SpeedtestApplicationService(
                 speedtestResultIDService,
                 timeService,
@@ -60,7 +62,8 @@ public class Main {
                 downloadService,
                 uploadService,
                 shareUrlService,
-                imageStore);
+                imageStore,
+                repository);
     }
 
 }

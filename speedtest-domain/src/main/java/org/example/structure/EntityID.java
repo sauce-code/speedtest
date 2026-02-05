@@ -12,4 +12,8 @@ public abstract class EntityID {
         this.uuid = uuid;
     }
 
+    public UUID uuid() {
+        return uuid;
+    }
+
 }
