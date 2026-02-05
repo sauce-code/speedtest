@@ -8,6 +8,7 @@ import org.example.domain.Server;
 import org.example.framework.out.config.ParsingException;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
+import org.example.util.Objectz;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -24,19 +25,19 @@ public class ServerServiceImpl implements ServerService {
         this.httpGetClient = httpGetClient;
     }
 
-    private static final Set<String> SERVER_URLS = new HashSet<>(Arrays.asList(
-            "https://www.speedtest.net/speedtest-servers-static.php", "http://c.speedtest.net/speedtest-servers-static.php",
-            "https://www.speedtest.net/speedtest-servers.php", "http://c.speedtest.net/speedtest-servers.php"));
+    private static final Set<URI> SERVER_URLS = Set.of(
+            URI.create("https://www.speedtest.net/speedtest-servers-static.php"),
+            URI.create("http://c.speedtest.net/speedtest-servers-static.php"),
+            URI.create("https://www.speedtest.net/speedtest-servers.php"),
+            URI.create("http://c.speedtest.net/speedtest-servers.php"));
 
     @Override
     public List<Server> servers(int threadsPerUrl) {
-        if (threadsPerUrl <= 0) {
-            throw new IllegalArgumentException();
-        }
+        Objectz.require(threadsPerUrl > 0);
         return SERVER_URLS.stream()
-                .map(urlString -> {
+                .map(base -> {
                     try {
-                        String s = "%s?threads=%d".formatted(urlString, threadsPerUrl);
+                        String s = "%s?threads=%d".formatted(base, threadsPerUrl);
                         URI uri = URI.create(s);
                         byte[] bytes = httpGetClient.get(uri);
                         return getServersFromXml(bytes);
