@@ -12,6 +12,7 @@ import org.example.framework.out.http.HttpPostClient;
 import org.example.framework.out.id.SpeedtestResultIDService;
 import org.example.framework.out.image.ImageStoreImpl;
 import org.example.framework.out.latency.LatencyServiceImpl;
+import org.example.framework.out.lock.LockServiceImpl;
 import org.example.framework.out.server.ServerServiceImpl;
 import org.example.framework.out.shareurl.ShareUrlServiceImpl;
 import org.example.framework.out.time.TimeServiceImpl;
@@ -45,6 +46,7 @@ public class Main {
         TransferService transferService = new TransferService();
 
         SpeedtestResultIDService speedtestResultIDService = new SpeedtestResultIDService();
+        LockServiceImpl lockService = new LockServiceImpl();
         ConfigServiceImpl configService = new ConfigServiceImpl(httpGetClient);
         ServerServiceImpl serverService = new ServerServiceImpl(httpGetClient);
         LatencyServiceImpl latencyService = new LatencyServiceImpl(httpGetClient, timeService);
@@ -54,6 +56,7 @@ public class Main {
         ImageStoreImpl imageStore = new ImageStoreImpl();
         SpeedtestCSVRepository repository = new SpeedtestCSVRepository();
         return new SpeedtestApplicationService(
+                lockService,
                 speedtestResultIDService,
                 timeService,
                 configService,

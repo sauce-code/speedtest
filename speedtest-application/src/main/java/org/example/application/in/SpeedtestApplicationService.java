@@ -18,6 +18,7 @@ public class SpeedtestApplicationService {
 
     private static final Logger logger = LogManager.getLogger();
 
+    private final LockService lockService;
     private final IDService<SpeedtestResultID> idService;
     private final TimeService timeService;
     private final ConfigService configService;
@@ -31,6 +32,7 @@ public class SpeedtestApplicationService {
 
     @Inject
     public SpeedtestApplicationService(
+            LockService lockService,
             IDService<SpeedtestResultID> idService,
             TimeService timeService,
             ConfigService configService,
@@ -41,6 +43,7 @@ public class SpeedtestApplicationService {
             ShareUrlService shareUrlService,
             ImageStore imageStore,
             Repository<SpeedtestResultID, SpeedtestResult> repository) {
+        this.lockService = lockService;
         this.idService = idService;
         this.timeService = timeService;
         this.configService = configService;
@@ -54,38 +57,43 @@ public class SpeedtestApplicationService {
     }
 
     public SpeedtestResult run() {
+        logger.info("setting lock ...");
+        if (!lockService.setBusy()) {
+            logger.error("application is already busy");
+            throw new RuntimeException("application is already Busy");
+        }
         try {
             SpeedtestResultID id = idService.create();
             LocalDateTime startTime = timeService.localDateTime();
 
-            logger.info("Requesting config ...");
+            logger.info("requesting config ...");
             Config config = configService.config();
             logger.info(config);
 
-            logger.info("Requesting servers ...");
+            logger.info("requesting servers ...");
             List<Server> servers = serverService.servers(
                     config.downloadSettings().threadsPerUrl());
-            logger.info("Fetched {} servers", servers.size());
+            logger.info("fetched {} servers", servers.size());
 
-            logger.info("Calculating closest servers ...");
+            logger.info("calculating closest servers ...");
             Map<Distance, Server> closestServers = config.client().closestServers(
                     servers,
                     10);
-            logger.info("Calculated {} closest servers", closestServers.size());
+            logger.info("calculated {} closest servers", closestServers.size());
 
-            logger.info("Requesting fastest server ...");
+            logger.info("requesting fastest server ...");
             FastestServerResult fastestServer = latencyService.getFastestServer(
                     closestServers);
             logger.info(fastestServer.server());
             logger.info(fastestServer.latencyTestResult());
 
-            logger.info("Testing download ...");
+            logger.info("testing download ...");
             TransferTestResult downloadResult = downloadService.testDownload(
                     fastestServer.server(),
                     config.downloadSettings());
             logger.info(downloadResult);
 
-            logger.info("Testing upload ...");
+            logger.info("testing upload ...");
             TransferTestResult uploadResult = uploadService.testUpload(
                     fastestServer.server(),
                     config.uploadSettings());
@@ -122,6 +130,9 @@ public class SpeedtestApplicationService {
         } catch (Exception e) {
             logger.error(e);
             throw new RuntimeException(e);
+        } finally {
+            logger.info("resetting lock ...");
+            lockService.reset();
         }
     }
 
