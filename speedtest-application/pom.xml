@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.example</groupId>
         <artifactId>speedtest</artifactId>
-        <version>${revision}</version>
+        <version>dev-SNAPSHOT</version>
     </parent>
 
     <artifactId>speedtest-application</artifactId>
@@ -15,7 +15,7 @@
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>speedtest-domain</artifactId>
-            <version>${revision}</version>
+            <version>dev-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -31,5 +31,23 @@
             <artifactId>jakarta.enterprise.cdi-api</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.smallrye</groupId>
+                <artifactId>jandex-maven-plugin</artifactId>
+                <version>3.5.3</version>
+                <executions>
+                    <execution>
+                        <id>make-index</id>
+                        <goals>
+                            <goal>jandex</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

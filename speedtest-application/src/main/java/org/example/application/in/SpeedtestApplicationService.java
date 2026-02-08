@@ -1,5 +1,6 @@
 package org.example.application.in;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+@ApplicationScoped
 public class SpeedtestApplicationService {
 
     private static final Logger logger = LogManager.getLogger();
