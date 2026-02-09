@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.example.application.in.SpeedtestApplicationService;
 import org.example.domain.SpeedtestResult;
 import org.example.framework.out.config.ConfigServiceImpl;
+import org.example.framework.out.config.ConfigSetting;
 import org.example.framework.out.csv.SpeedtestCSVRepository;
 import org.example.framework.out.http.HttpClient;
 import org.example.framework.out.http.HttpGetClient;
@@ -19,6 +20,7 @@ import org.example.framework.out.time.TimeServiceImpl;
 import org.example.framework.out.transfer.DownloadServiceImpl;
 import org.example.framework.out.transfer.TransferService;
 import org.example.framework.out.transfer.UploadServiceImpl;
+import org.example.framework.out.xml.Context;
 
 public class Main {
 
@@ -47,8 +49,9 @@ public class Main {
 
         SpeedtestResultIDService speedtestResultIDService = new SpeedtestResultIDService();
         LockServiceImpl lockService = new LockServiceImpl();
-        ConfigServiceImpl configService = new ConfigServiceImpl(httpGetClient);
-        ServerServiceImpl serverService = new ServerServiceImpl(httpGetClient);
+        Context context = new Context();
+        ConfigServiceImpl configService = new ConfigServiceImpl(httpGetClient, context);
+        ServerServiceImpl serverService = new ServerServiceImpl(httpGetClient, context);
         LatencyServiceImpl latencyService = new LatencyServiceImpl(httpGetClient, timeService);
         DownloadServiceImpl downloadService = new DownloadServiceImpl(httpGetClient, transferService, timeService);
         UploadServiceImpl uploadService = new UploadServiceImpl(httpPostClient, transferService, timeService);

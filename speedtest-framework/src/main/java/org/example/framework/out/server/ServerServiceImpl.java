@@ -10,6 +10,7 @@ import org.example.domain.Server;
 import org.example.framework.out.config.ParsingException;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
+import org.example.framework.out.xml.Context;
 import org.example.util.Objectz;
 
 import java.io.ByteArrayInputStream;
@@ -23,10 +24,14 @@ import java.util.stream.Collectors;
 public class ServerServiceImpl implements ServerService {
 
     private final HttpGetClient httpGetClient;
+    private final Context context;
 
     @Inject
-    public ServerServiceImpl(HttpGetClient httpGetClient) {
+    public ServerServiceImpl(
+            HttpGetClient httpGetClient,
+            Context context) {
         this.httpGetClient = httpGetClient;
+        this.context = context;
     }
 
     private static final Set<URI> SERVER_URLS = Set.of(
@@ -50,15 +55,13 @@ public class ServerServiceImpl implements ServerService {
                     }
                 })
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private List<Server> getServersFromXml(byte[] bytes) {
         Objects.requireNonNull(bytes);
         try (InputStream is = new ByteArrayInputStream(bytes)) {
-            JAXBContext jaxbContext = JAXBContext.newInstance(ServerSetting.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            ServerSetting serverSetting = (ServerSetting) jaxbUnmarshaller.unmarshal(is);
+            ServerSetting serverSetting = context.unmarshal(is, ServerSetting.class);
             return serverSetting.getServers().getServerList().stream()
                     .map(org.example.framework.out.server.Server::toDomain)
                     .filter(Optional::isPresent)

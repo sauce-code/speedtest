@@ -2,12 +2,11 @@ package org.example.framework.out.config;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import org.example.application.out.ConfigService;
 import org.example.domain.config.Config;
 import org.example.framework.out.http.HttpGetClient;
+import org.example.framework.out.xml.Context;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -21,10 +20,14 @@ public class ConfigServiceImpl implements ConfigService {
     private static final URI CONFIG_URL = URI.create("https://www.speedtest.net/speedtest-config.php");
 
     private final HttpGetClient httpGetClient;
+    private final Context context;
 
     @Inject
-    public ConfigServiceImpl(HttpGetClient httpGetClient) {
+    public ConfigServiceImpl(
+            HttpGetClient httpGetClient,
+            Context context) {
         this.httpGetClient = httpGetClient;
+        this.context = context;
     }
 
     @Override
@@ -37,9 +40,7 @@ public class ConfigServiceImpl implements ConfigService {
     private ConfigSetting getSettingFromXml(byte[] xml) throws ParsingException {
         Objects.requireNonNull(xml);
         try (InputStream is = new ByteArrayInputStream(xml)) {
-            JAXBContext jaxbContext = JAXBContext.newInstance(ConfigSetting.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            return (ConfigSetting) jaxbUnmarshaller.unmarshal(is);
+           return context.unmarshal(is, ConfigSetting.class);
         } catch (IOException | JAXBException e) {
             throw new ParsingException(e);
         }
