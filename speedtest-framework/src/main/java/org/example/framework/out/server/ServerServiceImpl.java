@@ -2,9 +2,7 @@ package org.example.framework.out.server;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import org.example.application.out.ServerService;
 import org.example.domain.Server;
 import org.example.framework.out.config.ParsingException;
@@ -18,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ServerServiceImpl implements ServerService {
@@ -61,8 +58,8 @@ public class ServerServiceImpl implements ServerService {
     private List<Server> getServersFromXml(byte[] bytes) {
         Objects.requireNonNull(bytes);
         try (InputStream is = new ByteArrayInputStream(bytes)) {
-            ServerSetting serverSetting = context.unmarshal(is, ServerSetting.class);
-            return serverSetting.getServers().getServerList().stream()
+            Settings settings = context.unmarshal(is, Settings.class);
+            return settings.servers.server.stream()
                     .map(org.example.framework.out.server.Server::toDomain)
                     .filter(Optional::isPresent)
                     .map(Optional::get)

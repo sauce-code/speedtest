@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import org.example.application.in.SpeedtestApplicationService;
 import org.example.domain.SpeedtestResult;
 import org.example.framework.out.config.ConfigServiceImpl;
-import org.example.framework.out.config.ConfigSetting;
 import org.example.framework.out.csv.SpeedtestCSVRepository;
 import org.example.framework.out.http.HttpClient;
 import org.example.framework.out.http.HttpGetClient;

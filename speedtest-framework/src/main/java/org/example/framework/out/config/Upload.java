@@ -3,24 +3,18 @@ package org.example.framework.out.config;
 import jakarta.xml.bind.annotation.*;
 
 @XmlRootElement
-public class Client {
+public class Upload {
 
     @XmlAttribute
-    String ip;
+    Integer ratio;
 
     @XmlAttribute
-    Double lat;
+    Integer maxchunkcount;
 
     @XmlAttribute
-    Double lon;
+    Integer threads;
 
     @XmlAttribute
-    String isp;
-
-    @XmlAttribute
-    Double isprating;
-
-    @XmlAttribute
-    String country;
+    Integer testlength;
 
 }

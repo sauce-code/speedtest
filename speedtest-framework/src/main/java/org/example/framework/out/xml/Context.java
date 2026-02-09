@@ -11,8 +11,8 @@ import java.io.InputStream;
 public class Context {
 
     @SuppressWarnings("unchecked")
-    public <T> T unmarshal(InputStream is, Class<T> cls) throws JAXBException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(cls);
+    public <T> T unmarshal(InputStream is, Class<T> clazz) throws JAXBException {
+        JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         return (T) jaxbUnmarshaller.unmarshal(is);
     }

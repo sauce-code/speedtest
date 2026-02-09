@@ -33,14 +33,14 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     public Config config() {
         byte[] bytes = httpGetClient.get(CONFIG_URL);
-        ConfigSetting settingFromXml = getSettingFromXml(bytes);
+        Settings settingFromXml = getSettingFromXml(bytes);
         return settingFromXml.toDomain();
     }
 
-    private ConfigSetting getSettingFromXml(byte[] xml) throws ParsingException {
+    private Settings getSettingFromXml(byte[] xml) throws ParsingException {
         Objects.requireNonNull(xml);
         try (InputStream is = new ByteArrayInputStream(xml)) {
-           return context.unmarshal(is, ConfigSetting.class);
+            return context.unmarshal(is, Settings.class);
         } catch (IOException | JAXBException e) {
             throw new ParsingException(e);
         }

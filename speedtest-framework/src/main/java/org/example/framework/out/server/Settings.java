@@ -3,12 +3,10 @@ package org.example.framework.out.server;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
-import java.util.List;
-
 @XmlRootElement
-public class Servers {
+public class Settings {
 
     @XmlElement
-    List<Server> server;
+    Servers servers;
 
 }
