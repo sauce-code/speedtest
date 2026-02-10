@@ -1,7 +1,6 @@
 package org.example.framework.out.http;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import org.example.application.out.TimeService;
 import org.example.domain.TransferTestResult;
@@ -22,7 +21,6 @@ public class HttpPostClient {
     private final HttpClient httpClient;
     private final TimeService timeService;
 
-    @Inject
     public HttpPostClient(HttpClient httpClient, TimeService timeService) {
         this.httpClient = httpClient;
         this.timeService = timeService;
@@ -34,16 +32,16 @@ public class HttpPostClient {
         final int maxBufferSize = Integer.parseInt(Objects.requireNonNull(Util.getConfigProperty("Upload.maxBufferSize")));
         int bytesSent = 0;
         try (InputStream is = new ByteArrayInputStream(dataString.getBytes())) {
-            final HttpURLConnection conn = httpClient.createConnection(uri, POST);
+            HttpURLConnection conn = httpClient.createConnection(uri, POST);
             conn.setChunkedStreamingMode(maxBufferSize);
             conn.setDoOutput(true);
             conn.setRequestProperty(CONTENT_LENGTH, Integer.toString(dataString.length()));
-            final long startTime = timeService.currentTimeMillis();
-            final DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
+            long startTime = timeService.currentTimeMillis();
+            DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
 
             int bytesAvailable = is.available();
             int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-            final byte[] buffer = new byte[bufferSize];
+            byte[] buffer = new byte[bufferSize];
             int bytesRead = 1;
             while (bytesRead > 0) {
                 if (timeoutTime > 0 && timeService.currentTimeMillis() > timeoutTime) {

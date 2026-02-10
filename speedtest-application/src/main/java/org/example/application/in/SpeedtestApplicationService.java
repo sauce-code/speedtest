@@ -1,7 +1,6 @@
 package org.example.application.in;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import org.example.application.out.*;
 import org.example.domain.*;
 import org.example.domain.config.Config;
@@ -27,7 +26,6 @@ public class SpeedtestApplicationService {
     private final ImageStore imageStore;
     private final Repository<SpeedtestResultID, SpeedtestResult> repository;
 
-    @Inject
     public SpeedtestApplicationService(
             Logger logger,
             LockService lockService,

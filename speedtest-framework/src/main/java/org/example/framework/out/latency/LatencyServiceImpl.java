@@ -1,7 +1,6 @@
 package org.example.framework.out.latency;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import org.example.application.out.LatencyService;
 import org.example.application.out.TimeService;
 import org.example.domain.Distance;
@@ -26,7 +25,6 @@ public class LatencyServiceImpl implements LatencyService {
     private final HttpGetClient httpGetClient;
     private final TimeService timeService;
 
-    @Inject
     public LatencyServiceImpl(HttpGetClient httpGetClient, TimeService timeService) {
         this.httpGetClient = httpGetClient;
         this.timeService = timeService;

@@ -6,7 +6,7 @@ import org.example.framework.out.http.HttpPostClient;
 import java.net.URI;
 import java.util.concurrent.Callable;
 
-public final class UploadTask implements Callable<TransferTestResult> {
+public class UploadTask implements Callable<TransferTestResult> {
 
     private final HttpPostClient httpPostClient;
     private final URI uri;

@@ -1,7 +1,6 @@
 package org.example.framework.out.shareurl;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.xml.bind.DatatypeConverter;
 import org.example.application.out.ShareUrlService;
 import org.example.domain.ShareURL;
@@ -24,7 +23,6 @@ public class ShareUrlServiceImpl implements ShareUrlService {
 
     private final HttpPostClient httpPostClient;
 
-    @Inject
     public ShareUrlServiceImpl(HttpPostClient httpPostClient) {
         this.httpPostClient = httpPostClient;
     }

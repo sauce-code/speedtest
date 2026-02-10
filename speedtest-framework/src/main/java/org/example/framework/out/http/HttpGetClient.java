@@ -1,7 +1,6 @@
 package org.example.framework.out.http;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import org.apache.commons.io.IOUtils;
 import org.example.application.out.TimeService;
 import org.example.domain.TransferTestResult;
@@ -21,7 +20,6 @@ public class HttpGetClient {
     private final HttpClient httpClient;
     private final TimeService timeService;
 
-    @Inject
     public HttpGetClient(HttpClient httpClient, TimeService timeService) {
         this.httpClient = httpClient;
         this.timeService = timeService;

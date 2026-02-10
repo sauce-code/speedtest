@@ -1,7 +1,6 @@
 package org.example.framework.out.server;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.xml.bind.JAXBException;
 import org.example.application.out.ServerService;
 import org.example.domain.Server;
@@ -23,7 +22,6 @@ public class ServerServiceImpl implements ServerService {
     private final HttpGetClient httpGetClient;
     private final Context context;
 
-    @Inject
     public ServerServiceImpl(
             HttpGetClient httpGetClient,
             Context context) {

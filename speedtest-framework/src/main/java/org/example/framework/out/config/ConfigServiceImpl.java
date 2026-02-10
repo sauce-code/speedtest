@@ -1,7 +1,6 @@
 package org.example.framework.out.config;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.xml.bind.JAXBException;
 import org.example.application.out.ConfigService;
 import org.example.domain.config.Config;
@@ -22,7 +21,6 @@ public class ConfigServiceImpl implements ConfigService {
     private final HttpGetClient httpGetClient;
     private final Context context;
 
-    @Inject
     public ConfigServiceImpl(
             HttpGetClient httpGetClient,
             Context context) {
