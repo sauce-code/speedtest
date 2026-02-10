@@ -1,19 +1,20 @@
-package org.example.framework.in.rest;
+package org.example.framework.in.schedule;
 
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.example.application.in.SpeedtestApplicationService;
+import org.example.application.out.Logger;
 
 @ApplicationScoped
 public class ScheduleAdapter {
 
-    private static final Logger logger = LogManager.getLogger();
-
+    private final Logger logger;
     private final SpeedtestApplicationService speedtestApplicationService;
 
-    public ScheduleAdapter(SpeedtestApplicationService speedtestApplicationService) {
+    public ScheduleAdapter(
+            Logger logger,
+            SpeedtestApplicationService speedtestApplicationService) {
+        this.logger = logger;
         this.speedtestApplicationService = speedtestApplicationService;
     }
 

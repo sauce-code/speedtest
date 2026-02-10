@@ -1,8 +1,7 @@
 package org.example.framework.out.csv;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.example.application.out.Logger;
 import org.example.application.out.Repository;
 import org.example.domain.SpeedtestResult;
 import org.example.domain.SpeedtestResultID;
@@ -16,7 +15,11 @@ import java.util.stream.Stream;
 @ApplicationScoped
 public class SpeedtestCSVRepository implements Repository<SpeedtestResultID, SpeedtestResult> {
 
-    private final Logger logger = LogManager.getLogger();
+    private final Logger logger;
+
+    public SpeedtestCSVRepository(Logger logger) {
+        this.logger = logger;
+    }
 
     @Override
     public void create(SpeedtestResult entity) {

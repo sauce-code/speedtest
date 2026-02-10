@@ -2,8 +2,6 @@ package org.example.application.in;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.example.application.out.*;
 import org.example.domain.*;
 import org.example.domain.config.Config;
@@ -16,8 +14,7 @@ import java.util.Map;
 @ApplicationScoped
 public class SpeedtestApplicationService {
 
-    private static final Logger logger = LogManager.getLogger();
-
+    private final Logger logger;
     private final LockService lockService;
     private final IDService<SpeedtestResultID> idService;
     private final TimeService timeService;
@@ -32,6 +29,7 @@ public class SpeedtestApplicationService {
 
     @Inject
     public SpeedtestApplicationService(
+            Logger logger,
             LockService lockService,
             IDService<SpeedtestResultID> idService,
             TimeService timeService,
@@ -43,6 +41,7 @@ public class SpeedtestApplicationService {
             ShareUrlService shareUrlService,
             ImageStore imageStore,
             Repository<SpeedtestResultID, SpeedtestResult> repository) {
+        this.logger = logger;
         this.lockService = lockService;
         this.idService = idService;
         this.timeService = timeService;
@@ -73,13 +72,13 @@ public class SpeedtestApplicationService {
             logger.info("requesting servers ...");
             List<Server> servers = serverService.servers(
                     config.downloadSettings().threadsPerUrl());
-            logger.info("fetched {} servers", servers.size());
+            logger.infov("fetched {0} servers", servers.size());
 
             logger.info("calculating closest servers ...");
             Map<Distance, Server> closestServers = config.client().closestServers(
                     servers,
                     10);
-            logger.info("calculated {} closest servers", closestServers.size());
+            logger.infov("calculated {0} closest servers", closestServers.size());
 
             logger.info("requesting fastest server ...");
             FastestServerResult fastestServer = latencyService.getFastestServer(

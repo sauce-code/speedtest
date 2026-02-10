@@ -1,9 +1,8 @@
 package org.example.framework.out.image;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.example.application.out.ImageStore;
+import org.example.application.out.Logger;
 import org.example.domain.ShareURL;
 
 import java.io.*;
@@ -13,7 +12,11 @@ import java.net.URL;
 @ApplicationScoped
 public class ImageStoreImpl implements ImageStore {
 
-    private final Logger logger = LogManager.getLogger();
+    private final Logger logger;
+
+    public ImageStoreImpl(Logger logger) {
+        this.logger = logger;
+    }
 
     @Override
     public URI store(ShareURL shareURL) {
@@ -23,7 +26,7 @@ public class ImageStoreImpl implements ImageStore {
             URI output = URI.create("target" + url.getFile());
             File file = new File(output.getPath());
             if (file.getParentFile().mkdirs()) {
-                logger.info("created dir {}", file.getParentFile());
+                logger.infov("created dir {}}", file.getParentFile());
             }
             FileOutputStream os = new FileOutputStream(file, false);
 
