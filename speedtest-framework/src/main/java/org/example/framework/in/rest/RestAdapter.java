@@ -21,8 +21,9 @@ public class RestAdapter {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("")
-    public SpeedtestResult run() {
-        return speedtestApplicationService.run();
+    public SpeedtestResultView run() {
+        var speedtestResult = speedtestApplicationService.run();
+        return SpeedtestResultView.from(speedtestResult);
     }
 
     @GET
