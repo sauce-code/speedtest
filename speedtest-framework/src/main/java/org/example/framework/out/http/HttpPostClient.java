@@ -1,7 +1,6 @@
 package org.example.framework.out.http;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.apache.commons.io.IOUtils;
 import org.example.application.out.TimeService;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.Util;
@@ -76,7 +75,7 @@ public class HttpPostClient {
                 writer.write(encodedBody);
                 writer.flush();
                 try (InputStream is = conn.getInputStream()) {
-                    return IOUtils.toString(is, StandardCharsets.UTF_8);
+                    return new String(is.readAllBytes(), StandardCharsets.UTF_8);
                 }
             }
         } catch (IOException e) {

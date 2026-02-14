@@ -29,7 +29,7 @@ public class ImageStoreImpl implements ImageStore {
             URI output = URI.create("target" + url.getFile());
             File file = new File(output.getPath());
             if (file.getParentFile().mkdirs()) {
-                logger.infov("created dir {}}", file.getParentFile());
+                logger.infov("created dir {}}", file.getParentFile()); // TODO wirft fehler
             }
             FileOutputStream os = new FileOutputStream(file, false);
 

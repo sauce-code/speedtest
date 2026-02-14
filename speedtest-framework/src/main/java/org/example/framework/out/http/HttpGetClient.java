@@ -1,7 +1,6 @@
 package org.example.framework.out.http;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.apache.commons.io.IOUtils;
 import org.example.application.out.TimeService;
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.Util;
@@ -54,7 +53,7 @@ public class HttpGetClient {
         try {
             HttpURLConnection conn = httpClient.createConnection(uri, RequestMethod.GET);
             try (InputStream is = conn.getInputStream()) {
-                return IOUtils.toByteArray(is);
+                return is.readAllBytes();
             }
         } catch (IOException e) {
             throw new ServerRequestException(e);
