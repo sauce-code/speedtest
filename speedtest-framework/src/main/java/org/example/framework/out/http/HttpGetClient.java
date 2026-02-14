@@ -15,8 +15,6 @@ import java.util.Objects;
 @ApplicationScoped
 public class HttpGetClient {
 
-    private static final String GET = "GET";
-
     private final HttpClient httpClient;
     private final TimeService timeService;
 
@@ -29,7 +27,7 @@ public class HttpGetClient {
         Objects.requireNonNull(uri);
         int bytesReceived = 0;
         try {
-            HttpURLConnection conn = httpClient.createConnection(uri, GET);
+            HttpURLConnection conn = httpClient.createConnection(uri, RequestMethod.GET);
             long startTime = timeService.currentTimeMillis();
             try (InputStream is = conn.getInputStream()) {
                 byte[] buffer =
@@ -54,7 +52,7 @@ public class HttpGetClient {
     public byte[] get(URI uri) {
         Objects.requireNonNull(uri);
         try {
-            HttpURLConnection conn = httpClient.createConnection(uri, GET);
+            HttpURLConnection conn = httpClient.createConnection(uri, RequestMethod.GET);
             try (InputStream is = conn.getInputStream()) {
                 return IOUtils.toByteArray(is);
             }

@@ -10,12 +10,12 @@ import java.util.Objects;
 @ApplicationScoped
 public class HttpClient {
 
-    public HttpURLConnection createConnection(URI uri, String requestMethod) throws IOException {
+    public HttpURLConnection createConnection(URI uri, RequestMethod requestMethod) throws IOException {
         Objects.requireNonNull(uri);
         Objects.requireNonNull(requestMethod);
         HttpURLConnection conn = (HttpURLConnection) uri.toURL().openConnection();
         conn.setUseCaches(false);
-        conn.setRequestMethod(requestMethod);
+        conn.setRequestMethod(requestMethod.name());
         conn.setRequestProperty("User-Agent", "speedtest-client");
         conn.setRequestProperty("Connection", "Keep-Alive");
         conn.setRequestProperty("Cache-Control", "no-cache");

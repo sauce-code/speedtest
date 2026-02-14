@@ -16,7 +16,6 @@ import java.util.Objects;
 public class HttpPostClient {
 
     public static final String CONTENT_LENGTH = "Content-Length";
-    private static final String POST = "POST";
 
     private final HttpClient httpClient;
     private final TimeService timeService;
@@ -32,7 +31,7 @@ public class HttpPostClient {
         final int maxBufferSize = Integer.parseInt(Objects.requireNonNull(Util.getConfigProperty("Upload.maxBufferSize")));
         int bytesSent = 0;
         try (InputStream is = new ByteArrayInputStream(dataString.getBytes())) {
-            HttpURLConnection conn = httpClient.createConnection(uri, POST);
+            HttpURLConnection conn = httpClient.createConnection(uri, RequestMethod.POST);
             conn.setChunkedStreamingMode(maxBufferSize);
             conn.setDoOutput(true);
             conn.setRequestProperty(CONTENT_LENGTH, Integer.toString(dataString.length()));
@@ -67,7 +66,7 @@ public class HttpPostClient {
         Objects.requireNonNull(uri);
         Objects.requireNonNull(encodedBody);
         try {
-            final HttpURLConnection conn = httpClient.createConnection(uri, POST);
+            final HttpURLConnection conn = httpClient.createConnection(uri, RequestMethod.POST);
             conn.setDoOutput(true);
             conn.setRequestProperty(CONTENT_LENGTH, Integer.toString(encodedBody.length()));
             conn.setRequestProperty("Referer", "http://c.speedtest.net/flash/speedtest.swf");
