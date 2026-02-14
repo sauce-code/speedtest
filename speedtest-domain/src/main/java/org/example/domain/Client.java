@@ -25,18 +25,14 @@ public record Client(
         Objects.requireNonNull(countryCode);
     }
 
-    public Map<Distance, Server> closestServers(List<Server> servers, int limit) {
+    public TreeMap<Distance, Server> closestServers(List<Server> servers) {
         Objects.requireNonNull(servers);
-        Objectz.require(limit > 0);
-        Map<Distance, Server> closestServers = servers.stream()
+        return servers.stream()
                 .collect(Collectors.toMap(
                         server -> location.distance(server.location()),
                         server -> server,
                         (server1, server2) -> server1,
                         TreeMap::new));
-        return closestServers.entrySet().stream()
-                .limit(limit)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

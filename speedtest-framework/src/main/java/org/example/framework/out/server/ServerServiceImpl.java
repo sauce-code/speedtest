@@ -3,10 +3,12 @@ package org.example.framework.out.server;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.xml.bind.JAXBException;
 import org.example.application.out.ServerService;
+import org.example.domain.Distance;
 import org.example.domain.Server;
 import org.example.framework.out.config.ParsingException;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
+import org.example.framework.out.server.model.Settings;
 import org.example.framework.out.xml.Context;
 import org.example.util.Objectz;
 
@@ -15,30 +17,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ServerServiceImpl implements ServerService {
 
+    private final Properties properties;
     private final HttpGetClient httpGetClient;
     private final Context context;
 
     public ServerServiceImpl(
+            Properties properties,
             HttpGetClient httpGetClient,
             Context context) {
+        this.properties = properties;
         this.httpGetClient = httpGetClient;
         this.context = context;
     }
 
-    private static final Set<URI> SERVER_URLS = Set.of(
-            URI.create("https://www.speedtest.net/speedtest-servers-static.php"),
-            URI.create("http://c.speedtest.net/speedtest-servers-static.php"),
-            URI.create("https://www.speedtest.net/speedtest-servers.php"),
-            URI.create("http://c.speedtest.net/speedtest-servers.php"));
-
     @Override
     public List<Server> servers(int threadsPerUrl) {
         Objectz.require(threadsPerUrl > 0);
-        return SERVER_URLS.stream()
+        return properties.baseUri().stream()
                 .map(base -> {
                     try {
                         String s = "%s?threads=%d".formatted(base, threadsPerUrl);
@@ -50,6 +50,7 @@ public class ServerServiceImpl implements ServerService {
                     }
                 })
                 .flatMap(Collection::stream)
+                .distinct()
                 .toList();
     }
 
@@ -58,13 +59,20 @@ public class ServerServiceImpl implements ServerService {
         try (InputStream is = new ByteArrayInputStream(bytes)) {
             Settings settings = context.unmarshal(is, Settings.class);
             return settings.servers.server.stream()
-                    .map(org.example.framework.out.server.Server::toDomain)
+                    .map(org.example.framework.out.server.model.Server::toDomain)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .toList();
         } catch (IOException | JAXBException e) {
             throw new ParsingException(e);
         }
+    }
+
+    @Override
+    public Map<Distance, Server> limit(TreeMap<Distance, Server> treeMap) {
+        return treeMap.entrySet().stream()
+                .limit(properties.limit())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

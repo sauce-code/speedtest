@@ -1,4 +1,4 @@
-package org.example.framework.out.config;
+package org.example.framework.out.config.model;
 
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -7,21 +7,21 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 public class Client {
 
     @XmlAttribute
-    String ip;
+    public String ip;
 
     @XmlAttribute
-    Double lat;
+    public Double lat;
 
     @XmlAttribute
-    Double lon;
+    public Double lon;
 
     @XmlAttribute
-    String isp;
+    public String isp;
 
     @XmlAttribute
-    Double isprating;
+    public Double isprating;
 
     @XmlAttribute
-    String country;
+    public String country;
 
 }

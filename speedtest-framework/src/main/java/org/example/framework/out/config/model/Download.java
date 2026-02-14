@@ -1,4 +1,4 @@
-package org.example.framework.out.config;
+package org.example.framework.out.config.model;
 
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -7,9 +7,9 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 public class Download {
 
     @XmlAttribute
-    Integer testlength;
+    public Integer testlength;
 
     @XmlAttribute
-    Integer threadsperurl;
+    public Integer threadsperurl;
 
 }

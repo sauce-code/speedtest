@@ -1,4 +1,4 @@
-package org.example.framework.out.server;
+package org.example.framework.out.server.model;
 
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -12,31 +12,31 @@ import java.util.Optional;
 public class Server {
 
     @XmlAttribute
-    String url;
+    public String url;
 
     @XmlAttribute
-    Double lat;
+    public Double lat;
 
     @XmlAttribute
-    Double lon;
+    public Double lon;
 
     @XmlAttribute
-    String name;
+    public String name;
 
     @XmlAttribute
-    String country;
+    public String country;
 
     @XmlAttribute
-    String cc;
+    public String cc;
 
     @XmlAttribute
-    String sponsor;
+    public String sponsor;
 
     @XmlAttribute
-    Integer id;
+    public Integer id;
 
     @XmlAttribute
-    String host;
+    public String host;
 
     public Optional<org.example.domain.Server> toDomain() {
         try {

@@ -22,14 +22,13 @@ public class ImageStoreImpl implements ImageStore {
     }
 
     @Override
-    public URI store(ShareURL shareURL) {
+    public File store(ShareURL shareURL) {
         try {
             URL url = shareURL.uri().toURL();
             InputStream is = url.openStream();
-            URI output = URI.create("target" + url.getFile());
-            File file = new File(output.getPath());
+            File file = new File("target" + url.getFile());
             if (file.getParentFile().mkdirs()) {
-                logger.infov("created dir {}}", file.getParentFile()); // TODO wirft fehler
+                logger.infov("created dir {0}", file.getParentFile());
             }
             FileOutputStream os = new FileOutputStream(file, false);
 
@@ -43,7 +42,7 @@ public class ImageStoreImpl implements ImageStore {
             is.close();
             os.close();
 
-            return output;
+            return file;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -4,33 +4,34 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.xml.bind.JAXBException;
 import org.example.application.out.ConfigService;
 import org.example.domain.config.Config;
+import org.example.framework.out.config.model.Settings;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.xml.Context;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.Objects;
 
 @ApplicationScoped
 public class ConfigServiceImpl implements ConfigService {
 
-    private static final URI CONFIG_URL = URI.create("https://www.speedtest.net/speedtest-config.php");
-
+    private final Properties properties;
     private final HttpGetClient httpGetClient;
     private final Context context;
 
     public ConfigServiceImpl(
+            Properties properties,
             HttpGetClient httpGetClient,
             Context context) {
+        this.properties = properties;
         this.httpGetClient = httpGetClient;
         this.context = context;
     }
 
     @Override
     public Config config() {
-        byte[] bytes = httpGetClient.get(CONFIG_URL);
+        byte[] bytes = httpGetClient.get(properties.url());
         Settings settingFromXml = getSettingFromXml(bytes);
         return settingFromXml.toDomain();
     }

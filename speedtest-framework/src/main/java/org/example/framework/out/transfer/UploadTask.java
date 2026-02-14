@@ -13,7 +13,11 @@ public class UploadTask implements Callable<TransferTestResult> {
     private final long timeoutTime;
     private final String dataString;
 
-    public UploadTask(HttpPostClient httpPostClient, URI uri, long timeoutTime, String dataString) {
+    public UploadTask(
+            HttpPostClient httpPostClient,
+            URI uri,
+            long timeoutTime,
+            String dataString) {
         this.httpPostClient = httpPostClient;
         this.uri = uri;
         this.timeoutTime = timeoutTime;

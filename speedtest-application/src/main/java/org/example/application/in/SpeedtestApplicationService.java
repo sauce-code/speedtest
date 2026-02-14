@@ -5,10 +5,11 @@ import org.example.application.out.*;
 import org.example.domain.*;
 import org.example.domain.config.Config;
 
-import java.net.URI;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 @ApplicationScoped
 public class SpeedtestApplicationService {
@@ -73,14 +74,14 @@ public class SpeedtestApplicationService {
             logger.infov("fetched {0} servers", servers.size());
 
             logger.info("calculating closest servers ...");
-            Map<Distance, Server> closestServers = config.client().closestServers(
-                    servers,
-                    10);
-            logger.infov("calculated {0} closest servers", closestServers.size());
+            TreeMap<Distance, Server> closestServers = config.client().closestServers(
+                    servers);
+            var closestServersLimited =  serverService.limit(closestServers);
+            logger.infov("calculated {0} closest servers", closestServersLimited.size());
 
             logger.info("requesting fastest server ...");
             FastestServerResult fastestServer = latencyService.getFastestServer(
-                    closestServers);
+                    closestServersLimited);
             logger.info(fastestServer.server());
             logger.info(fastestServer.latencyTestResult());
 
@@ -88,13 +89,13 @@ public class SpeedtestApplicationService {
             TransferTestResult downloadResult = downloadService.testDownload(
                     fastestServer.server(),
                     config.downloadSettings());
-            logger.info(downloadResult);
+            logger.infov("Download Rate: {0}", downloadResult.rateInMbps());
 
             logger.info("testing upload ...");
             TransferTestResult uploadResult = uploadService.testUpload(
                     fastestServer.server(),
                     config.uploadSettings());
-            logger.info(uploadResult);
+            logger.infov("Upload Rate: {0}", uploadResult.rateInMbps());
 
             logger.info("creating share url ...");
             ShareURL shareUrl = shareUrlService.createShareUrl(
@@ -117,8 +118,8 @@ public class SpeedtestApplicationService {
                     shareUrl);
 
             logger.info("saving share ...");
-            URI uri = imageStore.store(shareUrl);
-            logger.info(uri);
+            File file = imageStore.store(shareUrl);
+            logger.info(file);
 
             logger.info("saving csv ...");
             repository.create(speedtestResult);

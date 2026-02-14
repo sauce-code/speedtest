@@ -1,4 +1,4 @@
-package org.example.framework.out.config;
+package org.example.framework.out.config.model;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -12,13 +12,13 @@ import org.example.domain.config.UploadSettings;
 public class Settings {
 
     @XmlElement
-    Client client;
+    public Client client;
 
     @XmlElement
-    Download download;
+    public Download download;
 
     @XmlElement
-    Upload upload;
+    public Upload upload;
 
     public Config toDomain() {
         return new Config(

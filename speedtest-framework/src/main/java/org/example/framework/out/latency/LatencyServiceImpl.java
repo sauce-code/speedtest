@@ -7,7 +7,6 @@ import org.example.domain.Distance;
 import org.example.domain.FastestServerResult;
 import org.example.domain.LatencyTestResult;
 import org.example.domain.Server;
-import org.example.framework.out.Util;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
 import org.example.util.Objectz;
@@ -22,10 +21,15 @@ public class LatencyServiceImpl implements LatencyService {
     private static final String TEST_FILE = "/latency.txt?x=";
     private static final String EXPECTED_BODY = "test=test\n";
 
+    private final Properties properties;
     private final HttpGetClient httpGetClient;
     private final TimeService timeService;
 
-    public LatencyServiceImpl(HttpGetClient httpGetClient, TimeService timeService) {
+    public LatencyServiceImpl(
+            Properties properties,
+            HttpGetClient httpGetClient,
+            TimeService timeService) {
+        this.properties = properties;
         this.httpGetClient = httpGetClient;
         this.timeService = timeService;
     }
@@ -41,11 +45,10 @@ public class LatencyServiceImpl implements LatencyService {
 
     private Map<Server, LatencyTestResult> findServerLatencies(Map<Distance, Server> serverMap) {
         Objects.requireNonNull(serverMap);
-        int testsPerServer = Integer.parseInt(Objects.requireNonNull(Util.getConfigProperty("Latency.testsPerServer.maxNumber")));
         Map<Server, LatencyTestResult> results = new HashMap<>();
         for (Map.Entry<Distance, Server> entry : serverMap.entrySet()) {
             try {
-                List<Long> longs = testLatency(entry.getValue().uri(), testsPerServer);
+                List<Long> longs = testLatency(entry.getValue().uri(), properties.testsPerServer());
                 double average = calculateAverage(longs);
                 LatencyTestResult latencyTestResult = new LatencyTestResult(average, entry.getKey());
                 results.put(entry.getValue(), latencyTestResult);

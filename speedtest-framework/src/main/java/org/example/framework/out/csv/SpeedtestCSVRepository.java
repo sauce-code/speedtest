@@ -15,15 +15,19 @@ import java.util.stream.Stream;
 @ApplicationScoped
 public class SpeedtestCSVRepository implements Repository<SpeedtestResultID, SpeedtestResult> {
 
+    private final Properties properties;
     private final Logger logger;
 
-    public SpeedtestCSVRepository(Logger logger) {
+    public SpeedtestCSVRepository(
+            Properties properties,
+            Logger logger) {
+        this.properties = properties;
         this.logger = logger;
     }
 
     @Override
     public void create(SpeedtestResult entity) {
-        File csvOutputFile = new File("target/results.csv");
+        File csvOutputFile = properties.file();
         if (!csvOutputFile.exists()) {
             if (csvOutputFile.getParentFile().mkdirs()) {
                 logger.info("created csv file");

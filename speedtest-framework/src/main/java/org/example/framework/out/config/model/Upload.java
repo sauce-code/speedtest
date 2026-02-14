@@ -1,4 +1,4 @@
-package org.example.framework.out.config;
+package org.example.framework.out.config.model;
 
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
@@ -7,15 +7,15 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 public class Upload {
 
     @XmlAttribute
-    Integer ratio;
+    public Integer ratio;
 
     @XmlAttribute
-    Integer maxchunkcount;
+    public Integer maxchunkcount;
 
     @XmlAttribute
-    Integer threads;
+    public Integer threads;
 
     @XmlAttribute
-    Integer testlength;
+    public Integer testlength;
 
 }
