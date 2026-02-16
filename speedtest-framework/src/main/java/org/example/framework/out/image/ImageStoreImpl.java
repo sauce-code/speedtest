@@ -1,31 +1,41 @@
 package org.example.framework.out.image;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.example.application.out.ImageStore;
+import org.example.application.out.Logger;
 import org.example.domain.ShareURL;
 
-import java.io.*;
-import java.net.URI;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
+@ApplicationScoped
 public class ImageStoreImpl implements ImageStore {
 
-    private final Logger logger = LogManager.getLogger();
+    private final Logger logger;
+    private final Properties properties;
+
+    public ImageStoreImpl(
+            Logger logger,
+            Properties properties) {
+        this.logger = logger;
+        this.properties = properties;
+    }
 
     @Override
-    public URI store(ShareURL shareURL) {
+    public File store(ShareURL shareURL) {
         try {
             URL url = shareURL.uri().toURL();
             InputStream is = url.openStream();
-            URI output = URI.create("target" + url.getFile());
-            File file = new File(output.getPath());
+            File file = new File(properties.path() + url.getFile());
             if (file.getParentFile().mkdirs()) {
-                logger.info("created dir {}", file.getParentFile());
+                logger.infov("created dir {0}", file.getParentFile());
             }
             FileOutputStream os = new FileOutputStream(file, false);
 
-            byte[] b = new byte[2048];
+            byte[] b = new byte[properties.bufferSize()];
             int length;
 
             while ((length = is.read(b)) != -1) {
@@ -35,7 +45,7 @@ public class ImageStoreImpl implements ImageStore {
             is.close();
             os.close();
 
-            return output;
+            return file;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

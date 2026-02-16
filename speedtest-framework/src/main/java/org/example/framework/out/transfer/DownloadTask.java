@@ -12,7 +12,10 @@ public class DownloadTask implements Callable<TransferTestResult> {
     private final URI uri;
     private final long timeoutTime;
 
-    public DownloadTask(HttpGetClient httpGetClient, URI uri, long timeoutTime) {
+    public DownloadTask(
+            HttpGetClient httpGetClient,
+            URI uri,
+            long timeoutTime) {
         this.httpGetClient = httpGetClient;
         this.uri = uri;
         this.timeoutTime = timeoutTime;

@@ -1,9 +1,8 @@
 package org.example.framework.out.http;
 
-import org.apache.commons.io.IOUtils;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.example.application.out.TimeService;
 import org.example.domain.TransferTestResult;
-import org.example.framework.out.Util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,14 +10,18 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.util.Objects;
 
+@ApplicationScoped
 public class HttpGetClient {
 
-    private static final String GET = "GET";
-
+    private final Properties properties;
     private final HttpClient httpClient;
     private final TimeService timeService;
 
-    public HttpGetClient(HttpClient httpClient, TimeService timeService) {
+    public HttpGetClient(
+            Properties properties,
+            HttpClient httpClient,
+            TimeService timeService) {
+        this.properties = properties;
         this.httpClient = httpClient;
         this.timeService = timeService;
     }
@@ -27,11 +30,10 @@ public class HttpGetClient {
         Objects.requireNonNull(uri);
         int bytesReceived = 0;
         try {
-            HttpURLConnection conn = httpClient.createConnection(uri, GET);
+            HttpURLConnection conn = httpClient.createConnection(uri, RequestMethod.GET);
             long startTime = timeService.currentTimeMillis();
             try (InputStream is = conn.getInputStream()) {
-                byte[] buffer =
-                        new byte[Integer.parseInt(Objects.requireNonNull(Util.getConfigProperty("Download.maxBufferSize")))];
+                byte[] buffer = new byte[properties.download().maxBufferSize()];
                 int bytesRead = 1;
                 while (bytesRead > 0) {
                     if (timeoutTime > 0 && timeService.currentTimeMillis() > timeoutTime) {
@@ -42,7 +44,7 @@ public class HttpGetClient {
                         bytesReceived = bytesReceived + bytesRead;
                     }
                 }
-                return new TransferTestResult(0d, bytesReceived, timeService.currentTimeMillis() - startTime);
+                return new TransferTestResult(bytesReceived, timeService.currentTimeMillis() - startTime);
             }
         } catch (IOException e) {
             throw new ServerRequestException(e);
@@ -52,9 +54,9 @@ public class HttpGetClient {
     public byte[] get(URI uri) {
         Objects.requireNonNull(uri);
         try {
-            HttpURLConnection conn = httpClient.createConnection(uri, GET);
+            HttpURLConnection conn = httpClient.createConnection(uri, RequestMethod.GET);
             try (InputStream is = conn.getInputStream()) {
-                return IOUtils.toByteArray(is);
+                return is.readAllBytes();
             }
         } catch (IOException e) {
             throw new ServerRequestException(e);

@@ -1,46 +1,45 @@
 package org.example.framework.out.config;
 
-import jakarta.xml.bind.JAXBContext;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
 import org.example.application.out.ConfigService;
-import org.example.domain.Client;
-import org.example.domain.IsoAlpha2CountryCode;
-import org.example.domain.Location;
 import org.example.domain.config.Config;
-import org.example.domain.config.DownloadSettings;
-import org.example.domain.config.UploadSettings;
+import org.example.framework.out.config.model.Settings;
 import org.example.framework.out.http.HttpGetClient;
+import org.example.framework.out.xml.Context;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.Objects;
 
+@ApplicationScoped
 public class ConfigServiceImpl implements ConfigService {
 
-    private static final URI CONFIG_URL = URI.create("https://www.speedtest.net/speedtest-config.php");
-
+    private final Properties properties;
     private final HttpGetClient httpGetClient;
+    private final Context context;
 
-    public ConfigServiceImpl(HttpGetClient httpGetClient) {
+    public ConfigServiceImpl(
+            Properties properties,
+            HttpGetClient httpGetClient,
+            Context context) {
+        this.properties = properties;
         this.httpGetClient = httpGetClient;
+        this.context = context;
     }
 
     @Override
     public Config config() {
-        byte[] bytes = httpGetClient.get(CONFIG_URL);
-        ConfigSetting settingFromXml = getSettingFromXml(bytes);
+        byte[] bytes = httpGetClient.get(properties.url());
+        Settings settingFromXml = getSettingFromXml(bytes);
         return settingFromXml.toDomain();
     }
 
-    private ConfigSetting getSettingFromXml(byte[] xml) throws ParsingException {
+    private Settings getSettingFromXml(byte[] xml) throws ParsingException {
         Objects.requireNonNull(xml);
         try (InputStream is = new ByteArrayInputStream(xml)) {
-            JAXBContext jaxbContext = JAXBContext.newInstance(ConfigSetting.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            return (ConfigSetting) jaxbUnmarshaller.unmarshal(is);
+            return context.unmarshal(is, Settings.class);
         } catch (IOException | JAXBException e) {
             throw new ParsingException(e);
         }

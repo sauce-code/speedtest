@@ -1,7 +1,7 @@
 package org.example.framework.out.csv;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import jakarta.enterprise.context.ApplicationScoped;
+import org.example.application.out.Logger;
 import org.example.application.out.Repository;
 import org.example.domain.SpeedtestResult;
 import org.example.domain.SpeedtestResultID;
@@ -12,13 +12,22 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@ApplicationScoped
 public class SpeedtestCSVRepository implements Repository<SpeedtestResultID, SpeedtestResult> {
 
-    private final Logger logger = LogManager.getLogger();
+    private final Properties properties;
+    private final Logger logger;
+
+    public SpeedtestCSVRepository(
+            Properties properties,
+            Logger logger) {
+        this.properties = properties;
+        this.logger = logger;
+    }
 
     @Override
     public void create(SpeedtestResult entity) {
-        File csvOutputFile = new File("target/results.csv");
+        File csvOutputFile = properties.file();
         if (!csvOutputFile.exists()) {
             if (csvOutputFile.getParentFile().mkdirs()) {
                 logger.info("created csv file");
