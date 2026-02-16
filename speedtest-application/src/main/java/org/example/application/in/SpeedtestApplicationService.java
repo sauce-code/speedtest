@@ -8,7 +8,6 @@ import org.example.domain.config.Config;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
 @ApplicationScoped
@@ -89,13 +88,13 @@ public class SpeedtestApplicationService {
             TransferTestResult downloadResult = downloadService.testDownload(
                     fastestServer.server(),
                     config.downloadSettings());
-            logger.infov("Download Rate: {0}", downloadResult.rateInMbps());
+            logger.infov("Download Rate: {0}Mb/s", downloadResult.rateInMbps());
 
             logger.info("testing upload ...");
             TransferTestResult uploadResult = uploadService.testUpload(
                     fastestServer.server(),
                     config.uploadSettings());
-            logger.infov("Upload Rate: {0}", uploadResult.rateInMbps());
+            logger.infov("Upload Rate: {0}Mb/s", uploadResult.rateInMbps());
 
             logger.info("creating share url ...");
             ShareURL shareUrl = shareUrlService.createShareUrl(

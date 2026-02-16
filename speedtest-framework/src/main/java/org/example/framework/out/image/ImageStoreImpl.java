@@ -9,16 +9,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
 
 @ApplicationScoped
 public class ImageStoreImpl implements ImageStore {
 
     private final Logger logger;
+    private final Properties properties;
 
-    public ImageStoreImpl(Logger logger) {
+    public ImageStoreImpl(
+            Logger logger,
+            Properties properties) {
         this.logger = logger;
+        this.properties = properties;
     }
 
     @Override
@@ -26,13 +29,13 @@ public class ImageStoreImpl implements ImageStore {
         try {
             URL url = shareURL.uri().toURL();
             InputStream is = url.openStream();
-            File file = new File("target" + url.getFile());
+            File file = new File(properties.path() + url.getFile());
             if (file.getParentFile().mkdirs()) {
                 logger.infov("created dir {0}", file.getParentFile());
             }
             FileOutputStream os = new FileOutputStream(file, false);
 
-            byte[] b = new byte[2048];
+            byte[] b = new byte[properties.bufferSize()];
             int length;
 
             while ((length = is.read(b)) != -1) {
