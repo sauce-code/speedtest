@@ -29,9 +29,10 @@ public class ImageStoreImpl implements ImageStore {
         try {
             URL url = shareURL.uri().toURL();
             InputStream is = url.openStream();
-            File file = new File(properties.path() + url.getFile());
-            if (file.getParentFile().mkdirs()) {
-                logger.infov("created dir {0}", file.getParentFile());
+            File file = new File(properties.path() + url.getPath());
+            File parentFile = file.getParentFile();
+            if (parentFile.mkdirs()) {
+                logger.infov("Created Directory: {0}", parentFile);
             }
             FileOutputStream os = new FileOutputStream(file, false);
 
@@ -49,7 +50,6 @@ public class ImageStoreImpl implements ImageStore {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 
 }

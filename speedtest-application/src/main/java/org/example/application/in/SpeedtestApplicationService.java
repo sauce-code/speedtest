@@ -88,13 +88,13 @@ public class SpeedtestApplicationService {
             TransferTestResult downloadResult = downloadService.testDownload(
                     fastestServer.server(),
                     config.downloadSettings());
-            logger.infov("Download Rate: {0}Mb/s", downloadResult.rateInMbps());
+            logger.infov("Download Rate: {0} Mbit/s", downloadResult.rateInMbps());
 
             logger.info("testing upload ...");
             TransferTestResult uploadResult = uploadService.testUpload(
                     fastestServer.server(),
                     config.uploadSettings());
-            logger.infov("Upload Rate: {0}Mb/s", uploadResult.rateInMbps());
+            logger.infov("Upload Rate: {0} Mbit/s", uploadResult.rateInMbps());
 
             logger.info("creating share url ...");
             ShareURL shareUrl = shareUrlService.createShareUrl(

@@ -29,24 +29,51 @@ public class SpeedtestCSVRepository implements Repository<SpeedtestResultID, Spe
     public void create(SpeedtestResult entity) {
         File csvOutputFile = properties.file();
         if (!csvOutputFile.exists()) {
-            if (csvOutputFile.getParentFile().mkdirs()) {
-                logger.info("created csv file");
+            File parentFile = csvOutputFile.getParentFile();
+            if (parentFile.mkdirs()) {
+                logger.infov("Created Directory: {0}", parentFile);
             }
-            try (FileWriter pw = new FileWriter(csvOutputFile)) {
-                pw.append("id,downloadrate,uploadrate\n");
+            try (FileWriter pw = new FileWriter(csvOutputFile, properties.charset(), true)) {
+                String s = Stream.of(
+                                "ID",
+                                "Start Time",
+                                "End Time",
+                                "Client IP-Address",
+                                "ISP",
+                                "Server Host",
+                                "Server City",
+                                "Server Country",
+                                "Distance [km]",
+                                "Latency [ms]",
+                                "Download Rate [Mbit/s]",
+                                "Upload Rate [Mbit/s]",
+                                "Share URL")
+                        .collect(Collectors.joining(properties.delimiter()));
+                pw.append(s);
+                pw.append(properties.rowSeparator());
             } catch (IOException e) {
                 logger.error(e);
             }
         }
         String s = Stream.of(
                         entity.id().uuid(),
+                        entity.startTime(),
+                        entity.endTime(),
+                        entity.client().ipAddress(),
+                        entity.client().isp(),
+                        entity.server().host(),
+                        entity.server().city(),
+                        entity.server().country(),
+                        entity.latency().distance().kilometers(),
+                        entity.latency().latency(),
                         entity.download().rateInMbps(),
-                        entity.upload().rateInMbps())
+                        entity.upload().rateInMbps(),
+                        entity.shareUrl().uri())
                 .map(String::valueOf)
-                .collect(Collectors.joining(","));
-        try (FileWriter pw = new FileWriter(csvOutputFile, true)) {
+                .collect(Collectors.joining(properties.delimiter()));
+        try (FileWriter pw = new FileWriter(csvOutputFile, properties.charset(), true)) {
             pw.append(s);
-            pw.append("\n");
+            pw.append(properties.rowSeparator());
         } catch (IOException e) {
             logger.error(e);
         }

@@ -48,7 +48,7 @@ public class LatencyServiceImpl implements LatencyService {
         Map<Server, LatencyTestResult> results = new HashMap<>();
         for (Map.Entry<Distance, Server> entry : serverMap.entrySet()) {
             try {
-                List<Long> longs = testLatency(entry.getValue().uri(), properties.testsPerServer());
+                List<Long> longs = testLatency(entry.getValue().uri());
                 double average = calculateAverage(longs);
                 LatencyTestResult latencyTestResult = new LatencyTestResult(average, entry.getKey());
                 results.put(entry.getValue(), latencyTestResult);
@@ -68,12 +68,11 @@ public class LatencyServiceImpl implements LatencyService {
                 .orElseThrow();
     }
 
-    private List<Long> testLatency(URI serverUrl, int limit) {
+    private List<Long> testLatency(URI serverUrl) {
         Objects.requireNonNull(serverUrl);
-        Objectz.require(limit > 0);
         List<Long> latencies = new ArrayList<>();
-        for (int i = 0; i < limit; i++) {
-            String testUrlString = serverUrl + TEST_FILE + timeService.currentTimeMillis();
+        for (int i = 0; i < properties.testsPerServer(); i++) {
+            String testUrlString = serverUrl + TEST_FILE + timeService.currentTimeMillis(); // TODO use nanos
             URI uri = URI.create(testUrlString);
             long startTimestamp = timeService.currentTimeMillis();
             byte[] bytes = httpGetClient.get(uri);
