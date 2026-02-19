@@ -9,7 +9,6 @@ import org.example.domain.FastestServerResult;
 import org.example.domain.LatencyTestResult;
 import org.example.domain.Server;
 import org.example.framework.out.http.HttpGetClient;
-import org.example.framework.out.http.ServerRequestException;
 import org.example.util.Objectz;
 
 import java.net.URI;

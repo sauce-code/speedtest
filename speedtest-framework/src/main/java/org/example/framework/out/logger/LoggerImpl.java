@@ -11,6 +11,11 @@ public class LoggerImpl implements Logger {
     }
 
     @Override
+    public void debug(Object message) {
+        logger.debug(message);
+    }
+
+    @Override
     public void info(Object message) {
         logger.info(message);
     }

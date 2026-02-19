@@ -9,17 +9,24 @@ import org.example.application.out.Logger;
 public class ScheduleAdapter {
 
     private final Logger logger;
+    private final Properties properties;
     private final SpeedtestApplicationService speedtestApplicationService;
 
     public ScheduleAdapter(
             Logger logger,
+            Properties properties,
             SpeedtestApplicationService speedtestApplicationService) {
         this.logger = logger;
+        this.properties = properties;
         this.speedtestApplicationService = speedtestApplicationService;
     }
 
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "{speedtest.schedule.cron}")
     public void run() {
+        if (!properties.enabled()) {
+            logger.debug("Skipped scheduled run.");
+            return;
+        }
         logger.info("Starting scheduled run.");
         speedtestApplicationService.run();
         logger.info("Finished scheduled run.");
