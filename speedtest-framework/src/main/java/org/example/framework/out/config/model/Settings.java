@@ -2,11 +2,14 @@ package org.example.framework.out.config.model;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import org.example.domain.ISPRating;
 import org.example.domain.IsoAlpha2CountryCode;
 import org.example.domain.Location;
 import org.example.domain.config.Config;
 import org.example.domain.config.DownloadSettings;
 import org.example.domain.config.UploadSettings;
+
+import java.math.BigDecimal;
 
 @XmlRootElement
 public class Settings {
@@ -28,7 +31,7 @@ public class Settings {
                                 client.lat,
                                 client.lon),
                         client.isp,
-                        client.isprating,
+                        new ISPRating(new BigDecimal(client.isprating)),
                         new IsoAlpha2CountryCode(
                                 client.country)),
                 new DownloadSettings(

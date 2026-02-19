@@ -11,7 +11,7 @@ public record Client(
         String ipAddress,
         Location location,
         String isp,
-        double ispRating,
+        ISPRating ispRating,
         IsoAlpha2CountryCode countryCode
 ) {
 
@@ -19,8 +19,7 @@ public record Client(
         Objects.requireNonNull(ipAddress);
         Objects.requireNonNull(location);
         Objects.requireNonNull(isp);
-        Objectz.require(Double.isFinite(ispRating));
-        Objectz.require(ispRating >= 0d);
+        Objects.requireNonNull(ispRating);
         Objects.requireNonNull(countryCode);
     }
 

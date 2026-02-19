@@ -19,7 +19,7 @@ public class Client {
     public String isp;
 
     @XmlAttribute
-    public Double isprating;
+    public String isprating;
 
     @XmlAttribute
     public String country;
