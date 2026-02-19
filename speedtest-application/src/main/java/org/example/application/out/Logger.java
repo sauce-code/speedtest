@@ -2,6 +2,8 @@ package org.example.application.out;
 
 public interface Logger {
 
+    void debug(Object message);
+
     void info(Object message);
 
     void info(Object message, Throwable t);
