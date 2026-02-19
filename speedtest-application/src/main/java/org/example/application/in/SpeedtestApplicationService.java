@@ -56,8 +56,9 @@ public class SpeedtestApplicationService {
     public SpeedtestResult run() {
         logger.info("setting lock ...");
         if (!lockService.setBusy()) {
-            logger.error("application is already busy");
-            throw new RuntimeException("application is already Busy");
+            var message = "Application is already busy.";
+            logger.error(message);
+            throw new ApplicationLockException(message);
         }
         try {
             SpeedtestResultID id = idService.create();
@@ -126,7 +127,8 @@ public class SpeedtestApplicationService {
             return speedtestResult;
         } catch (Exception e) {
             logger.error(e);
-            throw new RuntimeException(e);
+            logger.error(e.getMessage());
+            throw new ApplicationRunException(e);
         } finally {
             logger.info("resetting lock ...");
             lockService.reset();

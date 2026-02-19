@@ -1,11 +1,9 @@
 package org.example.framework.out.server;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.xml.bind.JAXBException;
 import org.example.application.out.ServerService;
 import org.example.domain.Distance;
 import org.example.domain.Server;
-import org.example.framework.out.config.ParsingException;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
 import org.example.framework.out.server.model.Settings;
@@ -13,7 +11,6 @@ import org.example.framework.out.xml.Context;
 import org.example.util.Objectz;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.*;
@@ -46,7 +43,7 @@ public class ServerServiceImpl implements ServerService {
                         byte[] bytes = httpGetClient.get(uri);
                         return getServersFromXml(bytes);
                     } catch (ParsingException | ServerRequestException e) {
-                        return Collections.<Server>emptyList();
+                        throw new ServerServiceException(e);
                     }
                 })
                 .flatMap(Collection::stream)
@@ -54,22 +51,21 @@ public class ServerServiceImpl implements ServerService {
                 .toList();
     }
 
-    private List<Server> getServersFromXml(byte[] bytes) {
+    private List<Server> getServersFromXml(byte[] bytes) throws ParsingException {
         Objects.requireNonNull(bytes);
         try (InputStream is = new ByteArrayInputStream(bytes)) {
             Settings settings = context.unmarshal(is, Settings.class);
             return settings.servers.server.stream()
                     .map(org.example.framework.out.server.model.Server::toDomain)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
                     .toList();
-        } catch (IOException | JAXBException e) {
+        } catch (Exception e) {
             throw new ParsingException(e);
         }
     }
 
     @Override
     public Map<Distance, Server> limit(TreeMap<Distance, Server> treeMap) {
+        Objects.requireNonNull(treeMap);
         return treeMap.entrySet().stream()
                 .limit(properties.limit())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));

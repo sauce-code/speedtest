@@ -36,6 +36,11 @@ public class LoggerImpl implements Logger {
     }
 
     @Override
+    public void warnv(String format, Object... params) {
+        logger.warnv(format, params);
+    }
+
+    @Override
     public void error(Object message) {
         logger.error(message);
     }

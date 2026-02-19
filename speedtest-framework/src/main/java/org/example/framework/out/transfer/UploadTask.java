@@ -2,6 +2,7 @@ package org.example.framework.out.transfer;
 
 import org.example.domain.TransferTestResult;
 import org.example.framework.out.http.HttpPostClient;
+import org.example.framework.out.http.ServerRequestException;
 
 import java.net.URI;
 import java.util.concurrent.Callable;
@@ -25,7 +26,7 @@ public class UploadTask implements Callable<TransferTestResult> {
     }
 
     @Override
-    public TransferTestResult call() {
+    public TransferTestResult call() throws ServerRequestException {
         return httpPostClient.partialPostUploadData(uri, timeoutTime, dataString);
     }
 

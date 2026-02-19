@@ -26,7 +26,7 @@ public class HttpPostClient {
         this.timeService = timeService;
     }
 
-    public TransferTestResult partialPostUploadData(URI uri, long timeoutTime, String dataString) {
+    public TransferTestResult partialPostUploadData(URI uri, long timeoutTime, String dataString) throws ServerRequestException {
         Objects.requireNonNull(uri);
         Objects.requireNonNull(dataString);
         int maxBufferSize = properties.upload().maxBufferSize();
@@ -38,7 +38,6 @@ public class HttpPostClient {
             conn.setRequestProperty(RequestProperty.CONTENT_LENGTH.value(), Integer.toString(dataString.length()));
             long startTime = timeService.currentTimeMillis();
             DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-
             int bytesAvailable = is.available();
             int bufferSize = Math.min(bytesAvailable, maxBufferSize);
             byte[] buffer = new byte[bufferSize];
@@ -64,7 +63,7 @@ public class HttpPostClient {
         }
     }
 
-    public String postBodyWithSharedData(URI uri, String encodedBody) {
+    public String postBodyWithSharedData(URI uri, String encodedBody) throws ServerRequestException {
         Objects.requireNonNull(uri);
         Objects.requireNonNull(encodedBody);
         try {

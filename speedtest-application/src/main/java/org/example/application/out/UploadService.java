@@ -6,6 +6,6 @@ import org.example.domain.config.UploadSettings;
 
 public interface UploadService {
 
-    TransferTestResult testUpload(Server server, UploadSettings settings) throws InterruptedException;
+    TransferTestResult testUpload(Server server, UploadSettings settings);
 
 }

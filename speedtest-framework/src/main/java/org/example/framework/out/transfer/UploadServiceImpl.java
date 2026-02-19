@@ -36,7 +36,7 @@ public class UploadServiceImpl implements UploadService {
     }
 
     @Override
-    public TransferTestResult testUpload(Server server, UploadSettings settings) throws InterruptedException {
+    public TransferTestResult testUpload(Server server, UploadSettings settings) {
         Objects.requireNonNull(server);
         Objects.requireNonNull(settings);
         int length = properties.upload().sizes().size();

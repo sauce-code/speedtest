@@ -34,7 +34,7 @@ public class DownloadServiceImpl implements DownloadService {
     }
 
     @Override
-    public TransferTestResult testDownload(Server server, DownloadSettings settings) throws InterruptedException {
+    public TransferTestResult testDownload(Server server, DownloadSettings settings) {
         Objects.requireNonNull(server);
         Objects.requireNonNull(settings);
         List<URI> uris = generateUrls(server.uri(), settings.threadsPerUrl());

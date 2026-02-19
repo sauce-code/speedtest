@@ -6,6 +6,6 @@ import org.example.domain.config.DownloadSettings;
 
 public interface DownloadService {
 
-    TransferTestResult testDownload(Server server, DownloadSettings settings) throws InterruptedException;
+    TransferTestResult testDownload(Server server, DownloadSettings settings);
 
 }

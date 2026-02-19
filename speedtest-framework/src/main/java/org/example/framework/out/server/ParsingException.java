@@ -1,4 +1,4 @@
-package org.example.framework.out.config;
+package org.example.framework.out.server;
 
 public class ParsingException extends Exception {
 

@@ -26,7 +26,7 @@ public class HttpGetClient {
         this.timeService = timeService;
     }
 
-    public TransferTestResult partialGetDownloadData(URI uri, long timeoutTime) {
+    public TransferTestResult partialGetDownloadData(URI uri, long timeoutTime) throws ServerRequestException {
         Objects.requireNonNull(uri);
         int bytesReceived = 0;
         try {
@@ -51,7 +51,7 @@ public class HttpGetClient {
         }
     }
 
-    public byte[] get(URI uri) {
+    public byte[] get(URI uri) throws ServerRequestException {
         Objects.requireNonNull(uri);
         try {
             HttpURLConnection conn = httpClient.createConnection(uri, RequestMethod.GET);
