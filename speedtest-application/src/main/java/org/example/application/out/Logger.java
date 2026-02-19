@@ -12,6 +12,8 @@ public interface Logger {
 
     void warn(Object message, Throwable t);
 
+    void warnv(String format, Object... params);
+
     void error(Object message);
 
     void error(Object message, Throwable t);

@@ -36,19 +36,23 @@ public class ShareUrlServiceImpl implements ShareUrlService {
         Objectz.require(serverId > 0);
         Objectz.require(uploadMbps > 0);
         Objectz.require(downloadMbps > 0);
-        int ping = (int) Math.round(latency);
-        int uploadKbps = (int) Math.round(uploadMbps * 1000.0);
-        int downloadKbps = (int) Math.round(downloadMbps * 1000.0);
-        String md5Hash = generateMd5Hash(String.format("%s-%s-%s-%s", ping, uploadKbps, downloadKbps, "297aae72"));
-        String encodedBody = String.format("serverid=%s&hash=%s&ping=%s&download=%s&upload=%s&accuracy=1",
-                serverId, md5Hash, ping, downloadKbps, uploadKbps);
-        String result = httpPostClient.postBodyWithSharedData(properties.url(), encodedBody);
-        Map<String, String> queryParams = getQueryParams(result);
-        if (queryParams.containsKey(RESULT_ID) && queryParams.get(RESULT_ID) != null) {
-            var s = String.format("https://www.speedtest.net/result/%s.png", queryParams.get(RESULT_ID));
-            return new ShareURL(URI.create(s));
-        } else {
-            throw new MissingResultException("Missing result for shareUrl request");
+        try {
+            int ping = (int) Math.round(latency);
+            int uploadKbps = (int) Math.round(uploadMbps * 1000.0);
+            int downloadKbps = (int) Math.round(downloadMbps * 1000.0);
+            String md5Hash = generateMd5Hash(String.format("%s-%s-%s-%s", ping, uploadKbps, downloadKbps, "297aae72"));
+            String encodedBody = String.format("serverid=%s&hash=%s&ping=%s&download=%s&upload=%s&accuracy=1",
+                    serverId, md5Hash, ping, downloadKbps, uploadKbps);
+            String result = httpPostClient.postBodyWithSharedData(properties.url(), encodedBody);
+            Map<String, String> queryParams = getQueryParams(result);
+            if (queryParams.containsKey(RESULT_ID) && queryParams.get(RESULT_ID) != null) {
+                var s = String.format("https://www.speedtest.net/result/%s.png", queryParams.get(RESULT_ID));
+                return new ShareURL(URI.create(s));
+            } else {
+                throw new MissingResultException("Missing result for shareUrl request");
+            }
+        } catch (Exception e) {
+            throw new ShareUrlException(e);
         }
     }
 

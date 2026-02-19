@@ -6,6 +6,7 @@ import org.example.application.out.ConfigService;
 import org.example.domain.config.Config;
 import org.example.framework.out.config.model.Settings;
 import org.example.framework.out.http.HttpGetClient;
+import org.example.framework.out.http.ServerRequestException;
 import org.example.framework.out.xml.Context;
 
 import java.io.ByteArrayInputStream;
@@ -31,9 +32,13 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public Config config() {
-        byte[] bytes = httpGetClient.get(properties.url());
-        Settings settingFromXml = getSettingFromXml(bytes);
-        return settingFromXml.toDomain();
+        try {
+            byte[] bytes = httpGetClient.get(properties.url());
+            Settings settingFromXml = getSettingFromXml(bytes);
+            return settingFromXml.toDomain();
+        } catch (ServerRequestException | ParsingException e) {
+            throw new ConfigServiceException(e);
+        }
     }
 
     private Settings getSettingFromXml(byte[] xml) throws ParsingException {

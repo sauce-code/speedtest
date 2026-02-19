@@ -9,6 +9,7 @@ import org.example.domain.SpeedtestResultID;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -27,6 +28,7 @@ public class SpeedtestCSVRepository implements Repository<SpeedtestResultID, Spe
 
     @Override
     public void create(SpeedtestResult entity) {
+        Objects.requireNonNull(entity);
         File csvOutputFile = properties.file();
         if (!csvOutputFile.exists()) {
             File parentFile = csvOutputFile.getParentFile();

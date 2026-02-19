@@ -48,7 +48,7 @@ public class ImageStoreImpl implements ImageStore {
 
             return file;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ImageStoreException(e);
         }
     }
 

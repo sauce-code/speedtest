@@ -1,11 +1,9 @@
 package org.example.framework.out.http;
 
-public final class ServerRequestException extends RuntimeException {
-    public ServerRequestException(final String message) {
-        super(message);
-    }
+public class ServerRequestException extends Exception {
 
-    public ServerRequestException(final Exception exception) {
+    public ServerRequestException(Exception exception) {
         super(exception);
     }
+
 }
