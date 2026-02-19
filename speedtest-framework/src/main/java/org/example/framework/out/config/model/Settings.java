@@ -2,9 +2,7 @@ package org.example.framework.out.config.model;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import org.example.domain.ISPRating;
-import org.example.domain.IsoAlpha2CountryCode;
-import org.example.domain.Location;
+import org.example.domain.*;
 import org.example.domain.config.Config;
 import org.example.domain.config.DownloadSettings;
 import org.example.domain.config.UploadSettings;
@@ -28,8 +26,8 @@ public class Settings {
                 new org.example.domain.Client(
                         client.ip,
                         new Location(
-                                client.lat,
-                                client.lon),
+                                Latitude.valueOf(client.lat),
+                                Longitude.valueOf(client.lon)),
                         client.isp,
                         new ISPRating(new BigDecimal(client.isprating)),
                         new IsoAlpha2CountryCode(
