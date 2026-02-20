@@ -10,7 +10,6 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 @ApplicationScoped
 public class SpeedtestApplicationService {

@@ -1,18 +1,11 @@
 package org.example.domain;
 
 import org.example.domain.location.Distance;
-import org.example.domain.location.Latitude;
-import org.example.domain.location.Location;
-import org.example.domain.location.Longitude;
 import org.junit.jupiter.api.Test;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ClientTest {
 
