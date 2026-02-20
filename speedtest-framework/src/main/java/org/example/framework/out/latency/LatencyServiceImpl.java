@@ -4,11 +4,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.example.application.out.LatencyService;
 import org.example.application.out.Logger;
 import org.example.application.out.TimeService;
-import org.example.domain.FastestServerResult;
 import org.example.domain.Latency;
 import org.example.domain.LatencyTestResult;
-import org.example.domain.Server;
-import org.example.domain.location.Distance;
+import org.example.domain.ServerDistanceResult;
+import org.example.domain.ServerLatencyResult;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.util.Objectz;
 
@@ -39,35 +38,40 @@ public class LatencyServiceImpl implements LatencyService {
     }
 
     @Override
-    public FastestServerResult getFastestServer(Map<Distance, Server> serverMap) {
-        Objects.requireNonNull(serverMap);
-        Objectz.require(!serverMap.isEmpty());
-        return findServerLatencies(serverMap).entrySet().stream()
-                .min(Comparator.comparing(entry -> entry.getValue().latency()))
-                .map(entry -> new FastestServerResult(entry.getKey(), entry.getValue()))
-                .orElseThrow();
+    public ServerLatencyResult getFastestServer(List<ServerDistanceResult> serverDistanceResults) {
+        Objects.requireNonNull(serverDistanceResults);
+        Objectz.require(!serverDistanceResults.isEmpty());
+        return serverDistanceResults.stream()
+                .sorted(Comparator.comparing(ServerDistanceResult::distance))
+                .limit(properties.limit())
+                .map(this::latencyTestResult)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .min(Comparator.comparing(e -> e.latencyTestResult().latency()))
+                .orElseThrow(() -> new LatencyServiceException("Could not receive any latency."));
     }
 
-    private Map<Server, LatencyTestResult> findServerLatencies(Map<Distance, Server> serverMap) {
-        Objects.requireNonNull(serverMap);
-        Objectz.require(!serverMap.isEmpty());
-        Map<Server, LatencyTestResult> results = new HashMap<>();
-        for (Map.Entry<Distance, Server> entry : serverMap.entrySet()) {
-            List<Long> longs = testLatency(entry.getValue().uri());
-            double average = calculateAverage(longs);
-            LatencyTestResult latencyTestResult = new LatencyTestResult(Latency.valueOf(average), entry.getKey());
-            results.put(entry.getValue(), latencyTestResult);
+    private Optional<ServerLatencyResult> latencyTestResult(ServerDistanceResult serverDistanceResult) {
+        Objects.requireNonNull(serverDistanceResult);
+        var server = serverDistanceResult.server();
+        var latencies = testLatency(server.uri());
+        var average = average(latencies);
+        if (average.isEmpty()) {
+            logger.warnv("Could not get any latency for host: {0}", serverDistanceResult.server().host());
+            return Optional.empty();
         }
-        return results;
+        var latency = Latency.valueOf(average.getAsDouble());
+        var distance = serverDistanceResult.distance();
+        var latencyTestResult = new LatencyTestResult(latency, distance);
+        var fastestServerResult = new ServerLatencyResult(server, latencyTestResult);
+        return Optional.of(fastestServerResult);
     }
 
-    private double calculateAverage(List<Long> list) {
-        Objects.requireNonNull(list);
-        Objectz.require(!list.isEmpty());
-        return list.stream()
+    private OptionalDouble average(List<Long> latencies) {
+        Objects.requireNonNull(latencies);
+        return latencies.stream()
                 .mapToLong(Long::longValue)
-                .average()
-                .orElseThrow();
+                .average();
     }
 
     private List<Long> testLatency(URI serverUrl) {

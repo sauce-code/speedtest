@@ -3,7 +3,6 @@ package org.example.framework.out.server;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.example.application.out.ServerService;
 import org.example.domain.Server;
-import org.example.domain.location.Distance;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;
 import org.example.framework.out.server.model.Settings;
@@ -13,8 +12,9 @@ import org.example.util.Objectz;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @ApplicationScoped
 public class ServerServiceImpl implements ServerService {
@@ -61,14 +61,6 @@ public class ServerServiceImpl implements ServerService {
         } catch (Exception e) {
             throw new ParsingException(e);
         }
-    }
-
-    @Override
-    public Map<Distance, Server> limit(SortedMap<Distance, Server> treeMap) {
-        Objects.requireNonNull(treeMap);
-        return treeMap.entrySet().stream()
-                .limit(properties.limit())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
 }

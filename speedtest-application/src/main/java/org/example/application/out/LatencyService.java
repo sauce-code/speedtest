@@ -1,13 +1,12 @@
 package org.example.application.out;
 
-import org.example.domain.FastestServerResult;
-import org.example.domain.Server;
-import org.example.domain.location.Distance;
+import org.example.domain.ServerDistanceResult;
+import org.example.domain.ServerLatencyResult;
 
-import java.util.Map;
+import java.util.List;
 
 public interface LatencyService {
 
-    FastestServerResult getFastestServer(Map<Distance, Server> serverMap);
+    ServerLatencyResult getFastestServer(List<ServerDistanceResult> serverDistanceResults);
 
 }

@@ -1,13 +1,9 @@
 package org.example.domain;
 
-import org.example.domain.location.Distance;
 import org.example.domain.location.Location;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 public record Client(
         String ipAddress,
@@ -25,14 +21,11 @@ public record Client(
         Objects.requireNonNull(countryCode);
     }
 
-    public SortedMap<Distance, Server> closestServers(List<Server> servers) {
+    public List<ServerDistanceResult> closestServers(List<Server> servers) {
         Objects.requireNonNull(servers);
         return servers.stream()
-                .collect(Collectors.toMap(
-                        server -> location.distance(server.location()),
-                        server -> server,
-                        (server1, server2) -> server1,
-                        TreeMap::new));
+                .map(server -> new ServerDistanceResult(server, location.distance(server.location())))
+                .toList();
     }
 
 }
