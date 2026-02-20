@@ -44,6 +44,7 @@ public class ServerServiceImpl implements ServerService {
                         return getServersFromXml(bytes);
                     } catch (ParsingException | ServerRequestException e) {
                         throw new ServerServiceException(e);
+                        // TODO instead warn and return empty list
                     }
                 })
                 .flatMap(Collection::stream)

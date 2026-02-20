@@ -3,7 +3,6 @@ package org.example.framework.out.latency;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.example.application.out.LatencyService;
 import org.example.application.out.Logger;
-import org.example.application.out.TimeService;
 import org.example.domain.Latency;
 import org.example.domain.LatencyTestResult;
 import org.example.domain.ServerDistanceResult;
@@ -13,6 +12,7 @@ import org.example.util.Objectz;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.time.Clock;
 import java.util.*;
 
 @ApplicationScoped
@@ -24,17 +24,17 @@ public class LatencyServiceImpl implements LatencyService {
     private final Logger logger;
     private final Properties properties;
     private final HttpGetClient httpGetClient;
-    private final TimeService timeService;
+    private final Clock clock;
 
     public LatencyServiceImpl(
             Logger logger,
             Properties properties,
             HttpGetClient httpGetClient,
-            TimeService timeService) {
+            Clock clock) {
         this.logger = logger;
         this.properties = properties;
         this.httpGetClient = httpGetClient;
-        this.timeService = timeService;
+        this.clock = clock;
     }
 
     @Override
@@ -79,11 +79,11 @@ public class LatencyServiceImpl implements LatencyService {
         List<Long> latencies = new ArrayList<>();
         for (int i = 0; i < properties.testsPerServer(); i++) {
             try {
-                String testUrlString = serverUrl + TEST_FILE + timeService.currentTimeMillis(); // TODO use nanos
+                String testUrlString = serverUrl + TEST_FILE + clock.millis();
                 URI uri = URI.create(testUrlString);
-                long startTimestamp = timeService.currentTimeMillis();
+                long startTimestamp = clock.millis();
                 byte[] bytes = httpGetClient.get(uri);
-                long totalTime = timeService.currentTimeMillis() - startTimestamp;
+                long totalTime = clock.millis() - startTimestamp;
                 if (new String(bytes, StandardCharsets.UTF_8).equals(EXPECTED_BODY)) {
                     latencies.add(totalTime / 2);
                 } else {

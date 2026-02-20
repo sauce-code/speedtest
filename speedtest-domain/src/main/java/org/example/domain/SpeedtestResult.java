@@ -2,15 +2,24 @@ package org.example.domain;
 
 import org.example.structure.Entity;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Objects;
 
 public class SpeedtestResult extends Entity<SpeedtestResultID> {
 
+    private final Instant startTime;
+    private final Instant endTime;
+    private final Client client;
+    private final Server server;
+    private final LatencyTestResult latency;
+    private final TransferTestResult download;
+    private final TransferTestResult upload;
+    private final ShareURL shareUrl;
+
     public SpeedtestResult(
             SpeedtestResultID id,
-            LocalDateTime startTime,
-            LocalDateTime endTime,
+            Instant startTime,
+            Instant endTime,
             Client client,
             Server server,
             LatencyTestResult latency,
@@ -28,20 +37,11 @@ public class SpeedtestResult extends Entity<SpeedtestResultID> {
         this.shareUrl = Objects.requireNonNull(shareUrl);
     }
 
-    private final LocalDateTime startTime;
-    private final LocalDateTime endTime;
-    private final Client client;
-    private final Server server;
-    private final LatencyTestResult latency;
-    private final TransferTestResult download;
-    private final TransferTestResult upload;
-    private final ShareURL shareUrl;
-
-    public LocalDateTime startTime() {
+    public Instant startTime() {
         return startTime;
     }
 
-    public LocalDateTime endTime() {
+    public Instant endTime() {
         return endTime;
     }
 
