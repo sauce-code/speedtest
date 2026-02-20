@@ -1,7 +1,6 @@
-package org.example.domain;
+package org.example.domain.location;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Objects;
 
 public record Location(

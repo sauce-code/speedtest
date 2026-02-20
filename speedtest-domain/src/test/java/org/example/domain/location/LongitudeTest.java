@@ -1,4 +1,4 @@
-package org.example.domain;
+package org.example.domain.location;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

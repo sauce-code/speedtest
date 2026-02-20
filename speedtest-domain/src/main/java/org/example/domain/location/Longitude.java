@@ -1,4 +1,4 @@
-package org.example.domain;
+package org.example.domain.location;
 
 import org.example.util.Objectz;
 

@@ -4,7 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.example.application.out.LatencyService;
 import org.example.application.out.Logger;
 import org.example.application.out.TimeService;
-import org.example.domain.Distance;
+import org.example.domain.location.Distance;
 import org.example.domain.FastestServerResult;
 import org.example.domain.LatencyTestResult;
 import org.example.domain.Server;

@@ -1,5 +1,8 @@
 package org.example.domain;
 
+import org.example.domain.location.Distance;
+import org.example.domain.location.Location;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.TreeMap;

@@ -3,9 +3,9 @@ package org.example.framework.out.server.model;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import org.example.domain.IsoAlpha2CountryCode;
-import org.example.domain.Latitude;
-import org.example.domain.Location;
-import org.example.domain.Longitude;
+import org.example.domain.location.Latitude;
+import org.example.domain.location.Location;
+import org.example.domain.location.Longitude;
 
 import java.math.BigDecimal;
 import java.net.URI;

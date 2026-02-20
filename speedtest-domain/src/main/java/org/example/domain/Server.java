@@ -1,5 +1,7 @@
 package org.example.domain;
 
+import org.example.domain.location.Location;
+
 import java.net.URI;
 import java.util.Objects;
 

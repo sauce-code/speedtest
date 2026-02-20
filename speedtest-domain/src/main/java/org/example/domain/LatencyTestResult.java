@@ -1,5 +1,6 @@
 package org.example.domain;
 
+import org.example.domain.location.Distance;
 import org.example.util.Objectz;
 
 import java.util.Objects;

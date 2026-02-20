@@ -2,7 +2,7 @@ package org.example.framework.out.server;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import org.example.application.out.ServerService;
-import org.example.domain.Distance;
+import org.example.domain.location.Distance;
 import org.example.domain.Server;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.framework.out.http.ServerRequestException;

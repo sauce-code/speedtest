@@ -6,6 +6,9 @@ import org.example.domain.*;
 import org.example.domain.config.Config;
 import org.example.domain.config.DownloadSettings;
 import org.example.domain.config.UploadSettings;
+import org.example.domain.location.Latitude;
+import org.example.domain.location.Location;
+import org.example.domain.location.Longitude;
 
 import java.math.BigDecimal;
 
