@@ -5,6 +5,7 @@ import org.example.domain.location.Location;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
@@ -24,7 +25,7 @@ public record Client(
         Objects.requireNonNull(countryCode);
     }
 
-    public TreeMap<Distance, Server> closestServers(List<Server> servers) {
+    public SortedMap<Distance, Server> closestServers(List<Server> servers) {
         Objects.requireNonNull(servers);
         return servers.stream()
                 .collect(Collectors.toMap(

@@ -9,6 +9,7 @@ import org.example.domain.location.Distance;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 @ApplicationScoped
@@ -75,7 +76,7 @@ public class SpeedtestApplicationService {
             logger.infov("fetched {0} servers", servers.size());
 
             logger.info("calculating closest servers ...");
-            TreeMap<Distance, Server> closestServers = config.client().closestServers(
+            SortedMap<Distance, Server> closestServers = config.client().closestServers(
                     servers);
             var closestServersLimited =  serverService.limit(closestServers);
             logger.infov("calculated {0} closest servers", closestServersLimited.size());

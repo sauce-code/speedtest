@@ -5,12 +5,13 @@ import org.example.domain.location.Distance;
 
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 public interface ServerService {
 
     List<Server> servers(int threadsPerUrl);
 
-    Map<Distance, Server> limit(TreeMap<Distance, Server> treeMap);
+    Map<Distance, Server> limit(SortedMap<Distance, Server> treeMap);
 
 }
