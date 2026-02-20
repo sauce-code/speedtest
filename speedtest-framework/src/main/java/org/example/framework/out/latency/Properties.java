@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Positive;
 public interface Properties {
 
     @Positive
+    int limit();
+
+    @Positive
     int testsPerServer();
 
 }

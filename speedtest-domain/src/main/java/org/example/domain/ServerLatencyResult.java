@@ -2,12 +2,12 @@ package org.example.domain;
 
 import java.util.Objects;
 
-public record FastestServerResult(
+public record ServerLatencyResult(
         Server server,
         LatencyTestResult latencyTestResult
 ) {
 
-    public FastestServerResult {
+    public ServerLatencyResult {
         Objects.requireNonNull(server);
         Objects.requireNonNull(latencyTestResult);
     }
