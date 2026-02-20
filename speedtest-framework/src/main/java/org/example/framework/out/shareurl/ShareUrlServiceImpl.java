@@ -3,6 +3,7 @@ package org.example.framework.out.shareurl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.xml.bind.DatatypeConverter;
 import org.example.application.out.ShareUrlService;
+import org.example.domain.Latency;
 import org.example.domain.ShareURL;
 import org.example.framework.out.http.HttpPostClient;
 import org.example.util.Objectz;
@@ -32,12 +33,12 @@ public class ShareUrlServiceImpl implements ShareUrlService {
     }
 
     @Override
-    public ShareURL createShareUrl(int serverId, double latency, double uploadMbps, double downloadMbps) {
+    public ShareURL createShareUrl(int serverId, Latency latency, double uploadMbps, double downloadMbps) {
         Objectz.require(serverId > 0);
         Objectz.require(uploadMbps > 0);
         Objectz.require(downloadMbps > 0);
         try {
-            int ping = (int) Math.round(latency);
+            int ping = (int) Math.round(latency.ms().doubleValue());
             int uploadKbps = (int) Math.round(uploadMbps * 1000.0);
             int downloadKbps = (int) Math.round(downloadMbps * 1000.0);
             String md5Hash = generateMd5Hash(String.format("%s-%s-%s-%s", ping, uploadKbps, downloadKbps, "297aae72"));

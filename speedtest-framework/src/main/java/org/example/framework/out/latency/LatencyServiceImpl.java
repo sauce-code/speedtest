@@ -4,10 +4,11 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.example.application.out.LatencyService;
 import org.example.application.out.Logger;
 import org.example.application.out.TimeService;
-import org.example.domain.Distance;
 import org.example.domain.FastestServerResult;
+import org.example.domain.Latency;
 import org.example.domain.LatencyTestResult;
 import org.example.domain.Server;
+import org.example.domain.location.Distance;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.util.Objectz;
 
@@ -54,7 +55,7 @@ public class LatencyServiceImpl implements LatencyService {
         for (Map.Entry<Distance, Server> entry : serverMap.entrySet()) {
             List<Long> longs = testLatency(entry.getValue().uri());
             double average = calculateAverage(longs);
-            LatencyTestResult latencyTestResult = new LatencyTestResult(average, entry.getKey());
+            LatencyTestResult latencyTestResult = new LatencyTestResult(Latency.valueOf(average), entry.getKey());
             results.put(entry.getValue(), latencyTestResult);
         }
         return results;

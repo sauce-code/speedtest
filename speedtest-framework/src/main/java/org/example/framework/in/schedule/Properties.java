@@ -7,4 +7,6 @@ public interface Properties {
 
     boolean enabled();
 
+    String cron();
+
 }

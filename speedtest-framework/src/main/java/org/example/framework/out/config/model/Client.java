@@ -10,16 +10,16 @@ public class Client {
     public String ip;
 
     @XmlAttribute
-    public Double lat;
+    public String lat;
 
     @XmlAttribute
-    public Double lon;
+    public String lon;
 
     @XmlAttribute
     public String isp;
 
     @XmlAttribute
-    public Double isprating;
+    public String isprating;
 
     @XmlAttribute
     public String country;

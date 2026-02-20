@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.example.application.out.*;
 import org.example.domain.*;
 import org.example.domain.config.Config;
+import org.example.domain.location.Distance;
 
 import java.io.File;
 import java.time.LocalDateTime;

@@ -1,6 +1,7 @@
 package org.example.domain;
 
-import org.example.util.Objectz;
+import org.example.domain.location.Distance;
+import org.example.domain.location.Location;
 
 import java.util.List;
 import java.util.Objects;
@@ -11,7 +12,7 @@ public record Client(
         String ipAddress,
         Location location,
         String isp,
-        double ispRating,
+        ISPRating ispRating,
         IsoAlpha2CountryCode countryCode
 ) {
 
@@ -19,8 +20,7 @@ public record Client(
         Objects.requireNonNull(ipAddress);
         Objects.requireNonNull(location);
         Objects.requireNonNull(isp);
-        Objectz.require(Double.isFinite(ispRating));
-        Objectz.require(ispRating >= 0d);
+        Objects.requireNonNull(ispRating);
         Objects.requireNonNull(countryCode);
     }
 

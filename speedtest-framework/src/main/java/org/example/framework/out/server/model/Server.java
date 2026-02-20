@@ -3,8 +3,11 @@ package org.example.framework.out.server.model;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import org.example.domain.IsoAlpha2CountryCode;
-import org.example.domain.Location;
+import org.example.domain.location.Latitude;
+import org.example.domain.location.Location;
+import org.example.domain.location.Longitude;
 
+import java.math.BigDecimal;
 import java.net.URI;
 
 @XmlRootElement
@@ -14,10 +17,10 @@ public class Server {
     public String url;
 
     @XmlAttribute
-    public Double lat;
+    public String lat;
 
     @XmlAttribute
-    public Double lon;
+    public String lon;
 
     @XmlAttribute
     public String name;
@@ -40,7 +43,9 @@ public class Server {
     public org.example.domain.Server toDomain() {
         return new org.example.domain.Server(
                 URI.create(url),
-                new Location(lat, lon),
+                new Location(
+                        new Latitude(new BigDecimal(lat)),
+                        new Longitude(new BigDecimal(lon))),
                 name,
                 country,
                 new IsoAlpha2CountryCode(cc),
