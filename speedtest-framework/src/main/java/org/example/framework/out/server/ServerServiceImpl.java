@@ -64,7 +64,7 @@ public class ServerServiceImpl implements ServerService {
     }
 
     @Override
-    public Map<Distance, Server> limit(TreeMap<Distance, Server> treeMap) {
+    public Map<Distance, Server> limit(SortedMap<Distance, Server> treeMap) {
         Objects.requireNonNull(treeMap);
         return treeMap.entrySet().stream()
                 .limit(properties.limit())
