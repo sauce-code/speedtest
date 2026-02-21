@@ -9,6 +9,7 @@ import org.example.domain.SpeedtestResultID;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Clock;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,12 +19,15 @@ public class SpeedtestCSVRepository implements Repository<SpeedtestResultID, Spe
 
     private final Properties properties;
     private final Logger logger;
+    private final Clock clock;
 
     public SpeedtestCSVRepository(
             Properties properties,
-            Logger logger) {
+            Logger logger,
+            Clock clock) {
         this.properties = properties;
         this.logger = logger;
+        this.clock = clock;
     }
 
     @Override
@@ -59,8 +63,8 @@ public class SpeedtestCSVRepository implements Repository<SpeedtestResultID, Spe
         }
         String s = Stream.of(
                         entity.id().uuid(),
-                        entity.startTime(),
-                        entity.endTime(),
+                        entity.startTime().atZone(clock.getZone()),
+                        entity.endTime().atZone(clock.getZone()),
                         entity.client().ipAddress(),
                         entity.client().isp(),
                         entity.server().host(),

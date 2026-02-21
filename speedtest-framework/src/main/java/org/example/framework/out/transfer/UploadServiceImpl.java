@@ -1,7 +1,6 @@
 package org.example.framework.out.transfer;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.example.application.out.TimeService;
 import org.example.application.out.UploadService;
 import org.example.domain.Server;
 import org.example.domain.TransferTestResult;
@@ -9,6 +8,7 @@ import org.example.domain.config.UploadSettings;
 import org.example.framework.out.http.HttpPostClient;
 import org.example.util.Objectz;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,17 +22,17 @@ public class UploadServiceImpl implements UploadService {
     private final Properties properties;
     private final HttpPostClient httpPostClient;
     private final TransferService transferService;
-    private final TimeService timeService;
+    private final Clock clock;
 
     public UploadServiceImpl(
             Properties properties,
             HttpPostClient httpPostClient,
             TransferService transferService,
-            TimeService timeService) {
+            Clock clock) {
         this.properties = properties;
         this.httpPostClient = httpPostClient;
         this.transferService = transferService;
-        this.timeService = timeService;
+        this.clock = clock;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class UploadServiceImpl implements UploadService {
                 sizeList.add(size);
             }
         }
-        long timeoutTime = timeService.currentTimeMillis() + settings.testLength() * 1_000L;
+        long timeoutTime = clock.millis() + settings.testLength() * 1_000L;
         List<UploadTask> callables = sizeList.stream()
                 .map(s -> new UploadTask(httpPostClient, server.uri(), timeoutTime, generateDataString(s)))
                 .toList();

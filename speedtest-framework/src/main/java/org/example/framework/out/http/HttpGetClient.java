@@ -1,13 +1,13 @@
 package org.example.framework.out.http;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import org.example.application.out.TimeService;
 import org.example.domain.TransferTestResult;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.time.Clock;
 import java.util.Objects;
 
 @ApplicationScoped
@@ -15,15 +15,15 @@ public class HttpGetClient {
 
     private final Properties properties;
     private final HttpClient httpClient;
-    private final TimeService timeService;
+    private final Clock clock;
 
     public HttpGetClient(
             Properties properties,
             HttpClient httpClient,
-            TimeService timeService) {
+            Clock clock) {
         this.properties = properties;
         this.httpClient = httpClient;
-        this.timeService = timeService;
+        this.clock = clock;
     }
 
     public TransferTestResult partialGetDownloadData(URI uri, long timeoutTime) throws ServerRequestException {
@@ -31,12 +31,12 @@ public class HttpGetClient {
         int bytesReceived = 0;
         try {
             HttpURLConnection conn = httpClient.createConnection(uri, RequestMethod.GET);
-            long startTime = timeService.currentTimeMillis();
+            long startTime = clock.millis();
             try (InputStream is = conn.getInputStream()) {
                 byte[] buffer = new byte[properties.download().maxBufferSize()];
                 int bytesRead = 1;
                 while (bytesRead > 0) {
-                    if (timeoutTime > 0 && timeService.currentTimeMillis() > timeoutTime) {
+                    if (timeoutTime > 0 && clock.millis() > timeoutTime) {
                         break;
                     }
                     bytesRead = is.read(buffer);
@@ -44,7 +44,7 @@ public class HttpGetClient {
                         bytesReceived = bytesReceived + bytesRead;
                     }
                 }
-                return new TransferTestResult(bytesReceived, timeService.currentTimeMillis() - startTime);
+                return new TransferTestResult(bytesReceived, clock.millis() - startTime);
             }
         } catch (IOException e) {
             throw new ServerRequestException(e);

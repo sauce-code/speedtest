@@ -10,7 +10,7 @@ public record Latency(
         BigDecimal ms
 ) implements Comparable<Latency> {
 
-    static final int SCALE = 6;
+    static final int SCALE = 2;
 
     public Latency {
         Objects.requireNonNull(ms);

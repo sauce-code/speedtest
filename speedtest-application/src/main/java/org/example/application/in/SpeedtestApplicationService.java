@@ -6,7 +6,8 @@ import org.example.domain.*;
 import org.example.domain.config.Config;
 
 import java.io.File;
-import java.time.LocalDateTime;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.List;
 
 @ApplicationScoped
@@ -15,7 +16,7 @@ public class SpeedtestApplicationService {
     private final Logger logger;
     private final LockService lockService;
     private final IDService<SpeedtestResultID> idService;
-    private final TimeService timeService;
+    private final Clock clock;
     private final ConfigService configService;
     private final ServerService serverService;
     private final LatencyService latencyService;
@@ -29,7 +30,7 @@ public class SpeedtestApplicationService {
             Logger logger,
             LockService lockService,
             IDService<SpeedtestResultID> idService,
-            TimeService timeService,
+            Clock clock,
             ConfigService configService,
             ServerService serverService,
             LatencyService latencyService,
@@ -41,7 +42,7 @@ public class SpeedtestApplicationService {
         this.logger = logger;
         this.lockService = lockService;
         this.idService = idService;
-        this.timeService = timeService;
+        this.clock = clock;
         this.configService = configService;
         this.serverService = serverService;
         this.latencyService = latencyService;
@@ -61,7 +62,7 @@ public class SpeedtestApplicationService {
         }
         try {
             SpeedtestResultID id = idService.create();
-            LocalDateTime startTime = timeService.localDateTime();
+            Instant startTime = clock.instant();
 
             logger.info("requesting config ...");
             Config config = configService.config();
@@ -102,7 +103,7 @@ public class SpeedtestApplicationService {
                     downloadResult.rateInMbps());
             logger.info(shareUrl);
 
-            LocalDateTime endTime = timeService.localDateTime();
+            Instant endTime = clock.instant();
             SpeedtestResult speedtestResult = new SpeedtestResult(
                     id,
                     startTime,

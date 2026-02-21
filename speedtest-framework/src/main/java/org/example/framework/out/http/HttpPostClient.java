@@ -1,13 +1,13 @@
 package org.example.framework.out.http;
 
 import jakarta.inject.Singleton;
-import org.example.application.out.TimeService;
 import org.example.domain.TransferTestResult;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.time.Clock;
 import java.util.Objects;
 
 @Singleton
@@ -15,15 +15,15 @@ public class HttpPostClient {
 
     private final Properties properties;
     private final HttpClient httpClient;
-    private final TimeService timeService;
+    private final Clock clock;
 
     public HttpPostClient(
             Properties properties,
             HttpClient httpClient,
-            TimeService timeService) {
+            Clock clock) {
         this.properties = properties;
         this.httpClient = httpClient;
-        this.timeService = timeService;
+        this.clock = clock;
     }
 
     public TransferTestResult partialPostUploadData(URI uri, long timeoutTime, String dataString) throws ServerRequestException {
@@ -36,14 +36,14 @@ public class HttpPostClient {
             conn.setChunkedStreamingMode(maxBufferSize);
             conn.setDoOutput(true);
             conn.setRequestProperty(RequestProperty.CONTENT_LENGTH.value(), Integer.toString(dataString.length()));
-            long startTime = timeService.currentTimeMillis();
+            long startTime = clock.millis();
             DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
             int bytesAvailable = is.available();
             int bufferSize = Math.min(bytesAvailable, maxBufferSize);
             byte[] buffer = new byte[bufferSize];
             int bytesRead = 1;
             while (bytesRead > 0) {
-                if (timeoutTime > 0 && timeService.currentTimeMillis() > timeoutTime) {
+                if (timeoutTime > 0 && clock.millis() > timeoutTime) {
                     break;
                 }
                 dos.write(buffer, 0, bufferSize);
@@ -54,7 +54,7 @@ public class HttpPostClient {
                     bytesSent = bytesSent + bytesRead;
                 }
             }
-            var duartionInMs = timeService.currentTimeMillis() - startTime;
+            var duartionInMs = clock.millis() - startTime;
             dos.flush();
             dos.close();
             return new TransferTestResult(bytesSent, duartionInMs);

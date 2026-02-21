@@ -11,14 +11,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class LatencyTest {
 
     @ParameterizedTest
-    @ValueSource(strings = {"-1.000000", "-0.000001"})
+    @ValueSource(strings = {"-1.00", "-0.01"})
     void givenInvalidValue_whenConstructor_thenThrows(String value) {
         var bigDecimal = new BigDecimal(value);
         assertThrows(IllegalArgumentException.class, () -> new Latency(bigDecimal));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"-0.000000", "0.000000", "0.000001", "1.000000"})
+    @ValueSource(strings = {"-0.00", "0.00", "0.01", "1.00"})
     void givenValidValue_whenConstructor_thenNotThrows(String value) {
         var bigDecimal = new BigDecimal(value);
         assertDoesNotThrow(() -> new Latency(bigDecimal));
@@ -26,17 +26,17 @@ class LatencyTest {
 
     @Test
     void givenValueString_whenValueOf_thenRecord() {
-        var given = "12.1234567";
+        var given = "12.12";
         var actual = Latency.valueOf(given);
-        var expected = new Latency(new BigDecimal("12.123457"));
+        var expected = new Latency(new BigDecimal("12.12"));
         assertEquals(expected, actual);
     }
 
     @Test
     void givenValueDouble_whenValueOf_thenRecord() {
-        var d = 12.1234567;
+        var d = 12.12;
         var actual = Latency.valueOf(d);
-        var expected = new Latency(new BigDecimal("12.123457"));
+        var expected = new Latency(new BigDecimal("12.12"));
         assertEquals(expected, actual);
     }
 
