@@ -1,6 +1,7 @@
 package org.example.framework.out.server;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import org.example.application.out.Logger;
 import org.example.application.out.ServerService;
 import org.example.domain.Server;
 import org.example.framework.out.http.HttpGetClient;
@@ -13,20 +14,24 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 @ApplicationScoped
 public class ServerServiceImpl implements ServerService {
 
+    private final Logger logger;
     private final Properties properties;
     private final HttpGetClient httpGetClient;
     private final Context context;
 
     public ServerServiceImpl(
+            Logger logger,
             Properties properties,
             HttpGetClient httpGetClient,
             Context context) {
+        this.logger = logger;
         this.properties = properties;
         this.httpGetClient = httpGetClient;
         this.context = context;
@@ -36,23 +41,25 @@ public class ServerServiceImpl implements ServerService {
     public List<Server> servers(int threadsPerUrl) {
         Objectz.require(threadsPerUrl > 0);
         return properties.baseUri().stream()
-                .map(base -> {
-                    try {
-                        String s = "%s?threads=%d".formatted(base, threadsPerUrl);
-                        URI uri = URI.create(s);
-                        byte[] bytes = httpGetClient.get(uri);
-                        return getServersFromXml(bytes);
-                    } catch (ParsingException | ServerRequestException e) {
-                        throw new ServerServiceException(e);
-                        // TODO instead warn and return empty list
-                    }
-                })
+                .map(base -> "%s?threads=%d".formatted(base, threadsPerUrl))
+                .map(URI::create)
+                .map(this::serversFromURI)
                 .flatMap(Collection::stream)
                 .distinct()
                 .toList();
     }
 
-    private List<Server> getServersFromXml(byte[] bytes) throws ParsingException {
+    private List<Server> serversFromURI(URI uri) {
+        try {
+            byte[] bytes = httpGetClient.get(uri);
+            return serversFromXml(bytes);
+        } catch (ParsingException | ServerRequestException e) {
+            logger.warnv("Could not receive any servers for {0}: {1}", uri, e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    private List<Server> serversFromXml(byte[] bytes) throws ParsingException {
         Objects.requireNonNull(bytes);
         try (InputStream is = new ByteArrayInputStream(bytes)) {
             Settings settings = context.unmarshal(is, Settings.class);

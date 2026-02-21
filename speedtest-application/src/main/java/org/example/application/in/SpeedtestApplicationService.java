@@ -71,6 +71,9 @@ public class SpeedtestApplicationService {
             logger.info("requesting servers ...");
             List<Server> servers = serverService.servers(
                     config.downloadSettings().threadsPerUrl());
+            if (servers.isEmpty()) {
+                throw new ApplicationRunException("Could not receive any servers.");
+            }
             logger.infov("fetched {0} servers", servers.size());
 
             logger.info("calculating closest servers ...");
@@ -124,7 +127,6 @@ public class SpeedtestApplicationService {
 
             return speedtestResult;
         } catch (Exception e) {
-            logger.error(e);
             logger.error(e.getMessage());
             throw new ApplicationRunException(e);
         } finally {
