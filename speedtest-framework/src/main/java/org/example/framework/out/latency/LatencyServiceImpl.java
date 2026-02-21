@@ -3,10 +3,10 @@ package org.example.framework.out.latency;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.example.application.out.LatencyService;
 import org.example.application.out.Logger;
+import org.example.application.out.ServerLatencyResult;
 import org.example.domain.Latency;
 import org.example.domain.LatencyTestResult;
-import org.example.domain.ServerDistanceResult;
-import org.example.domain.ServerLatencyResult;
+import org.example.domain.ServerDistance;
 import org.example.framework.out.http.HttpGetClient;
 import org.example.util.Objectz;
 
@@ -38,11 +38,11 @@ public class LatencyServiceImpl implements LatencyService {
     }
 
     @Override
-    public ServerLatencyResult getFastestServer(List<ServerDistanceResult> serverDistanceResults) {
-        Objects.requireNonNull(serverDistanceResults);
-        Objectz.require(!serverDistanceResults.isEmpty());
-        return serverDistanceResults.stream()
-                .sorted(Comparator.comparing(ServerDistanceResult::distance))
+    public ServerLatencyResult getFastestServer(List<ServerDistance> serverDistances) {
+        Objects.requireNonNull(serverDistances);
+        Objectz.require(!serverDistances.isEmpty());
+        return serverDistances.stream()
+                .sorted(Comparator.comparing(ServerDistance::distance))
                 .limit(properties.limit())
                 .map(this::latencyTestResult)
                 .filter(Optional::isPresent)
@@ -51,17 +51,17 @@ public class LatencyServiceImpl implements LatencyService {
                 .orElseThrow(() -> new LatencyServiceException("Could not receive any latency."));
     }
 
-    private Optional<ServerLatencyResult> latencyTestResult(ServerDistanceResult serverDistanceResult) {
-        Objects.requireNonNull(serverDistanceResult);
-        var server = serverDistanceResult.server();
+    private Optional<ServerLatencyResult> latencyTestResult(ServerDistance serverDistance) {
+        Objects.requireNonNull(serverDistance);
+        var server = serverDistance.server();
         var latencies = testLatency(server.uri());
         var average = average(latencies);
         if (average.isEmpty()) {
-            logger.warnv("Could not get any latency for host: {0}", serverDistanceResult.server().host());
+            logger.warnv("Could not get any latency for host: {0}", serverDistance.server().host());
             return Optional.empty();
         }
         var latency = Latency.valueOf(average.getAsDouble());
-        var distance = serverDistanceResult.distance();
+        var distance = serverDistance.distance();
         var latencyTestResult = new LatencyTestResult(latency, distance);
         var fastestServerResult = new ServerLatencyResult(server, latencyTestResult);
         return Optional.of(fastestServerResult);

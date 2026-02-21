@@ -70,6 +70,18 @@ public class SpeedtestResult extends Entity<SpeedtestResultID> {
     }
 
     @Override
+    public boolean equals(Object object) {
+        if (object == null || getClass() != object.getClass()) return false;
+        SpeedtestResult that = (SpeedtestResult) object;
+        return Objects.equals(startTime, that.startTime) && Objects.equals(endTime, that.endTime) && Objects.equals(client, that.client) && Objects.equals(server, that.server) && Objects.equals(latency, that.latency) && Objects.equals(download, that.download) && Objects.equals(upload, that.upload) && Objects.equals(shareUrl, that.shareUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(startTime, endTime, client, server, latency, download, upload, shareUrl);
+    }
+
+    @Override
     public String toString() {
         return "SpeedtestResult{" +
                 "startTime=" + startTime +

@@ -21,10 +21,10 @@ public record Client(
         Objects.requireNonNull(countryCode);
     }
 
-    public List<ServerDistanceResult> closestServers(List<Server> servers) {
+    public List<ServerDistance> serverDistances(List<Server> servers) {
         Objects.requireNonNull(servers);
         return servers.stream()
-                .map(server -> new ServerDistanceResult(server, location.distance(server.location())))
+                .map(server -> new ServerDistance(server, location.distance(server.location())))
                 .toList();
     }
 
