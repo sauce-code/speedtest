@@ -10,10 +10,10 @@ public class ClientFixture {
 
     public static Client some() {
         return new Client(
-                "134.19.37.45",
+                "134.19.32.81",
                 new Location(
-                        Latitude.valueOf("51.0880"),
-                        Longitude.valueOf("6.8845")),
+                        Latitude.valueOf("49.0401"),
+                        Longitude.valueOf("8.7109")),
                 "vitroconnect",
                 new ISPRating(new BigDecimal("3.7")),
                 new IsoAlpha2CountryCode("DE"));

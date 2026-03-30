@@ -4,12 +4,12 @@ import org.example.domain.location.Distance;
 
 import java.util.Objects;
 
-public record ServerDistanceResult(
+public record ServerDistance(
         Server server,
         Distance distance
 ) {
 
-    public ServerDistanceResult {
+    public ServerDistance {
         Objects.requireNonNull(server);
         Objects.requireNonNull(distance);
     }

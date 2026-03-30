@@ -7,11 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ClientTest {
 
     @Test
-    void givenServers_whenClosestServers_thenResult() {
+    void givenServers_whenServerDistances_thenResult() {
         var client = ClientFixture.some();
         var servers = ServerFixture.some();
-        var actual = client.closestServers(servers);
-        var expected = ServerDistanceResultFixture.some();
+        var actual = client.serverDistances(servers);
+        var expected = ServerDistanceFixture.some();
         assertEquals(expected, actual);
     }
 

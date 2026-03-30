@@ -33,7 +33,7 @@ public class ShareUrlServiceImpl implements ShareUrlService {
     }
 
     @Override
-    public ShareURL createShareUrl(int serverId, Latency latency, double uploadMbps, double downloadMbps) {
+    public ShareURL createShareUrl(int serverId, Latency latency, double downloadMbps, double uploadMbps) {
         Objectz.require(serverId > 0);
         Objectz.require(uploadMbps > 0);
         Objectz.require(downloadMbps > 0);

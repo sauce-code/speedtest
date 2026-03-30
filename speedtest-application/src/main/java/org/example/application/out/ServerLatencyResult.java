@@ -1,4 +1,7 @@
-package org.example.domain;
+package org.example.application.out;
+
+import org.example.domain.LatencyTestResult;
+import org.example.domain.Server;
 
 import java.util.Objects;
 
